@@ -16,5 +16,6 @@
             "name": "yijin",
             "email": "yijin@91laiqian.com"
         }
-    ]
+    ],
+    "license":"Apache-2.0"
 }
