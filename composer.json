@@ -5,7 +5,11 @@
     "version": "1.0.2",
     "require": {
         "php": ">=7.0",
-        "guzzlehttp/guzzle": "^7.3"
+        "guzzlehttp/guzzle": "^7.3",
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "ext-mbstring": "*",
+        "ext-curl": "*"
     },
     "autoload": {
         "psr-4": {

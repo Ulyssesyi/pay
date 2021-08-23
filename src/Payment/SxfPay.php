@@ -237,6 +237,31 @@ class SxfPay extends Base
      */
     function sign($data): string
     {
+        $signContent = $this->generateSignString($data);
+        $signSecret = "-----BEGIN RSA PRIVATE KEY-----\n" .
+            wordwrap($this->config->orgPrivateRSAKey, 64, "\n", true) .
+            "\n-----END RSA PRIVATE KEY-----";
+        openssl_sign($signContent, $sign, $signSecret);
+        return base64_encode($sign);
+    }
+
+    /**
+     * 验证签名,暂无
+     */
+    function verifySign(array $data): bool
+    {
+        $signKey = 'sign';
+        $signed = $data[$signKey];
+        unset($data[$signKey]);
+        $signContent = $this->generateSignString($data);
+        $signSecret = "-----BEGIN PUBLIC KEY-----\n" .
+            wordwrap($this->config->orgPublicRSAKey, 64, "\n", true) .
+            "\n-----END PUBLIC KEY-----";
+        return openssl_verify($signContent, base64_decode($signed), $signSecret);
+    }
+
+    private function generateSignString($data): string
+    {
         ksort($data);
         $stringToBeSigned = "";
         foreach ($data as $k => $v) {
@@ -248,15 +273,7 @@ class SxfPay extends Base
             }
         }
         unset ($k, $v);
-        $signContent = mb_substr($stringToBeSigned, 0, mb_strlen($stringToBeSigned) - 1);
-        $res = "-----BEGIN RSA PRIVATE KEY-----\n" .
-            wordwrap($this->config->orgPrivateRSAKey, 64, "\n", true) .
-            "\n-----END RSA PRIVATE KEY-----";
-        if (!$res) {
-            throw new \Exception('您使用的私钥格式错误，请检查RSA私钥配置');
-        }
-        openssl_sign($signContent, $sign, $res);
-        return base64_encode($sign);
+        return mb_substr($stringToBeSigned, 0, mb_strlen($stringToBeSigned) - 1);
     }
 
     private function execRequest($params, $url) {
@@ -270,7 +287,7 @@ class SxfPay extends Base
         }
         $commonParams = [
             "orgId" => $this->config->orgId,
-            "reqData" => $params,
+            "reqData" => array_filter($params),
             "reqId" => uniqid('sxf'),
             "signType" => "RSA",
             "timestamp" => date("Y-m-d h:i:s"),
@@ -279,7 +296,10 @@ class SxfPay extends Base
         $commonParams['sign'] = $this->sign($commonParams);
 
         $client = new Client([
-            'base_uri' => $this->config->domain
+            'base_uri' => $this->config->domain,
+            'curl' => [
+                CURLOPT_SSL_CIPHER_LIST => 'DEFAULT@SECLEVEL=1'
+            ]
         ]);
         $response = $client->post($url, [
             'json' => $commonParams

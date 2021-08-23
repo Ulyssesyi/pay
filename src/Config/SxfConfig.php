@@ -6,7 +6,8 @@ namespace Yijin\Pay\Config;
  * @property string $orgId 企业编号
  * @property string $merchantNo 商户编号
  * @property string $userIP 请求IP
- * @property string $orgPrivateRSAKey RSA密钥内容
+ * @property string $orgPrivateRSAKey 机构RSA私钥内容
+ * @property string $orgPublicRSAKey 平台RSA公钥内容
  * @property string $outFrontUrl H5支付后跳转网页地址
  * @property string $wechatFoodOrder 微信扫码点餐标识，最大长度32位,目前需上送：FoodOrder
  * @property string $refundReason 退款原因。默认值：商家与消费者协商一致

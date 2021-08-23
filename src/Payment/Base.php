@@ -58,13 +58,5 @@ abstract class Base
     /**
      * 验证签名
      */
-    function verifySign($data, $signKey): bool
-    {
-        $sign = $data[$signKey] ?? '';
-        if (!$sign) {
-            return false;
-        }
-        unset($data[$signKey]);
-        return $sign === $this->sign($data);
-    }
+    abstract function verifySign(array $data): bool;
 }
