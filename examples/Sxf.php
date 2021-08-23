@@ -4,7 +4,7 @@ use \Yijin\Pay\Factory;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 ### B扫C
-$config = new SxfConfig();
+$config = (new Factory())->getConfig(Factory::PAY_BY_SXF);
 $config->channel = SxfConfig::$ALIPAY;
 $config->tradeNo = 'SB202012261548555';
 $config->totalAmount = 0.01;
@@ -21,7 +21,7 @@ $res = $payModel->barcodePay();
 var_dump($res);
 
 ### C扫B
-$config = new SxfConfig();
+$config = (new Factory())->getConfig(Factory::PAY_BY_SXF);
 $config->channel = SxfConfig::$ALIPAY;
 $config->tradeNo = 'SB202012261548555';
 $config->totalAmount = 0.01;
@@ -37,7 +37,7 @@ $res = $payModel->qrcodePay();
 var_dump($res);
 
 ### 网页支付
-$config = new SxfConfig();
+$config = (new Factory())->getConfig(Factory::PAY_BY_SXF);
 $config->channel = SxfConfig::$ALIPAY;
 $config->tradeNo = 'SB202012261548555';
 $config->totalAmount = 0.01;
@@ -58,7 +58,7 @@ $res = $payModel->webPay();
 var_dump($res);
 
 ### 支付订单查询
-$config = new SxfConfig();
+$config = (new Factory())->getConfig(Factory::PAY_BY_SXF);
 $config->channel = SxfConfig::$ALIPAY;
 $config->tradeNo = 'SB202012261548555';
 $config->orgId = '85555555';
@@ -71,7 +71,7 @@ $res = $payModel->query();
 var_dump($res);
 
 ### 退款
-$config = new SxfConfig();
+$config = (new Factory())->getConfig(Factory::PAY_BY_SXF);
 $config->channel = SxfConfig::$ALIPAY;
 $config->tradeNo = 'SB202012261548555';
 $config->refundTradeNo = 'SB-TK202012261548555';
@@ -86,7 +86,7 @@ $res = $payModel->refund();
 var_dump($res);
 
 ### 退款订单查询
-$config = new SxfConfig();
+$config = (new Factory())->getConfig(Factory::PAY_BY_SXF);
 $config->channel = SxfConfig::$ALIPAY;
 $config->refundTradeNo = 'SB-TK202012261548555';
 $config->orgId = '85555555';
