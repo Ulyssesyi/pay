@@ -1,7 +1,8 @@
 {
     "name": "yijin/pay",
     "description": "A project for diff channel to pay in china",
-    "type": "composer-plugin",
+    "type": "library",
+    "version": "1.0.0",
     "require": {
         "php": ">=7.0",
         "guzzlehttp/guzzle": "^7.3"
@@ -17,5 +18,6 @@
             "email": "yijin@91laiqian.com"
         }
     ],
+    "minimum-stability":"dev",
     "license":"Apache-2.0"
 }
