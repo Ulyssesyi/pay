@@ -2,7 +2,7 @@
     "name": "yijin/pay",
     "description": "A project for diff channel to pay in china",
     "type": "library",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "require": {
         "php": ">=7.0",
         "guzzlehttp/guzzle": "^7.3",
