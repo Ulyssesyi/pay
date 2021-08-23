@@ -1,13 +1,16 @@
 # 介绍
 这个项目初衷是适配公司多个不同支付渠道下（支付宝/微信支付）的支付组件，目前支持的支付渠道如下
-- 官方（<font color=red>待完成</font>）
-- 随行付（<font color=green>已完成</font>）
-- 联付通（<font color=red>待完成</font>）
-- 付呗（<font color=red>待完成</font>）
-- 收钱吧（<font color=red>待完成</font>）
-- 乐刷（<font color=red>待完成</font>）
-- 云闪付（<font color=red>待完成</font>）
-- 乐天成（<font color=red>待完成</font>）
+
+渠道|渠道编号|进度
+---|---|---
+官方|5|（<font color=red>待完成</font>）
+随行付|10|（<font color=green>已完成</font>）
+联付通|1|（<font color=red>待完成</font>）
+付呗|4|（<font color=red>待完成</font>）
+收钱吧|6|（<font color=red>待完成</font>）
+乐刷|7|（<font color=red>待完成</font>）
+云闪付|8|（<font color=red>待完成</font>）
+乐天成|11|（<font color=red>待完成</font>）
 
 # 更多
 可以通过继承Base类后实现更多的支付渠道

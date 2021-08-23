@@ -7,10 +7,10 @@ use Yijin\Pay\Payment\SxfPay;
 
 class Factory
 {
-    const PAY_BY_SXF = 'SXF';
+    const PAY_BY_SXF = 10;
 
     function getAdapter($type, Config $config): Base {
-        switch ($type) {
+        switch ((int)$type) {
             case self::PAY_BY_SXF:
                 return new SxfPay($config);
             default:
