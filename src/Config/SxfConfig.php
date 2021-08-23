@@ -5,7 +5,6 @@ namespace Yijin\Pay\Config;
 /**
  * @property string $orgId 企业编号
  * @property string $merchantNo 商户编号
- * @property string $domain 接口域名
  * @property string $userIP 请求IP
  * @property string $orgPrivateRSAKey RSA密钥内容
  * @property string $outFrontUrl H5支付后跳转网页地址
@@ -14,6 +13,10 @@ namespace Yijin\Pay\Config;
  */
 class SxfConfig extends Base
 {
+    /**
+     * @var string $domain 接口域名
+     */
+    public $domain = 'https://openapi.tianquetech.com';
     // B扫C
     const BARCODE_PAY_URL = 'order/reverseScan';
     // C扫B
