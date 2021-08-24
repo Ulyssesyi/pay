@@ -4,9 +4,11 @@ namespace Yijin\Pay\Payment;
 
 use GuzzleHttp\Client;
 use Yijin\Pay\Config;
+use Yijin\Pay\Response;
 
 class SxfPay extends Base
 {
+    use Response;
     // B扫C
     const BARCODE_PAY_URL = 'order/reverseScan';
     // C扫B
@@ -77,7 +79,12 @@ class SxfPay extends Base
             //"mobileNum"=> "", //手机号
             //"extend"=> "" //备用
         ];
-        return $this->execRequest($params, self::BARCODE_PAY_URL);
+        try {
+            $res = $this->execRequest($params, self::BARCODE_PAY_URL);
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+        return $res['bizCode'] === '0000' ? $this->success($res) : $this->error($res['bizMsg'], $res['bizCode'] );
     }
 
     /**
@@ -129,7 +136,12 @@ class SxfPay extends Base
             //"mobileNum"=> "", //手机号
             //"extend"=> "" //备用
         ];
-        return $this->execRequest($params, self::QRCODE_PAY_URL);
+        try {
+            $res = $this->execRequest($params, self::QRCODE_PAY_URL);
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+        return $res['bizCode'] === '0000' ? $this->success($res) : $this->error($res['bizMsg'], $res['bizCode'] );
     }
 
     /**
@@ -187,7 +199,28 @@ class SxfPay extends Base
             //"extend"=> "", //备用
             "wechatFoodOrder"=> $this->config->wechatFoodOrder //微信扫码点餐标识，最大长度32位,目前需上送：FoodOrder
         ];
-        return $this->execRequest($params, self::JS_PAY_URL);
+        try {
+            $res = $this->execRequest($params, self::JS_PAY_URL);
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+        if ($res['bizCode'] === '0000') {
+            if ($this->config->channel === Config::WE_PAY) {
+                $data['jsApiParameters'] = [
+                    'appId' => $res['payAppId'] ?? '',
+                    'timeStamp' => $res['payTimeStamp'] ?? '',
+                    'nonceStr' => $res['paynonceStr'] ?? '',
+                    'paySign' => $res['paySign'] ?? '',
+                    'package' => $res['payPackage'] ?? '',
+                    'signType' => $res['paySignType'] ?? '',
+                ];
+            } else {
+                $data['trade_no'] = $res['source'] ?? '';
+            }
+            return $this->success(array_merge($res, $data));
+        } else {
+            return $this->error($res['bizMsg'], $res['bizCode']);
+        }
     }
 
     /**
@@ -205,7 +238,27 @@ class SxfPay extends Base
             //"terminalId"=> "", //TQ 机具编号， 支付来源为硬 件时，该参数 为必传；
             //"deviceNo"=> ""//设备号
         ];
-        return $this->execRequest($params, self::ORDER_QUERY_URL);
+
+        try {
+            $res = $this->execRequest($params, self::ORDER_QUERY_URL);
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+        if ($res['bizCode'] === '0000') {
+            switch ($res['tranSts']) {
+                case 'SUCCESS':
+                    $trade_status = Config::PAY_SUCCESS;
+                    break;
+                case 'PAYING':
+                    $trade_status = Config::PAYING;
+                    break;
+                default:
+                    $trade_status = Config::PAY_FAIL;
+            }
+            return $this->success(array_merge($res, compact('trade_status')));
+        } else {
+            return $this->error($res['bizMsg'], $res['bizCode']);
+        }
     }
 
     /**
@@ -226,7 +279,12 @@ class SxfPay extends Base
             "refundReason" => $this->config->refundReason ?: "商家与消费者协商一致", //退货原因
             // "extend" => "" //备用
         ];
-        return $this->execRequest($params, self::REFUND_URL);
+        try {
+            $res = $this->execRequest($params, self::REFUND_URL);
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+        return $res['bizCode'] === '0000' ? $this->success($res) : $this->error($res['bizMsg'], $res['bizCode']);
     }
 
     /**
@@ -241,7 +299,12 @@ class SxfPay extends Base
             "ordNo" => $this->config->refundTradeNo, //商户退款订单号
             // "uuid"=> "" //科技公司订单号
         ];
-        return $this->execRequest($params, self::REFUND_QUERY_URL);
+        try {
+            $res = $this->execRequest($params, self::REFUND_QUERY_URL);
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+        return $res['bizCode'] === '0000' ? $this->success($res) : $this->error($res['bizMsg'], $res['bizCode']);
     }
 
     /**
@@ -321,7 +384,15 @@ class SxfPay extends Base
             throw new \Exception("请求{$url}失败，错误码为".$response->getStatusCode());
         }
         $responseData = $response->getBody()->getContents();
-        return json_decode($responseData, true);
+        $data = json_decode($responseData, true);
+        if (!isset($data['code']) || $data['code'] !== '0000') {
+            return [
+                'bizCode' => $data['code'] ?? '0001',
+                'bizMsg' => $data['msg'] ?? '系统异常',
+            ];
+        } else {
+            return $data['respData'] ?? [];
+        }
     }
 
     private function getPayChannel(): string

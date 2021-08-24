@@ -35,6 +35,10 @@ class Config
     const ALIPAY = 1;
     const WE_PAY = 2;
 
+    const PAY_SUCCESS = 1;
+    const PAYING = 0;
+    const PAY_FAIL = -1;
+
     protected $_config = [];
 
     public function __set($name, $value)

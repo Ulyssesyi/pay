@@ -18,7 +18,8 @@
 # 示例
 参看examples文件夹
 
-# 通用参数
+# 请求参数
+## 通用参数
 
 名称|是否必填|类型|示例|说明
 ---|---|---|---|---
@@ -34,7 +35,7 @@ appid|O|string|wx5ccf1abe464a2215|微信支付时发起支付的公众号/小程
 isMiniProgram|O|int|1|webPay是不是由小程序发起，1-小程序，0-公众号/服务窗/js支付
 userId|O|string|oDdgAwTnZ2z4ov8p-VDAb-0GeBIU|用户在微信/支付宝中的id，即微信的openid，支付宝的buyer_id .etc
 
-# 随行付参数
+## 随行付参数
 名称|是否必填|类型|示例|说明
 ---|---|---|---|---
 orgId|M|string|85555555|机构/服务商编号
@@ -47,6 +48,16 @@ wechatFoodOrder|C|string|FoodOrder|微信扫码点餐标识，目前仅有FoodOr
 refundReason|C|string|商家与消费者协商一致|退款原因。默认值：商家与消费者协商一致
 
 更多参数目前用不到没加上，需要的可以自己添加
+
+# 返回参数
+## 通用参数
+
+名称|是否必填|类型|示例|说明
+---|---|---|---|---
+result|M|bool|true|支付请求结果，true-请求成功，false-请求失败
+errMsgNo|C|mixed|1001|支付请求失败的失败错误码，用于特定场景的特殊处理
+errMsg|C|string|缺失参数xxx|支付请求失败的失败原因
+data|C|mixed|https://xxx/xx|支付请求成功时，一些额外信息返回
 
 # 名词解释
 M-必填，C-可以不填写，O-部分场景下必填

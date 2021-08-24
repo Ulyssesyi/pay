@@ -23,29 +23,33 @@ abstract class Base
     abstract function barcodePay();
     /**
      * 二维码支付（C扫B）
+     * 返回的data中必须包含key-payUrl：二维码的图片地址/二维码的base64编码
      * @return mixed
      */
     abstract function qrcodePay();
     /**
      * 网页支付（含H5和小程序支付）
+     * 返回的data中微信必须包含key-jsApiParameters：H5和小程序支付的参数数组，里面key list为appId/timeStamp/nonceStr/package/signType；支付必须包含key-trade_no
+     * 如果是跳转支付的必须包含key-payUrl：支付跳转的地址
      * @return mixed
      */
     abstract function webPay();
 
     /**
      * 支付结果查询
+     * 返回的data中必须包含key-trade_status：当前交易状态，-1-支付失败, 0-支付进行中, 1-支付完成
      * @return mixed
      */
     abstract function query();
 
     /**
-     * 支付退款
+     * 支付退款，返回的result为true代表退款成功，false代表退款失败或者处理中
      * @return mixed
      */
     abstract function refund();
 
     /**
-     * 支付退款查询
+     * 支付退款查询，返回的result为true代表退款成功，false代表退款失败或者处理中
      * @return mixed
      */
     abstract function refundQuery();
