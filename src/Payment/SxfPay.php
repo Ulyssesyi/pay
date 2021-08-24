@@ -205,7 +205,7 @@ class SxfPay extends Base
             return $this->error($e->getMessage(), $e->getCode());
         }
         if ($res['bizCode'] === '0000') {
-            if ($this->config->channel === Config::WE_PAY) {
+            if ($this->config->payType === Config::WE_PAY) {
                 $data['jsApiParameters'] = [
                     'appId' => $res['payAppId'] ?? '',
                     'timeStamp' => $res['payTimeStamp'] ?? '',
