@@ -30,4 +30,14 @@ class Base
     {
         return  $this->_config[$name] ?? null;
     }
+
+    public function __toString()
+    {
+        return json_encode($this->_config);
+    }
+
+    public function __serialize(): array
+    {
+        return $this->_config;
+    }
 }
