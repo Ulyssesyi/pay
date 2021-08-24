@@ -3,14 +3,27 @@
 namespace Yijin\Pay\Payment;
 
 use GuzzleHttp\Client;
-use Yijin\Pay\Config\SxfConfig as Config;
+use Yijin\Pay\Config;
 
 class SxfPay extends Base
 {
+    // B扫C
+    const BARCODE_PAY_URL = 'order/reverseScan';
+    // C扫B
+    const QRCODE_PAY_URL = 'order/activeScan';
+    // js网页支付URL
+    const JS_PAY_URL = 'order/jsapiScan';
+    // 订单支付结果查询
+    const ORDER_QUERY_URL = 'query/tradeQuery';
+    // 退款接口
+    const REFUND_URL = 'order/refund';
+    // 退款查询接口
+    const REFUND_QUERY_URL = 'query/refundQuery';
+
     /**
-     * @var Config
+     * @var string $domain 接口域名
      */
-    protected $config;
+    public $domain = 'https://openapi.tianquetech.com';
 
     /**
      * @inheritDoc
@@ -64,7 +77,7 @@ class SxfPay extends Base
             //"mobileNum"=> "", //手机号
             //"extend"=> "" //备用
         ];
-        return $this->execRequest($params, Config::BARCODE_PAY_URL);
+        return $this->execRequest($params, self::BARCODE_PAY_URL);
     }
 
     /**
@@ -116,7 +129,7 @@ class SxfPay extends Base
             //"mobileNum"=> "", //手机号
             //"extend"=> "" //备用
         ];
-        return $this->execRequest($params, Config::QRCODE_PAY_URL);
+        return $this->execRequest($params, self::QRCODE_PAY_URL);
     }
 
     /**
@@ -174,7 +187,7 @@ class SxfPay extends Base
             //"extend"=> "", //备用
             "wechatFoodOrder"=> $this->config->wechatFoodOrder //微信扫码点餐标识，最大长度32位,目前需上送：FoodOrder
         ];
-        return $this->execRequest($params, Config::JS_PAY_URL);
+        return $this->execRequest($params, self::JS_PAY_URL);
     }
 
     /**
@@ -192,7 +205,7 @@ class SxfPay extends Base
             //"terminalId"=> "", //TQ 机具编号， 支付来源为硬 件时，该参数 为必传；
             //"deviceNo"=> ""//设备号
         ];
-        return $this->execRequest($params, Config::ORDER_QUERY_URL);
+        return $this->execRequest($params, self::ORDER_QUERY_URL);
     }
 
     /**
@@ -213,7 +226,7 @@ class SxfPay extends Base
             "refundReason" => $this->config->refundReason ?: "商家与消费者协商一致", //退货原因
             // "extend" => "" //备用
         ];
-        return $this->execRequest($params, Config::REFUND_URL);
+        return $this->execRequest($params, self::REFUND_URL);
     }
 
     /**
@@ -228,7 +241,7 @@ class SxfPay extends Base
             "ordNo" => $this->config->refundTradeNo, //商户退款订单号
             // "uuid"=> "" //科技公司订单号
         ];
-        return $this->execRequest($params, Config::REFUND_QUERY_URL);
+        return $this->execRequest($params, self::REFUND_QUERY_URL);
     }
 
     /**
@@ -296,7 +309,7 @@ class SxfPay extends Base
         $commonParams['sign'] = $this->sign($commonParams);
 
         $client = new Client([
-            'base_uri' => $this->config->domain,
+            'base_uri' => $this->domain,
             'curl' => [
                 CURLOPT_SSL_CIPHER_LIST => 'DEFAULT@SECLEVEL=1'
             ]
@@ -313,10 +326,10 @@ class SxfPay extends Base
 
     private function getPayChannel(): string
     {
-        switch ($this->config->channel) {
-            case Config::$WE_PAY:
+        switch ($this->config->payType) {
+            case Config::WE_PAY:
                 return 'WECHAT';
-            case Config::$ALIPAY:
+            case Config::ALIPAY:
                 return 'ALIPAY';
             default:
                 return 'UNIONPAY';

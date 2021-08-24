@@ -2,7 +2,7 @@
 
 namespace Yijin\Pay\Payment;
 
-use \Yijin\Pay\Config\Base as Config;
+use \Yijin\Pay\Config;
 
 abstract class Base
 {
