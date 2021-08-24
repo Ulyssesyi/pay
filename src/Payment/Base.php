@@ -29,7 +29,7 @@ abstract class Base
     abstract function qrcodePay();
     /**
      * 网页支付（含H5和小程序支付）
-     * 返回的data中微信必须包含key-jsApiParameters：H5和小程序支付的参数数组，里面key list为appId/timeStamp/nonceStr/package/signType；支付必须包含key-trade_no
+     * 返回的data中微信必须包含key-jsApiParameters：H5和小程序支付的参数数组，里面key list为appId/timeStamp/nonceStr/package/signType；支付宝必须包含key-trade_no：支付宝网页呼起支付用的订单号
      * 如果是跳转支付的必须包含key-payUrl：支付跳转的地址
      * @return mixed
      */
@@ -53,6 +53,19 @@ abstract class Base
      * @return mixed
      */
     abstract function refundQuery();
+
+    /**
+     * 异步通知处理，返回的result为true代表异步通知的结果是成功
+     * 返回的data中微信必须包含key-merchantTradeNo：商户订单号/商户退款单号
+     * @return mixed
+     */
+    abstract function notify($data);
+
+    /**
+     * 异步通知处理成功后给第三方平台的成功返回
+     * @return mixed
+     */
+    abstract function notifySuccess();
 
     /**
      * 签名

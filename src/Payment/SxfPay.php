@@ -309,6 +309,30 @@ class SxfPay extends Base
 
     /**
      * @inheritDoc
+     */
+    function notify($data)
+    {
+        if (!$this->verifySign($data)) {
+            return $this->error('验签失败', -1);
+        }
+        if ($data['bizCode'] === '0000') {
+            $merchantTradeNo = $data['ordNo'] ?? '';
+            return $this->success(array_merge($data, compact('merchantTradeNo')));
+        } else {
+            return $this->error($data['bizMsg'], $data['bizCode']);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    function notifySuccess()
+    {
+        return ['code' => 'success', 'msg' => '成功'];
+    }
+
+    /**
+     * @inheritDoc
      * @throws \Exception
      */
     function sign($data): string
