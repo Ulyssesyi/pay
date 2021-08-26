@@ -84,7 +84,22 @@ class SxfPay extends Base
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
-        return $res['bizCode'] === '0000' ? $this->success($res) : $this->error($res['bizMsg'], $res['bizCode'] );
+        if ($this->isSuccess($res)) {
+            $data = $res['respData'] ?? [];
+            switch ($data['bizCode']) {
+                case '0000':
+                    $trade_status = Config::PAY_SUCCESS;
+                    break;
+                case '2002':
+                    $trade_status = Config::PAYING;
+                    break;
+                default:
+                    $trade_status = Config::PAY_FAIL;
+            }
+            return $this->success(array_merge($data, compact('trade_status')));
+        } else {
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
+        }
     }
 
     /**
@@ -141,7 +156,12 @@ class SxfPay extends Base
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
-        return $res['bizCode'] === '0000' ? $this->success($res) : $this->error($res['bizMsg'], $res['bizCode'] );
+        if ($this->isSuccess($res)) {
+            $data = $res['respData'] ?? [];
+            return $data['bizCode'] === '0000' ? $this->success($data) : $this->error($data['bizMsg'], $data['bizCode']);
+        } else {
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
+        }
     }
 
     /**
@@ -204,22 +224,27 @@ class SxfPay extends Base
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
-        if ($res['bizCode'] === '0000') {
-            if ($this->config->payType === Config::WE_PAY) {
-                $data['jsApiParameters'] = [
-                    'appId' => $res['payAppId'] ?? '',
-                    'timeStamp' => $res['payTimeStamp'] ?? '',
-                    'nonceStr' => $res['paynonceStr'] ?? '',
-                    'paySign' => $res['paySign'] ?? '',
-                    'package' => $res['payPackage'] ?? '',
-                    'signType' => $res['paySignType'] ?? '',
-                ];
+        if ($this->isSuccess($res)) {
+            $data = $res['respData'] ?? [];
+            if ($data['bizCode'] === '0000') {
+                if ($this->config->payType === Config::WE_PAY) {
+                    $data['jsApiParameters'] = [
+                        'appId' => $data['payAppId'] ?? '',
+                        'timeStamp' => $data['payTimeStamp'] ?? '',
+                        'nonceStr' => $data['paynonceStr'] ?? '',
+                        'paySign' => $data['paySign'] ?? '',
+                        'package' => $data['payPackage'] ?? '',
+                        'signType' => $data['paySignType'] ?? '',
+                    ];
+                } else {
+                    $data['trade_no'] = $data['source'] ?? '';
+                }
+                return $this->success($data);
             } else {
-                $data['trade_no'] = $res['source'] ?? '';
+                return $this->error($data['bizMsg'], $data['bizCode']);
             }
-            return $this->success(array_merge($res, $data));
         } else {
-            return $this->error($res['bizMsg'], $res['bizCode']);
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
         }
     }
 
@@ -244,20 +269,25 @@ class SxfPay extends Base
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
-        if ($res['bizCode'] === '0000') {
-            switch ($res['tranSts']) {
-                case 'SUCCESS':
-                    $trade_status = Config::PAY_SUCCESS;
-                    break;
-                case 'PAYING':
-                    $trade_status = Config::PAYING;
-                    break;
-                default:
-                    $trade_status = Config::PAY_FAIL;
+        if ($this->isSuccess($res)) {
+            $data = $res['respData'] ?? [];
+            if ($data['bizCode'] === '0000') {
+                switch ($data['tranSts']) {
+                    case 'SUCCESS':
+                        $trade_status = Config::PAY_SUCCESS;
+                        break;
+                    case 'PAYING':
+                        $trade_status = Config::PAYING;
+                        break;
+                    default:
+                        $trade_status = Config::PAY_FAIL;
+                }
+                return $this->success(array_merge($data, compact('trade_status')));
+            } else {
+                return $this->error($data['bizMsg'], $data['bizCode']);
             }
-            return $this->success(array_merge($res, compact('trade_status')));
         } else {
-            return $this->error($res['bizMsg'], $res['bizCode']);
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
         }
     }
 
@@ -284,7 +314,12 @@ class SxfPay extends Base
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
-        return $res['bizCode'] === '0000' ? $this->success($res) : $this->error($res['bizMsg'], $res['bizCode']);
+        if ($this->isSuccess($res)) {
+            $data = $res['respData'] ?? [];
+            return $data['bizCode'] === '0000' ? $this->success($data) : $this->error($data['bizMsg'], $data['bizCode']);
+        } else {
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
+        }
     }
 
     /**
@@ -304,7 +339,12 @@ class SxfPay extends Base
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
-        return $res['bizCode'] === '0000' ? $this->success($res) : $this->error($res['bizMsg'], $res['bizCode']);
+        if ($this->isSuccess($res)) {
+            $data = $res['respData'] ?? [];
+            return $data['bizCode'] === '0000' ? $this->success($data) : $this->error($data['bizMsg'], $data['bizCode']);
+        } else {
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
+        }
     }
 
     /**
@@ -408,15 +448,7 @@ class SxfPay extends Base
             throw new \Exception("请求{$url}失败，错误码为".$response->getStatusCode());
         }
         $responseData = $response->getBody()->getContents();
-        $data = json_decode($responseData, true);
-        if (!isset($data['code']) || $data['code'] !== '0000') {
-            return [
-                'bizCode' => $data['code'] ?? '0001',
-                'bizMsg' => $data['msg'] ?? '系统异常',
-            ];
-        } else {
-            return $data['respData'] ?? [];
-        }
+        return json_decode($responseData, true);
     }
 
     private function getPayChannel(): string
@@ -429,5 +461,10 @@ class SxfPay extends Base
             default:
                 return 'UNIONPAY';
         }
+    }
+
+    private function isSuccess($data): bool
+    {
+        return isset($data['code']) && $data['code'] === '0000';
     }
 }
