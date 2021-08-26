@@ -39,6 +39,10 @@ class Config
     const PAYING = 0;
     const PAY_FAIL = -1;
 
+    const REFUND_SUCCESS = 1;
+    const REFUNDING = 0;
+    const REFUND_FAIL = -1;
+
     protected $_config = [];
 
     public function __set($name, $value)

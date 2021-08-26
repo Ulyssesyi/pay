@@ -316,7 +316,17 @@ class SxfPay extends Base
         }
         if ($this->isSuccess($res)) {
             $data = $res['respData'] ?? [];
-            return $data['bizCode'] === '0000' ? $this->success($data) : $this->error($data['bizMsg'], $data['bizCode']);
+            switch ($data['bizCode']) {
+                case '0000':
+                    $refund_status = Config::REFUND_SUCCESS;
+                    break;
+                case '2002':
+                    $refund_status = Config::REFUNDING;
+                    break;
+                default:
+                    $refund_status = Config::REFUND_FAIL;
+            }
+            return $this->success(array_merge($data, compact('refund_status')));
         } else {
             return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
         }
@@ -341,7 +351,17 @@ class SxfPay extends Base
         }
         if ($this->isSuccess($res)) {
             $data = $res['respData'] ?? [];
-            return $data['bizCode'] === '0000' ? $this->success($data) : $this->error($data['bizMsg'], $data['bizCode']);
+            switch ($data['bizCode']) {
+                case '0000':
+                    $refund_status = Config::REFUND_SUCCESS;
+                    break;
+                case '2002':
+                    $refund_status = Config::REFUNDING;
+                    break;
+                default:
+                    $refund_status = Config::REFUND_FAIL;
+            }
+            return $this->success(array_merge($data, compact('refund_status')));
         } else {
             return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
         }

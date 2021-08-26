@@ -44,13 +44,15 @@ abstract class Base
     abstract function query();
 
     /**
-     * 支付退款，返回的result为true代表退款成功，false代表退款失败或者处理中
+     * 支付退款
+     * 返回的data中必须包含key-refund_status：当前退款状态，-1-退款失败, 0-退款进行中, 1-退款完成
      * @return mixed
      */
     abstract function refund();
 
     /**
-     * 支付退款查询，返回的result为true代表退款成功，false代表退款失败或者处理中
+     * 支付退款查询
+     * 返回的data中必须包含key-refund_status：当前退款状态，-1-退款失败, 0-退款进行中, 1-退款完成
      * @return mixed
      */
     abstract function refundQuery();
