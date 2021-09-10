@@ -59,7 +59,7 @@ abstract class Base
 
     /**
      * 异步通知处理，返回的result为true代表异步通知的结果是成功
-     * 返回的data中微信必须包含key-merchantTradeNo：商户订单号/商户退款单号
+     * 返回的data中必须包含key-merchantTradeNo：商户订单号/商户退款单号
      * @return mixed
      */
     abstract function notify($data);

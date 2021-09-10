@@ -17,11 +17,21 @@ namespace Yijin\Pay;
  * @property string $appid 微信支付时发起支付的公众号/小程序的APP ID
  * @property int $isMiniProgram webPay是不是由小程序发起，1-小程序，0-公众号/服务窗/js支付
  * @property string $userId 用户在微信/支付宝中的id，即微信的openid，支付宝的buyer_id .etc
+ * @property int $expireTime 订单有效截止10位（秒级）时间戳
+ * @property string $userIP 请求IP
+ *
+ * 微信官方配置
+ * @property string $mchId 商户号
+ * @property string $subAppId 子商户的公众号/小程序的APP ID
+ * @property string $subMchId 子商户号
+ * @property string $apiV2Key 商户API v2密钥
+ * @property string $clientApiV2KeyFilePath 商户API v2证书
+ * @property string $clientApiV2CertFilePath 商户API v2证书密钥
+ * @property string $attach 附加数据，不建议使用
  *
  * 随行付配置
  * @property string $orgId 企业编号
  * @property string $merchantNo 商户编号
- * @property string $userIP 请求IP
  * @property string $orgPrivateRSAKey 机构RSA私钥内容
  * @property string $orgPublicRSAKey 平台RSA公钥内容
  * @property string $outFrontUrl H5支付后跳转网页地址

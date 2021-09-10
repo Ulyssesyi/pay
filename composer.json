@@ -6,10 +6,13 @@
     "require": {
         "php": ">=7.0",
         "guzzlehttp/guzzle": "^7.3",
+        "nesbot/carbon": "^2.16",
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-mbstring": "*",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-libxml": "*",
+        "ext-simplexml": "*"
     },
     "autoload": {
         "psr-4": {

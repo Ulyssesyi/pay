@@ -3,6 +3,7 @@
 namespace Yijin\Pay\Payment;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Yijin\Pay\Config;
 use Yijin\Pay\Response;
 
@@ -81,6 +82,8 @@ class SxfPay extends Base
         ];
         try {
             $res = $this->execRequest($params, self::BARCODE_PAY_URL);
+        } catch (GuzzleException $e) {
+            return $this->error($e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -153,6 +156,8 @@ class SxfPay extends Base
         ];
         try {
             $res = $this->execRequest($params, self::QRCODE_PAY_URL);
+        } catch (GuzzleException $e) {
+            return $this->error($e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -221,6 +226,8 @@ class SxfPay extends Base
         ];
         try {
             $res = $this->execRequest($params, self::JS_PAY_URL);
+        } catch (GuzzleException $e) {
+            return $this->error($e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -266,6 +273,8 @@ class SxfPay extends Base
 
         try {
             $res = $this->execRequest($params, self::ORDER_QUERY_URL);
+        } catch (GuzzleException $e) {
+            return $this->error($e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -311,6 +320,8 @@ class SxfPay extends Base
         ];
         try {
             $res = $this->execRequest($params, self::REFUND_URL);
+        } catch (GuzzleException $e) {
+            return $this->error($e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -346,6 +357,8 @@ class SxfPay extends Base
         ];
         try {
             $res = $this->execRequest($params, self::REFUND_QUERY_URL);
+        } catch (GuzzleException $e) {
+            return $this->error($e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -393,7 +406,6 @@ class SxfPay extends Base
 
     /**
      * @inheritDoc
-     * @throws \Exception
      */
     function sign($data): string
     {
@@ -436,6 +448,9 @@ class SxfPay extends Base
         return mb_substr($stringToBeSigned, 0, mb_strlen($stringToBeSigned) - 1);
     }
 
+    /**
+     * @throws GuzzleException
+     */
     private function execRequest($params, $url) {
         if (isset($params['subject'])) {
             $res = htmlentities($params['subject']);
@@ -464,9 +479,6 @@ class SxfPay extends Base
         $response = $client->post($url, [
             'json' => $commonParams
         ]);
-        if ($response->getStatusCode() >= 400) {
-            throw new \Exception("请求{$url}失败，错误码为".$response->getStatusCode());
-        }
         $responseData = $response->getBody()->getContents();
         return json_decode($responseData, true);
     }
