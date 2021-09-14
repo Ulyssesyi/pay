@@ -4,18 +4,20 @@
     "type": "library",
     "version": "1.0.3",
     "require": {
-        "php": ">=7.0",
-        "guzzlehttp/guzzle": "^7.3",
-        "nesbot/carbon": "^2.16",
+        "php": ">=7.2",
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-mbstring": "*",
         "ext-curl": "*",
         "ext-libxml": "*",
-        "ext-simplexml": "*"
+        "ext-simplexml": "*",
+        "guzzlehttp/guzzle": "^7.3",
+        "nesbot/carbon": "^2.16",
+        "vlucas/phpdotenv": "^5.3"
     },
     "require-dev": {
-        "phpstan/phpstan": "^0.12"
+        "phpstan/phpstan": "^0.12",
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
@@ -29,8 +31,10 @@
         }
     ],
     "minimum-stability":"dev",
+    "prefer-stable": true,
     "license":"Apache-2.0",
     "scripts": {
-        "analyse": "phpstan analyse --memory-limit 300M -l 0 -c phpstan.neon ./src ./examples"
+        "test": "phpunit --prepend tests/bootstrap.php -c phpunit.xml --colors=always",
+        "phpstan": "phpstan analyse --memory-limit 300M -l 0 -c phpstan.neon ./src ./examples"
     }
 }

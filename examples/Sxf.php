@@ -4,23 +4,29 @@ use Yijin\Pay\Config;
 use \Yijin\Pay\Factory;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+include_once './params.php';
+
+/**
+ * @var array $sxfParams
+ */
+
+$tradeNo = 'TS-' . time();
 ### B扫C
-//$config = new Config();
-//$config->channel = Config::PAY_BY_SXF;
-//$config->payType = Config::WE_PAY;
-//$config->tradeNo = 'SB202012261548555';
-//$config->totalAmount = 0.01;
-//$config->subject = '起飞';
-//$config->authCode = '123';
-//$config->orgId = '85555555';
-//$config->merchantNo = '866666666';
-//$config->domain = 'https://openapi-test.tianquetech.com';
-//$config->userIP = '127.0.0.1';
-//$config->orgPrivateRSAKey = 'MII***==';
-//
-//$payModel = (new Factory())->getAdapter($config);
-//$res = $payModel->barcodePay();
-//var_dump($res);
+$config = new Config();
+$config->channel = Config::PAY_BY_SXF;
+$config->payType = Config::WE_PAY;
+$config->tradeNo = $tradeNo;
+$config->totalAmount = 0.01;
+$config->subject = '起飞';
+$config->authCode = '';
+$config->orgId = $sxfParams['orgId'];
+$config->merchantNo = $sxfParams['merchantNo'];
+$config->userIP = '127.0.0.1';
+$config->orgPrivateRSAKey = $sxfParams['orgPrivateRSAKey'];
+
+$payModel = (new Factory())->getAdapter($config);
+$res = $payModel->barcodePay();
+var_dump($res);
 
 ### C扫B
 //$config = new Config();

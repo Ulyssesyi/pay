@@ -41,6 +41,7 @@ namespace Yijin\Pay;
 class Config
 {
     const PAY_BY_SXF = 10;
+    const PAY_BY_OFFICIAL = 5;
 
     const ALIPAY = 1;
     const WE_PAY = 2;

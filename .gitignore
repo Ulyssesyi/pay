@@ -2,3 +2,5 @@
 .idea
 composer.lock
 params.php
+.phpunit.*
+.env
