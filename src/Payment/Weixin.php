@@ -67,15 +67,16 @@ class Weixin extends Base
                     'body' => $this->config->subject,
                     'attach' => $this->config->attach,
                     'out_trade_no' => $this->config->tradeNo,
-                    'time_expire' => $time->toDateTime(),
+                    'time_expire' => $time->format('YmdHis'),
                     'notify_url' => $this->config->notifyUrl,
                     'total_fee' => intval($this->config->totalAmount * 100),
                     'product_id' => '123456789',
+                    'trade_type' => 'NATIVE',
                 ])
             ]);
             $data = $this->xml2Array($res->getBody()->getContents());
             if ($this->isReturnSuccess($data)) {
-                return $this->success(array_merge($data, ['payUrl' => $data['prepay_id']]));
+                return $this->success(array_merge($data, ['payUrl' => $data['code_url']]));
             } else {
                 return $this->error($data['return_msg'] ?? '请求失败', -1);
             }
@@ -94,10 +95,11 @@ class Weixin extends Base
                 'body' => $this->config->subject,
                 'attach' => $this->config->attach,
                 'out_trade_no' => $this->config->tradeNo,
-                'time_expire' => Carbon::createFromTimestamp($this->config->expireTime ?: (time()+ 600))->toDateTime(),
+                'time_expire' => Carbon::createFromTimestamp($this->config->expireTime ?: (time()+ 600))->format('YmdHis'),
                 'notify_url' => $this->config->notifyUrl,
                 'total_fee' => intval($this->config->totalAmount * 100),
                 'product_id' => '123456789',
+                'trade_type' => 'JSAPI',
             ];
             if ($this->config->subAppId) {
                 $data['sub_openid'] = $this->config->userId;
@@ -149,7 +151,7 @@ class Weixin extends Base
                     $trade_status = -1;
                 }
             } else {
-                $trade_status = 0;
+                $trade_status = -1;
             }
             return $this->success(array_merge($data, compact('trade_status')));
         } catch (GuzzleException $e) {
@@ -202,8 +204,10 @@ class Weixin extends Base
             $data = $this->xml2Array($res->getBody()->getContents());
             if ($this->isReturnSuccess($data)) {
                 $refund_status = 1;
-            } else {
+            } else if (isset($data['err_code']) && $data['err_code'] === 'SYSTEMERROR') {
                 $refund_status = 0;
+            } else {
+                $refund_status = -1;
             }
             return $this->success(array_merge($data, compact('refund_status')));
         } catch (GuzzleException $e) {
@@ -246,9 +250,14 @@ class Weixin extends Base
     {
         //签名步骤一：按字典序排序参数
         ksort($data);
-        $string = http_build_query(array_filter($data));
+        $strArr = [];
+        foreach ($data as $key => $item) {
+            if ($key != 'sign' && $item) {
+                $strArr[] = $key . '=' . $item;
+            }
+        }
         //签名步骤二：在string后加入KEY
-        $string = $string . "&key=" . $this->config->apiV2Key;
+        $string = implode('&', $strArr) . "&key=" . $this->config->apiV2Key;
         //签名步骤三：MD5加密
         $string = md5($string);
         //签名步骤四：所有字符转为大写
@@ -261,7 +270,6 @@ class Weixin extends Base
     function verifySign(array $data): bool
     {
         $sign = $data['sign'] ?? '';
-        unset($data['sign']);
         return $this->sign($data) === $sign;
     }
 
