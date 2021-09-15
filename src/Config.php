@@ -14,11 +14,19 @@ namespace Yijin\Pay;
  * @property string $subject 订单标题
  * @property string $authCode B扫C时读取到的条码内容
  * @property string $notifyUrl 支付结果异步通知地址
- * @property string $appid 微信支付时发起支付的公众号/小程序的APP ID
+ * @property string $appid 微信支付时发起支付的公众号/小程序的APP ID/支付宝直连的APPID
  * @property int $isMiniProgram webPay是不是由小程序发起，1-小程序，0-公众号/服务窗/js支付
  * @property string $userId 用户在微信/支付宝中的id，即微信的openid，支付宝的buyer_id .etc
  * @property int $expireTime 订单有效截止10位（秒级）时间戳
  * @property string $userIP 请求IP
+ *
+ * 支付宝官方配置
+ * @property string $merchantPrivateKey 应用私钥，例如：MIIEvQIBADANB
+ * @property string $alipayCertPath 支付宝公钥证书文件路径，例如：/foo/alipayCertPublicKey_RSA2.crt
+ * @property string $alipayRootCertPath 支付宝根证书文件路径，例如：/foo/alipayRootCert.crt
+ * @property string $merchantCertPath 应用公钥证书文件路径，例如：/foo/appCertPublicKey_2019051064521003.crt
+ * @property string $alipayPublicKey 支付宝公钥，例如：MIIBIjANBg，非证书模式，填写这个公钥即可，上面三个证书可以不填写
+ * @property string $encryptKey AES密钥，调用AES加解密相关接口时需要，非必填
  *
  * 微信官方配置
  * @property string $mchId 商户号

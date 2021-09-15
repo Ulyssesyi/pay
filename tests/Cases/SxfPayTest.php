@@ -145,7 +145,11 @@ class SxfPayTest extends TestCase
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->webPay();
         $this->assertTrue($res['result'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
-        $this->assertArrayHasKey('jsApiParameters', $res['data'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        if ($config->payType === Config::WE_PAY) {
+            $this->assertArrayHasKey('jsApiParameters', $res['data'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        } else {
+            $this->assertArrayHasKey('trade_no', $res['data'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        }
     }
 
     public function testWebPayFailure()
