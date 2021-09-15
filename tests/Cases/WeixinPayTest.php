@@ -137,6 +137,52 @@ class WeixinPayTest extends TestCase
         $this->assertFalse($res['result'], 'C扫B预期失败不成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
     }
 
+    public function testWebPaySuccess()
+    {
+        $config = new Config();
+        $config->channel = Config::PAY_BY_OFFICIAL;
+        $config->payType = Config::WE_PAY;
+        $config->tradeNo = $this->tradeNo;
+        $config->totalAmount = 0.01;
+        $config->subject = '起飞';
+        $config->userIP = '127.0.0.1';
+        $config->userId = getenv('WX_OPENID');
+        $config->notifyUrl = 'https://www.baidu.com';
+
+        $config->appid = getenv('WX_APPID');
+        $config->mchId = getenv('WX_MCH_ID');
+        $config->subMchId = getenv('WX_SUB_MCH_ID');
+        $config->apiV2Key = getenv('WX_V2_API_KEY');
+
+        $payModel = (new Factory())->getAdapter($config);
+        $res = $payModel->webPay();
+        $this->assertTrue($res['result'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        $this->assertArrayHasKey('jsApiParameters', $res['data'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+    }
+
+    public function testWebPayFailure()
+    {
+        $config = new Config();
+        $config->channel = Config::PAY_BY_OFFICIAL;
+        $config->payType = Config::WE_PAY;
+        $config->tradeNo = $this->tradeNo;
+        $config->totalAmount = 0.01;
+        $config->subject = '起飞';
+        $config->orgId = $this->orgId;
+        $config->userIP = '127.0.0.1';
+        $config->userId = getenv('WX_OPENID');
+        $config->notifyUrl = 'https://www.baidu.com';
+
+        $config->appid = getenv('WX_APPID');
+        $config->mchId = getenv('WX_MCH_ID');
+        $config->subMchId = getenv('WX_SUB_MCH_ID');
+        $config->apiV2Key = getenv('WX_V2_API_KEY');
+
+        $payModel = (new Factory())->getAdapter($config);
+        $res = $payModel->webPay();
+        $this->assertFalse($res['result'], '网页支付预期失败不成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+    }
+
     public function testQueryPaySuccess()
     {
         $config = new Config();

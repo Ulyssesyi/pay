@@ -78,7 +78,7 @@ class Weixin extends Base
             if ($this->isReturnSuccess($data)) {
                 return $this->success(array_merge($data, ['payUrl' => $data['code_url']]));
             } else {
-                return $this->error($data['return_msg'] ?? '请求失败', -1);
+                return $this->error($data['err_code_des'] ?? ($data['return_msg'] ?? '请求失败'), -1);
             }
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
@@ -121,7 +121,7 @@ class Weixin extends Base
                 $jsApiParameters['paySign'] = $this->sign($jsApiParameters);
                 return $this->success(array_merge($data, compact('jsApiParameters')));
             } else {
-                return $this->error($data['return_msg'] ?? '请求失败', -1);
+                return $this->error($data['err_code_des'] ?? ($data['return_msg'] ?? '请求失败'), -1);
             }
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
