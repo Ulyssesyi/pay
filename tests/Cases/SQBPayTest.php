@@ -5,57 +5,83 @@ namespace Cases;
 use Yijin\Pay\Config;
 use PHPUnit\Framework\TestCase;
 use Yijin\Pay\Factory;
+use Yijin\Pay\Payment\SQBPay;
 
-class SxfPayTest extends TestCase
+class SQBPayTest extends TestCase
 {
-    private $orgId;
-    private $merchantNo;
-    private $orgPrivateRSAKey;
+    private $terminalSN;
+    private $terminalKey;
     private $tradeNo;
     protected function setUp(): void
     {
-        $this->orgId = getenv('SXF_ORG_ID');
-        $this->merchantNo = getenv('SXF_MERCHANT_NO');
-        $this->orgPrivateRSAKey = getenv('SXF_ORG_RSA_KEY');
+        $this->terminalSN = getenv('SQB_TERM_SN');
+        $this->terminalKey = getenv('SQB_TERM_KEY');
         $this->tradeNo = 'TS-' . time();
+    }
+
+    public function testActivate() {
+        $config = new Config();
+        $config->serviceProviderID = getenv('SQB_SP_ID');
+        $config->terminalSN = getenv('SQB_SP_SN');
+        $config->terminalKey = getenv('SQB_SP_KEY');
+        $config->activateCode = getenv('SQB_CODE');
+        $config->activateDeviceID = getenv('SQB_DEVICE_ID');
+
+        $res = (new SQBPay($config))->activate();
+        $this->assertTrue($res['result'], '设备激活失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        $this->assertNotEmpty($res['data']['terminal_sn'], '设备激活失败'. json_encode($res, JSON_UNESCAPED_UNICODE));
+        $this->assertNotEmpty($res['data']['terminal_key'], '设备激活失败'. json_encode($res, JSON_UNESCAPED_UNICODE));
+        var_dump($res);
+    }
+
+    public function testCheckIn() {
+        $config = new Config();
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
+        $config->activateDeviceID = getenv('SQB_DEVICE_ID');
+
+        $res = (new SQBPay($config))->checkIn();
+        $this->assertTrue($res['result'], '设备刷新失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        $this->assertNotEmpty($res['data']['terminal_key'], '设备刷新失败'. json_encode($res, JSON_UNESCAPED_UNICODE));
+        var_dump($res);
     }
 
     public function testBarcodePaySuccess()
     {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
+        $config->channel = Config::PAY_BY_SQB;
         $config->payType = Config::WE_PAY;
         $config->tradeNo = $this->tradeNo;
-        $config->totalAmount = 0.1;
+        $config->totalAmount = 0.01;
         $config->subject = '起飞';
-        $config->authCode = '134729175574290721';
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->userIP = '127.0.0.1';
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+        $config->authCode = '';
+
+        $config->operator = 'Test';
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $this->assertTrue(!!$config->authCode, '未填入付款码');
-        var_dump($this->tradeNo);
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->barcodePay();
         $this->assertTrue($res['result'], 'B扫C失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
         $this->assertSame(Config::PAY_SUCCESS, $res['data']['trade_status'], 'B扫C预期成功未实现'. json_encode($res, JSON_UNESCAPED_UNICODE));
+        var_dump($this->tradeNo);
     }
 
     public function testBarcodePayIng()
     {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
+        $config->channel = Config::PAY_BY_SQB;
         $config->payType = Config::WE_PAY;
         $config->tradeNo = $this->tradeNo;
-        $config->totalAmount = 10000;
+        $config->totalAmount = 100000;
         $config->subject = '起飞';
-        $config->authCode = '134551963473559946';
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->userIP = '127.0.0.1';
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+        $config->authCode = '';
+
+        $config->operator = 'Test';
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $this->assertTrue(!!$config->authCode, '未填入付款码');
 
@@ -69,16 +95,17 @@ class SxfPayTest extends TestCase
     {
         $tradeNo = 'TS-' . time();
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
+        $config->channel = Config::PAY_BY_SQB;
         $config->payType = Config::WE_PAY;
         $config->tradeNo = $tradeNo;
         $config->totalAmount = 10000000000;
         $config->subject = '起飞';
         $config->authCode = '1231231';
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->userIP = '127.0.0.1';
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+
+
+        $config->operator = 'Test';
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->barcodePay();
@@ -88,15 +115,15 @@ class SxfPayTest extends TestCase
     public function testQrcodePaySuccess()
     {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
-        $config->payType = Config::WE_PAY;
+        $config->channel = Config::PAY_BY_SQB;
+        $config->payType = Config::ALIPAY;
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->userIP = '127.0.0.1';
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+
+        $config->operator = 'Test';
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->qrcodePay();
@@ -109,15 +136,15 @@ class SxfPayTest extends TestCase
     public function testQrcodePayFailure()
     {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
+        $config->channel = Config::PAY_BY_SQB;
         $config->payType = Config::WE_PAY;
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
-        $config->orgId = $this->orgId;
-        $config->merchantNo = '1231231';
-        $config->userIP = '127.0.0.1';
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+
+        $config->operator = 'Test';
+        $config->terminalSN = '12312';
+        $config->terminalKey = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->qrcodePay();
@@ -127,61 +154,33 @@ class SxfPayTest extends TestCase
     public function testWebPaySuccess()
     {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
-        $config->payType = Config::WE_PAY;
+        $config->channel = Config::PAY_BY_SQB;
+        $config->payType = Config::ALIPAY;
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
-        $config->userIP = '127.0.0.1';
-        $config->userId = getenv('SXF_OPENID');
-        $config->appid = getenv('SXF_APPID');
         $config->notifyUrl = 'https://www.baidu.com';
+        $config->returnUrl = 'https://www.baidu.com';
 
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+        $config->operator = 'Test';
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->webPay();
         $this->assertTrue($res['result'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
-        if ($config->payType === Config::WE_PAY) {
-            $this->assertArrayHasKey('jsApiParameters', $res['data'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
-        } else {
-            $this->assertArrayHasKey('trade_no', $res['data'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
-        }
-    }
-
-    public function testWebPayFailure()
-    {
-        $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
-        $config->payType = Config::WE_PAY;
-        $config->tradeNo = $this->tradeNo;
-        $config->totalAmount = 0.01;
-        $config->subject = '起飞';
-        $config->orgId = $this->orgId;
-        $config->userIP = '127.0.0.1';
-        $config->userId = getenv('SXF_OPENID');
-        $config->appid = getenv('SXF_APPID');
-        $config->notifyUrl = 'https://www.baidu.com';
-
-        $config->orgId = $this->orgId;
-        $config->merchantNo = '123';
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
-
-        $payModel = (new Factory())->getAdapter($config);
-        $res = $payModel->webPay();
-        $this->assertFalse($res['result'], '网页支付预期失败不成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        $this->assertArrayHasKey('payUrl', $res['data'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        var_dump($res['data']['payUrl']);
     }
 
     public function testQueryPaySuccess()
     {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
-        $config->tradeNo = getenv('SXF_PAY_SUCCESS_TRADE');
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+        $config->channel = Config::PAY_BY_SQB;
+        $config->tradeNo = getenv('SQB_PAY_SUCCESS_TRADE');
+
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $this->assertTrue(!!$config->tradeNo, '请填入订单号');
 
@@ -196,11 +195,11 @@ class SxfPayTest extends TestCase
      */
     public function testQueryPaying() {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
+        $config->channel = Config::PAY_BY_SQB;
         $config->tradeNo = $this->tradeNo;
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->query();
@@ -210,11 +209,11 @@ class SxfPayTest extends TestCase
 
     public function testQueryFailure() {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
+        $config->channel = Config::PAY_BY_SQB;
         $config->tradeNo = 'NTS-' . time();
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->query();
@@ -223,44 +222,42 @@ class SxfPayTest extends TestCase
 
     public function testRefundSuccess() {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
-        $config->tradeNo = 'TS-1631606186';
+        $config->channel = Config::PAY_BY_SQB;
+        $config->tradeNo = 'TS-1631762669';
         $config->refundTradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refund();
         $this->assertTrue($res['result'], '订单退款失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
         $this->assertSame(Config::REFUND_SUCCESS, $res['data']['refund_status'], '订单退款失败'. json_encode($res, JSON_UNESCAPED_UNICODE));
+        return $config->tradeNo;
     }
 
     public function testRefundFailure() {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
+        $config->channel = Config::PAY_BY_SQB;
         $config->tradeNo = $this->tradeNo;
         $config->refundTradeNo = $this->tradeNo;
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refund();
         $this->assertFalse($res['result'], '订单退款预期失败未成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
     }
 
-    /**
-     * @depends testRefundSuccess
-     */
     public function testRefundQuerySuccess() {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
-        $config->refundTradeNo = $this->tradeNo;
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+        $config->channel = Config::PAY_BY_SQB;
+        $config->tradeNo = 'TS-1631762669';
+
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refundQuery();
@@ -270,14 +267,15 @@ class SxfPayTest extends TestCase
 
     public function testRefundQueryFailure() {
         $config = new Config();
-        $config->channel = Config::PAY_BY_SXF;
+        $config->channel = Config::PAY_BY_SQB;
         $config->tradeNo = 'NTS-' . time();
-        $config->orgId = $this->orgId;
-        $config->merchantNo = $this->merchantNo;
-        $config->orgPrivateRSAKey = $this->orgPrivateRSAKey;
+
+        $config->terminalSN = $this->terminalSN;
+        $config->terminalKey = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refundQuery();
-        $this->assertFalse($res['result'], '订单退款查询预期失败未成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        $this->assertTrue($res['result'], '订单退款查询预期失败未成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        $this->assertSame(Config::REFUND_FAIL, $res['data']['refund_status'], '订单退款查询预期失败未成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
     }
 }

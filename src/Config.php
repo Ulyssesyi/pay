@@ -21,6 +21,7 @@ namespace Yijin\Pay;
  * @property string $userIP 请求IP
  *
  * 支付宝官方配置
+ * @property string $appAuthToken ISV服务商模式下的授权token
  * @property string $merchantPrivateKey 应用私钥，例如：MIIEvQIBADANB
  * @property string $alipayCertPath 支付宝公钥证书文件路径，例如：/foo/alipayCertPublicKey_RSA2.crt
  * @property string $alipayRootCertPath 支付宝根证书文件路径，例如：/foo/alipayRootCert.crt
@@ -45,11 +46,23 @@ namespace Yijin\Pay;
  * @property string $outFrontUrl H5支付后跳转网页地址
  * @property string $wechatFoodOrder 微信扫码点餐标识，最大长度32位,目前需上送：FoodOrder
  * @property string $refundReason 退款原因。默认值：商家与消费者协商一致
+ *
+ * 收钱吧配置
+ * @property string $serviceProviderID 服务商ID
+ * @property string $activateCode 激活码
+ * @property string $activateDeviceID 激活设备ID
+ * @property string $terminalSN 终端账号
+ * @property string $terminalKey 终端密钥
+ * @property string $deviceId 设备唯一ID
+ * @property string $operator 操作员
+ * @property string $returnUrl web支付后的跳回地址
+ * @property string $reflect web支付后的反射参数
  */
 class Config
 {
     const PAY_BY_SXF = 10;
     const PAY_BY_OFFICIAL = 5;
+    const PAY_BY_SQB = 6;
 
     const ALIPAY = 1;
     const WE_PAY = 2;

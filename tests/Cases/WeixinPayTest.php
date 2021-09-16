@@ -5,19 +5,12 @@ namespace Cases;
 use Yijin\Pay\Config;
 use PHPUnit\Framework\TestCase;
 use Yijin\Pay\Factory;
-use Yijin\Pay\Payment\SxfPay;
 
 class WeixinPayTest extends TestCase
 {
-    private $orgId;
-    private $merchantNo;
-    private $orgPrivateRSAKey;
     private $tradeNo;
     protected function setUp(): void
     {
-        $this->orgId = getenv('SXF_ORG_ID');
-        $this->merchantNo = getenv('SXF_MERCHANT_NO');
-        $this->orgPrivateRSAKey = getenv('SXF_ORG_RSA_KEY');
         $this->tradeNo = 'TS-' . time();
     }
 
@@ -168,8 +161,8 @@ class WeixinPayTest extends TestCase
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
-        $config->orgId = $this->orgId;
         $config->userIP = '127.0.0.1';
+
         $config->userId = getenv('WX_OPENID');
         $config->notifyUrl = 'https://www.baidu.com';
 

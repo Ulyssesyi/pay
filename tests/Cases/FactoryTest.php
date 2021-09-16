@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Yijin\Pay\Config;
 use Yijin\Pay\Factory;
 use Yijin\Pay\Payment\Alipay;
+use Yijin\Pay\Payment\SQBPay;
 use Yijin\Pay\Payment\SxfPay;
 use Yijin\Pay\Payment\Weixin;
 
@@ -33,6 +34,14 @@ class FactoryTest extends TestCase
         $config->payType = Config::ALIPAY;
         $payModel = (new Factory())->getAdapter($config);
         $this->assertInstanceOf(Alipay::class, $payModel, '工厂实例化支付宝直连支付失败');
+    }
+
+    public function testSQBPayAdapter() {
+        $config = new Config();
+        $config->channel = Config::PAY_BY_SQB;
+        $config->payType = Config::ALIPAY;
+        $payModel = (new Factory())->getAdapter($config);
+        $this->assertInstanceOf(SQBPay::class, $payModel, '工厂实例化支付宝直连支付失败');
     }
 
     public function testNoChannelAdapter() {
