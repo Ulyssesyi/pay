@@ -34,12 +34,12 @@ class SQBPay extends Base
     function barcodePay()
     {
         $params = [
-            'terminal_sn' => $this->config->terminalSN,
+            'terminal_sn' => $this->config->terminalSNSqb,
             'client_sn' => $this->config->tradeNo,
             'total_amount' => (string)intval($this->config->totalAmount * 100),
             'dynamic_id' => $this->config->authCode,
             'subject' => $this->config->subject,
-            'operator' => $this->config->operator
+            'operator' => $this->config->operatorSqb
         ];
         try {
             $res = $this->execRequest($params, self::BARCODE_PAY_URL);
@@ -60,12 +60,12 @@ class SQBPay extends Base
     function qrcodePay()
     {
         $params = [
-            'terminal_sn' => $this->config->terminalSN,
+            'terminal_sn' => $this->config->terminalSNSqb,
             'client_sn' => $this->config->tradeNo,
             'total_amount' => (string)intval($this->config->totalAmount * 100),
             'payway' => $this->config->payType === Config::WE_PAY ? '3' : '2',
             'subject' => $this->config->subject,
-            'operator' => $this->config->operator
+            'operator' => $this->config->operatorSqb
         ];
         try {
             $res = $this->execRequest($params, self::QRCODE_PAY_URL);
@@ -86,14 +86,14 @@ class SQBPay extends Base
     function webPay()
     {
         $params = [
-            'terminal_sn' => $this->config->terminalSN,
+            'terminal_sn' => $this->config->terminalSNSqb,
             'client_sn' => $this->config->tradeNo,
             'total_amount' => (string)intval($this->config->totalAmount * 100),
             'subject' => $this->config->subject,
             'notify_url' => $this->config->notifyUrl,
-            'operator' => $this->config->operator,
-            'return_url' => $this->config->returnUrl,
-            'reflect' => $this->config->reflect,
+            'operator' => $this->config->operatorSqb,
+            'return_url' => $this->config->returnUrlSqb,
+            'reflect' => $this->config->reflectSqb,
         ];
         $params = array_filter($params);
         ksort($params);
@@ -101,7 +101,7 @@ class SQBPay extends Base
         foreach ($params as $key => $param) {
             $str .= $key .'='. $param .'&';
         }
-        $params['sign'] = strtoupper(md5($str) . 'key=' . $this->config->terminalKey);
+        $params['sign'] = strtoupper(md5($str) . 'key=' . $this->config->terminalKeySqb);
         return $this->success(['payUrl' => "https://qr.shouqianba.com/gateway?" . http_build_query($params)]);
     }
 
@@ -111,7 +111,7 @@ class SQBPay extends Base
     function query()
     {
         $params = [
-            'terminal_sn' => $this->config->terminalSN,
+            'terminal_sn' => $this->config->terminalSNSqb,
             'client_sn' => $this->config->tradeNo,
         ];
         try {
@@ -133,11 +133,11 @@ class SQBPay extends Base
     function refund()
     {
         $params = [
-            'terminal_sn' => $this->config->terminalSN,
+            'terminal_sn' => $this->config->terminalSNSqb,
             'client_sn' => $this->config->tradeNo,
             'refund_request_no' => $this->config->refundTradeNo,
             'refund_amount' => (string)intval($this->config->totalAmount * 100),
-            'operator' => $this->config->operator
+            'operator' => $this->config->operatorSqb
         ];
         try {
             $res = $this->execRequest($params, self::REFUND_URL);
@@ -166,7 +166,7 @@ class SQBPay extends Base
     function refundQuery()
     {
         $params = [
-            'terminal_sn' => $this->config->terminalSN,
+            'terminal_sn' => $this->config->terminalSNSqb,
             'client_sn' => $this->config->tradeNo,
             'refund_request_no' => $this->config->refundTradeNo,
         ];
@@ -198,11 +198,11 @@ class SQBPay extends Base
         if (!$this->verifySign($data)) {
             return $this->error('验签失败', -1);
         }
-        if ($data['bizCode'] === '0000') {
-            $merchantTradeNo = $data['ordNo'] ?? '';
+        if (isset($data['status']) && $data['status'] === 'SUCCESS' && isset($data['order_status']) && $data['order_status'] === 'PAID') {
+            $merchantTradeNo = $data['client_sn'] ?? '';
             return $this->success(array_merge($data, compact('merchantTradeNo')));
         } else {
-            return $this->error($data['bizMsg'], $data['bizCode']);
+            return $this->error($data['order_status'] ?? '内容异常', $data['status'] ?? '-1');
         }
     }
 
@@ -211,7 +211,7 @@ class SQBPay extends Base
      */
     function notifySuccess()
     {
-        return ['code' => 'success', 'msg' => '成功'];
+        return 'success';
     }
 
     /**
@@ -219,7 +219,7 @@ class SQBPay extends Base
      */
     function sign($data): string
     {
-        return md5(json_encode($data) . $this->config->terminalKey);
+        return md5(json_encode($data) . $this->config->terminalKeySqb);
     }
 
     /**
@@ -236,8 +236,8 @@ class SQBPay extends Base
     public function checkIn(): array
     {
         $params = [
-            'terminal_sn' => $this->config->terminalSN,
-            'device_id' => $this->config->activateDeviceID,
+            'terminal_sn' => $this->config->terminalSNSqb,
+            'device_id' => $this->config->activateDeviceIDSqb,
         ];
         try {
             $res = $this->execRequest($params, self::CHECKIN_URL);
@@ -259,9 +259,9 @@ class SQBPay extends Base
     public function activate(): array
     {
         $params = [
-            'app_id' => $this->config->serviceProviderID,
-            'code' => $this->config->activateCode,
-            'device_id' => $this->config->activateDeviceID,
+            'app_id' => $this->config->serviceProviderIDSqb,
+            'code' => $this->config->activateCodeSqb,
+            'device_id' => $this->config->activateDeviceIDSqb,
         ];
         try {
             $res = $this->execRequest($params, self::ACTIVATE_URL);
@@ -290,7 +290,7 @@ class SQBPay extends Base
         $response = $client->post($url, [
             'json' => $params,
             'headers' => [
-                'Authorization' => $this->config->terminalSN . ' ' . $sign
+                'Authorization' => $this->config->terminalSNSqb . ' ' . $sign
             ]
         ]);
         $responseData = $response->getBody()->getContents();

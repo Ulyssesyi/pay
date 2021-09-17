@@ -160,7 +160,7 @@ class AliPayTest extends TestCase
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
-        $config->orgId = $this->orgId;
+        $config->orgIdSxf = $this->orgId;
         $config->userIP = '127.0.0.1';
         $config->userId = getenv('WX_OPENID');
         $config->notifyUrl = 'https://www.baidu.com';

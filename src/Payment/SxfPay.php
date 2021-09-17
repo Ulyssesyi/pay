@@ -35,7 +35,7 @@ class SxfPay extends Base
     {
         $params = [
             //业务参数
-            "mno" => $this->config->merchantNo, //商户编号
+            "mno" => $this->config->merchantNoSxf, //商户编号
             "ordNo" => $this->config->tradeNo, //商户订单号
             //"subMechId"=> "", //子商户号
             //"subAppid"=> "", //微信 subAppId
@@ -111,7 +111,7 @@ class SxfPay extends Base
     function qrcodePay()
     {
         $params = [
-            "mno" => $this->config->merchantNo, //商户编号
+            "mno" => $this->config->merchantNoSxf, //商户编号
             "ordNo" => $this->config->tradeNo, //商户订单号
             //"subMechId"=> "", //子商户号
             //"subAppid"=> "", //微信 subAppId
@@ -176,7 +176,7 @@ class SxfPay extends Base
     {
         $params = [
             //业务参数
-            "mno" => $this->config->merchantNo, //商户编号
+            "mno" => $this->config->merchantNoSxf, //商户编号
             "ordNo" => $this->config->tradeNo, //商户订单号
             //"subMechId"=> "", //子商户号
             "subAppid" => $this->config->appid, //微信 subAppId
@@ -212,7 +212,7 @@ class SxfPay extends Base
             //"ledgerAccountFlag"=> "00", //是否做分账 分账交易使 用；00：做； 01：不做；不传默认为不做分账
             //"ledgerAccountEffectTime"=> "00", //分账有效时间 单位为天；是 否做分账选择 00 时该字段必传
             "notifyUrl"=> $this->config->notifyUrl, //回调地址
-            "outFrontUrl"=> $this->config->outFrontUrl, //支付成功后跳转网页地址
+            "outFrontUrl"=> $this->config->outFrontUrlSxf, //支付成功后跳转网页地址
             //"ylTrmNo"=> "", //银联终端号
             //"terminalId"=> "", //TQ机具编号
             //"deviceNo"=> "", //设备号
@@ -222,7 +222,7 @@ class SxfPay extends Base
             //"buyerName"=> "张三", //买家姓名
             //"mobileNum"=> "", //手机号
             //"extend"=> "", //备用
-            "wechatFoodOrder"=> $this->config->wechatFoodOrder //微信扫码点餐标识，最大长度32位,目前需上送：FoodOrder
+            "wechatFoodOrder"=> $this->config->wechatFoodOrderSxf //微信扫码点餐标识，最大长度32位,目前需上送：FoodOrder
         ];
         try {
             $res = $this->execRequest($params, self::JS_PAY_URL);
@@ -262,7 +262,7 @@ class SxfPay extends Base
     {
         $params = [
             //业务参数
-            "mno" => $this->config->merchantNo, //商户编号
+            "mno" => $this->config->merchantNoSxf, //商户编号
             //下面三个至少传一个
             "ordNo" => $this->config->tradeNo, //商户订单号
             //"uuid"=> "", //科技公司订单号
@@ -307,7 +307,7 @@ class SxfPay extends Base
     {
         $params = [
             //业务参数
-            "mno" => $this->config->merchantNo, //商户编号
+            "mno" => $this->config->merchantNoSxf, //商户编号
             "ordNo" => $this->config->refundTradeNo, //商户退款订单号
             //下面三个至少传一个
             "origOrderNo" => $this->config->tradeNo, //原商户订单号
@@ -315,7 +315,7 @@ class SxfPay extends Base
             // "origSxfUuid" => "", //正交易落单号
             "amt" => $this->config->totalAmount, //退款金额
             "notifyUrl"=> $this->config->notifyUrl, //回调推送地址
-            "refundReason" => $this->config->refundReason ?: "商家与消费者协商一致", //退货原因
+            "refundReason" => $this->config->refundReasonSxf ?: "商家与消费者协商一致", //退货原因
             // "extend" => "" //备用
         ];
         try {
@@ -350,7 +350,7 @@ class SxfPay extends Base
     {
         $params = [
             //业务参数
-            "mno" => $this->config->merchantNo, //商户编号
+            "mno" => $this->config->merchantNoSxf, //商户编号
             //下面两个至少传一个
             "ordNo" => $this->config->refundTradeNo, //商户退款订单号
             // "uuid"=> "" //科技公司订单号
@@ -411,7 +411,7 @@ class SxfPay extends Base
     {
         $signContent = $this->generateSignString($data);
         $signSecret = "-----BEGIN RSA PRIVATE KEY-----\n" .
-            wordwrap($this->config->orgPrivateRSAKey, 64, "\n", true) .
+            wordwrap($this->config->orgPrivateRSAKeySxf, 64, "\n", true) .
             "\n-----END RSA PRIVATE KEY-----";
         openssl_sign($signContent, $sign, $signSecret);
         return base64_encode($sign);
@@ -427,7 +427,7 @@ class SxfPay extends Base
         unset($data[$signKey]);
         $signContent = $this->generateSignString($data);
         $signSecret = "-----BEGIN PUBLIC KEY-----\n" .
-            wordwrap($this->config->orgPublicRSAKey, 64, "\n", true) .
+            wordwrap($this->config->orgPublicRSAKeySxf, 64, "\n", true) .
             "\n-----END PUBLIC KEY-----";
         return openssl_verify($signContent, base64_decode($signed), $signSecret);
     }
@@ -461,7 +461,7 @@ class SxfPay extends Base
             }
         }
         $commonParams = [
-            "orgId" => $this->config->orgId,
+            "orgId" => $this->config->orgIdSxf,
             "reqData" => array_filter($params),
             "reqId" => uniqid('sxf'),
             "signType" => "RSA",

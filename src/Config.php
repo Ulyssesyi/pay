@@ -39,30 +39,37 @@ namespace Yijin\Pay;
  * @property string $attach 附加数据，不建议使用
  *
  * 随行付配置
- * @property string $orgId 企业编号
- * @property string $merchantNo 商户编号
- * @property string $orgPrivateRSAKey 机构RSA私钥内容
- * @property string $orgPublicRSAKey 平台RSA公钥内容
- * @property string $outFrontUrl H5支付后跳转网页地址
- * @property string $wechatFoodOrder 微信扫码点餐标识，最大长度32位,目前需上送：FoodOrder
- * @property string $refundReason 退款原因。默认值：商家与消费者协商一致
+ * @property string $orgIdSxf 服务商机构编号
+ * @property string $merchantNoSxf 商户编号
+ * @property string $orgPrivateRSAKeySxf 服务商机构RSA私钥内容
+ * @property string $orgPublicRSAKeySxf 平台RSA公钥内容
+ * @property string $outFrontUrlSxf H5支付后跳转网页地址
+ * @property string $wechatFoodOrderSxf 微信扫码点餐标识，最大长度32位,目前需上送：FoodOrder
+ * @property string $refundReasonSxf 退款原因。默认值：商家与消费者协商一致
  *
  * 收钱吧配置
- * @property string $serviceProviderID 服务商ID
- * @property string $activateCode 激活码
- * @property string $activateDeviceID 激活设备ID
- * @property string $terminalSN 终端账号
- * @property string $terminalKey 终端密钥
- * @property string $deviceId 设备唯一ID
- * @property string $operator 操作员
- * @property string $returnUrl web支付后的跳回地址
- * @property string $reflect web支付后的反射参数
+ * @property string $serviceProviderIDSqb 服务商ID
+ * @property string $activateCodeSqb 激活码
+ * @property string $activateDeviceIDSqb 激活设备ID
+ * @property string $terminalSNSqb 终端账号
+ * @property string $terminalKeySqb 终端密钥
+ * @property string $deviceIdSqb 设备唯一ID
+ * @property string $operatorSqb 操作员
+ * @property string $returnUrlSqb web支付后的跳回地址
+ * @property string $reflectSqb web支付后的反射参数
+ *
+ * 付呗配置
+ * @property string $merchantIdFb 商户ID
+ * @property string $merchantKeyFb 商户密码
+ * @property string $storeIdFb 商户门店ID
+ * @property string $wxOpenIDFb 付呗网页下的用户ID
  */
 class Config
 {
     const PAY_BY_SXF = 10;
     const PAY_BY_OFFICIAL = 5;
     const PAY_BY_SQB = 6;
+    const PAY_BY_FB = 4;
 
     const ALIPAY = 1;
     const WE_PAY = 2;

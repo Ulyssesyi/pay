@@ -21,11 +21,11 @@ class SQBPayTest extends TestCase
 
     public function testActivate() {
         $config = new Config();
-        $config->serviceProviderID = getenv('SQB_SP_ID');
-        $config->terminalSN = getenv('SQB_SP_SN');
-        $config->terminalKey = getenv('SQB_SP_KEY');
-        $config->activateCode = getenv('SQB_CODE');
-        $config->activateDeviceID = getenv('SQB_DEVICE_ID');
+        $config->serviceProviderIDSqb = getenv('SQB_SP_ID');
+        $config->terminalSNSqb = getenv('SQB_SP_SN');
+        $config->terminalKeySqb = getenv('SQB_SP_KEY');
+        $config->activateCodeSqb = getenv('SQB_CODE');
+        $config->activateDeviceIDSqb = getenv('SQB_DEVICE_ID');
 
         $res = (new SQBPay($config))->activate();
         $this->assertTrue($res['result'], '设备激活失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
@@ -36,9 +36,9 @@ class SQBPayTest extends TestCase
 
     public function testCheckIn() {
         $config = new Config();
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
-        $config->activateDeviceID = getenv('SQB_DEVICE_ID');
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
+        $config->activateDeviceIDSqb = getenv('SQB_DEVICE_ID');
 
         $res = (new SQBPay($config))->checkIn();
         $this->assertTrue($res['result'], '设备刷新失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
@@ -56,9 +56,9 @@ class SQBPayTest extends TestCase
         $config->subject = '起飞';
         $config->authCode = '';
 
-        $config->operator = 'Test';
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->operatorSqb = 'Test';
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $this->assertTrue(!!$config->authCode, '未填入付款码');
 
@@ -79,9 +79,9 @@ class SQBPayTest extends TestCase
         $config->subject = '起飞';
         $config->authCode = '';
 
-        $config->operator = 'Test';
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->operatorSqb = 'Test';
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $this->assertTrue(!!$config->authCode, '未填入付款码');
 
@@ -103,9 +103,9 @@ class SQBPayTest extends TestCase
         $config->authCode = '1231231';
 
 
-        $config->operator = 'Test';
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->operatorSqb = 'Test';
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->barcodePay();
@@ -121,9 +121,9 @@ class SQBPayTest extends TestCase
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
 
-        $config->operator = 'Test';
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->operatorSqb = 'Test';
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->qrcodePay();
@@ -142,9 +142,9 @@ class SQBPayTest extends TestCase
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
 
-        $config->operator = 'Test';
-        $config->terminalSN = '12312';
-        $config->terminalKey = $this->terminalKey;
+        $config->operatorSqb = 'Test';
+        $config->terminalSNSqb = '12312';
+        $config->terminalKeySqb = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->qrcodePay();
@@ -160,11 +160,11 @@ class SQBPayTest extends TestCase
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
         $config->notifyUrl = 'https://www.baidu.com';
-        $config->returnUrl = 'https://www.baidu.com';
+        $config->returnUrlSqb = 'https://www.baidu.com';
 
-        $config->operator = 'Test';
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->operatorSqb = 'Test';
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->webPay();
@@ -179,8 +179,8 @@ class SQBPayTest extends TestCase
         $config->channel = Config::PAY_BY_SQB;
         $config->tradeNo = getenv('SQB_PAY_SUCCESS_TRADE');
 
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $this->assertTrue(!!$config->tradeNo, '请填入订单号');
 
@@ -198,8 +198,8 @@ class SQBPayTest extends TestCase
         $config->channel = Config::PAY_BY_SQB;
         $config->tradeNo = $this->tradeNo;
 
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->query();
@@ -212,8 +212,8 @@ class SQBPayTest extends TestCase
         $config->channel = Config::PAY_BY_SQB;
         $config->tradeNo = 'NTS-' . time();
 
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->query();
@@ -227,8 +227,8 @@ class SQBPayTest extends TestCase
         $config->refundTradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
 
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refund();
@@ -243,8 +243,8 @@ class SQBPayTest extends TestCase
         $config->tradeNo = $this->tradeNo;
         $config->refundTradeNo = $this->tradeNo;
 
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refund();
@@ -256,8 +256,8 @@ class SQBPayTest extends TestCase
         $config->channel = Config::PAY_BY_SQB;
         $config->tradeNo = 'TS-1631762669';
 
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refundQuery();
@@ -270,8 +270,8 @@ class SQBPayTest extends TestCase
         $config->channel = Config::PAY_BY_SQB;
         $config->tradeNo = 'NTS-' . time();
 
-        $config->terminalSN = $this->terminalSN;
-        $config->terminalKey = $this->terminalKey;
+        $config->terminalSNSqb = $this->terminalSN;
+        $config->terminalKeySqb = $this->terminalKey;
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refundQuery();
