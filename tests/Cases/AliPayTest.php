@@ -23,11 +23,13 @@ class AliPayTest extends TestCase
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
-        $config->authCode = '134664532889881598';
+        $config->authCode = '284129140845289263';
 
         $config->appid = getenv('ALIPAY_APPID');
         $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
-        $config->alipayPublicKey = getenv('ALIPAY_PUBLIC_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $this->assertTrue(!!$config->authCode, '未填入付款码');
         var_dump($this->tradeNo);
@@ -44,15 +46,15 @@ class AliPayTest extends TestCase
         $config->channel = Config::PAY_BY_OFFICIAL;
         $config->payType = Config::ALIPAY;
         $config->tradeNo = $this->tradeNo;
-        $config->totalAmount = 10000;
+        $config->totalAmount = 100000;
         $config->subject = '起飞';
-        $config->authCode = '134551963473559946';
-        $config->userIP = '127.0.0.1';
+        $config->authCode = '280958516674862100';
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = getenv('ALIPAY_APPID');
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $this->assertTrue(!!$config->authCode, '未填入付款码');
 
@@ -71,12 +73,12 @@ class AliPayTest extends TestCase
         $config->totalAmount = 10000000000;
         $config->subject = '起飞';
         $config->authCode = '1231231';
-        $config->userIP = '127.0.0.1';
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = getenv('ALIPAY_APPID');
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->barcodePay();
@@ -92,13 +94,12 @@ class AliPayTest extends TestCase
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
-        $config->userIP = '127.0.0.1';
-        $config->notifyUrl = 'https://www.baidu.com';
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = getenv('ALIPAY_APPID');
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->qrcodePay();
@@ -116,13 +117,12 @@ class AliPayTest extends TestCase
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
-        $config->userIP = '127.0.0.1';
-        $config->notifyUrl = 'https://www.baidu.com';
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = '12312312';
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = '1231231';
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->qrcodePay();
@@ -137,19 +137,19 @@ class AliPayTest extends TestCase
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
-        $config->userIP = '127.0.0.1';
-        $config->userId = getenv('WX_OPENID');
+        $config->userId = getenv('ALIPAY_BUYER_ID');
         $config->notifyUrl = 'https://www.baidu.com';
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = getenv('ALIPAY_APPID');
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->webPay();
         $this->assertTrue($res['result'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
-        $this->assertArrayHasKey('jsApiParameters', $res['data'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        $this->assertArrayHasKey('trade_no', $res['data'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
     }
 
     public function testWebPayFailure()
@@ -160,15 +160,14 @@ class AliPayTest extends TestCase
         $config->tradeNo = $this->tradeNo;
         $config->totalAmount = 0.01;
         $config->subject = '起飞';
-        $config->orgIdSxf = $this->orgId;
-        $config->userIP = '127.0.0.1';
         $config->userId = getenv('WX_OPENID');
         $config->notifyUrl = 'https://www.baidu.com';
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = getenv('ALIPAY_APPID');
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->webPay();
@@ -180,12 +179,13 @@ class AliPayTest extends TestCase
         $config = new Config();
         $config->channel = Config::PAY_BY_OFFICIAL;
         $config->payType = Config::ALIPAY;
-        $config->tradeNo = getenv('WX_PAY_SUCCESS_TRADE');
+        $config->tradeNo = getenv('ALIPAY_SUCCESS_TRADE');
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = getenv('ALIPAY_APPID');
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $this->assertTrue(!!$config->tradeNo, '请填入订单号');
 
@@ -195,19 +195,17 @@ class AliPayTest extends TestCase
         $this->assertSame(Config::PAY_SUCCESS, $res['data']['trade_status'], '订单查询失败' . json_encode($res, JSON_UNESCAPED_UNICODE));
     }
 
-    /**
-     * @depends testQrcodePaySuccess
-     */
     public function testQueryPaying() {
         $config = new Config();
         $config->channel = Config::PAY_BY_OFFICIAL;
         $config->payType = Config::ALIPAY;
-        $config->tradeNo = $this->tradeNo;
+        $config->tradeNo = 'TS-1631865966';
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = getenv('ALIPAY_APPID');
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->query();
@@ -221,37 +219,34 @@ class AliPayTest extends TestCase
         $config->payType = Config::ALIPAY;
         $config->tradeNo = 'NTS-' . time();
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = '1231';
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->query();
-        $this->assertTrue($res['result'], '订单查询预期失败未成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
-        $this->assertSame(Config::PAY_FAIL, $res['data']['trade_status'], '订单查询预期失败未成功'. json_encode($res, JSON_UNESCAPED_UNICODE));
+        $this->assertFalse($res['result'], '订单查询预期失败未成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
     }
 
     public function testRefundSuccess() {
         $config = new Config();
         $config->channel = Config::PAY_BY_OFFICIAL;
         $config->payType = Config::ALIPAY;
-        $config->tradeNo = 'TS-1631608809';
-        $config->refundTradeNo = $this->tradeNo;
-        $config->totalAmount = 0.2;
+        $config->tradeNo = 'TS-1631862319';
+        $config->totalAmount = 0.01;
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
-        $config->clientApiV2KeyFilePath = BASE_PATH . '/cert/apiclient_key.pem';
-        $config->clientApiV2CertFilePath = BASE_PATH . '/cert/apiclient_cert.pem';
+        $config->appid = getenv('ALIPAY_APPID');
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refund();
         $this->assertTrue($res['result'], '订单退款失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
         $this->assertSame(Config::REFUND_SUCCESS, $res['data']['refund_status'], '订单退款失败'. json_encode($res, JSON_UNESCAPED_UNICODE));
-        return $this->tradeNo;
     }
 
     public function testRefundFailure() {
@@ -259,31 +254,30 @@ class AliPayTest extends TestCase
         $config->channel = Config::PAY_BY_OFFICIAL;
         $config->payType = Config::ALIPAY;
         $config->tradeNo = $this->tradeNo;
-        $config->refundTradeNo = $this->tradeNo;
+        $config->totalAmount = 0.01;
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = getenv('ALIPAY_APPID');
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refund();
         $this->assertFalse($res['result'], '订单退款预期失败未成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
     }
 
-    /**
-     * @depends testRefundSuccess
-     */
-    public function testRefundQuerySuccess($refundTradeNo) {
+    public function testRefundQuerySuccess() {
         $config = new Config();
         $config->channel = Config::PAY_BY_OFFICIAL;
         $config->payType = Config::ALIPAY;
-        $config->refundTradeNo = $refundTradeNo;
+        $config->tradeNo = 'TS-1631862319';
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = getenv('ALIPAY_APPID');
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refundQuery();
@@ -297,14 +291,14 @@ class AliPayTest extends TestCase
         $config->payType = Config::ALIPAY;
         $config->tradeNo = 'NTS-' . time();
 
-        $config->appid = getenv('WX_APPID');
-        $config->mchId = getenv('WX_MCH_ID');
-        $config->subMchId = getenv('WX_SUB_MCH_ID');
-        $config->apiV2Key = getenv('WX_V2_API_KEY');
+        $config->appid = getenv('ALIPAY_APPID');
+        $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
+        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->refundQuery();
-        $this->assertTrue($res['result'], '订单退款查询预期失败未成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
-        $this->assertSame(Config::REFUND_FAIL, $res['data']['refund_status'], '订单退款查询预期失败未成功'. json_encode($res, JSON_UNESCAPED_UNICODE));
+        $this->assertFalse($res['result'], '订单退款查询预期失败未成功' . json_encode($res,  JSON_UNESCAPED_UNICODE));
     }
 }

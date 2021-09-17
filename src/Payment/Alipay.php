@@ -53,7 +53,16 @@ class Alipay extends Base
                 $client->agent($this->config->appAuthToken);
             }
             $res = $client->pay($this->config->subject, $this->config->tradeNo, $this->config->totalAmount, $this->config->authCode);
-            return $this->success($res->toMap());
+            if ($res->code === '10000') {
+                $trade_status = Config::PAY_SUCCESS;
+            } elseif ($res->code === '10003') {
+                $trade_status = Config::PAYING;
+            } elseif ($res->code === '40004' && $res->subCode === 'ACQ.SYSTEM_ERROR') {
+                $trade_status = Config::PAYING;
+            } else {
+                $trade_status = Config::PAY_FAIL;
+            }
+            return $this->success(array_merge($res->toMap(), compact('trade_status')));
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -70,7 +79,12 @@ class Alipay extends Base
                 $client->agent($this->config->appAuthToken);
             }
             $res = $client->preCreate($this->config->subject, $this->config->tradeNo, $this->config->totalAmount);
-            return $this->success($res);
+            if ($res->code === '10000') {
+                $payUrl = $res->qrCode;
+                return $this->success(array_merge($res->toMap(), compact('payUrl')));
+            } else {
+                return $this->error($res->subMsg ?? $res->msg, $res->subCode ?? $res->code);
+            }
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -87,7 +101,12 @@ class Alipay extends Base
                 $client->agent($this->config->appAuthToken);
             }
             $res = $client->create($this->config->subject, $this->config->tradeNo, $this->config->totalAmount, $this->config->userId);
-            return $this->success($res);
+            if ($res->code === '10000') {
+                $trade_no = $res->tradeNo;
+                return $this->success(array_merge($res->toMap(), compact('trade_no')));
+            } else {
+                return $this->error($res->subMsg ?? $res->msg, $res->subCode ?? $res->code);
+            }
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -104,7 +123,20 @@ class Alipay extends Base
                 $client->agent($this->config->appAuthToken);
             }
             $res = $client->query($this->config->tradeNo);
-            return $this->success($res);
+            if ($res->code === '10000') {
+                if ($res->tradeStatus === 'TRADE_SUCCESS' || $res->tradeStatus === 'TRADE_FINISHED') {
+                    $trade_status = Config::PAY_SUCCESS;
+                } else if ($res->tradeStatus === 'WAIT_BUYER_PAY') {
+                    $trade_status = Config::PAYING;
+                } else {
+                    $trade_status = Config::PAY_FAIL;
+                }
+            } elseif ($res->code === '40004') {
+                $trade_status = Config::PAYING;
+            } else {
+                $trade_status = Config::PAY_FAIL;
+            }
+            return $this->success(array_merge($res->toMap(), compact('trade_status')));
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -124,7 +156,15 @@ class Alipay extends Base
                 $client->optional('out_request_no', $this->config->refundTradeNo);
             }
             $res = $client->refund($this->config->tradeNo, $this->config->totalAmount);
-            return $this->success($res);
+
+            if ($res->code === '10000') {
+                $refund_status = Config::REFUND_SUCCESS;
+            } elseif ($res->code === '40004' && $res->subCode === 'ACQ.SYSTEM_ERROR') {
+                $refund_status = Config::REFUNDING;
+            } else {
+                return $this->error($res->subCode ?? $res->code, $res->subMsg ?? $res->msg);
+            }
+            return $this->success(array_merge($res->toMap(), compact('refund_status')));
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -137,7 +177,14 @@ class Alipay extends Base
     {
         try {
             $res = Factory::payment()->common()->queryRefund($this->config->tradeNo, $this->config->refundTradeNo ?? $this->config->tradeNo);
-            return $this->success($res);
+            if ($res->code === '10000') {
+                $refund_status = $res->refundStatus === 'REFUND_SUCCESS' ? Config::REFUND_SUCCESS : Config::REFUNDING;
+            } elseif ($res->code === '40004' && $res->subCode === 'ACQ.SYSTEM_ERROR') {
+                $refund_status = Config::REFUNDING;
+            } else {
+                return $this->error($res->subCode ?? $res->code, $res->subMsg ?? $res->msg);
+            }
+            return $this->success(array_merge($res->toMap(), compact('refund_status')));
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
