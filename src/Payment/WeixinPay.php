@@ -12,7 +12,7 @@ use Yijin\Pay\Response;
 /**
  * 等微信官方付款码支付升级v3后，在将代码切换到新版本接口
  */
-class Weixin extends Base
+class WeixinPay extends Base
 {
     use Response;
 
@@ -283,7 +283,7 @@ class Weixin extends Base
 
     private function generateRequestParams(array $params): string
     {
-        $arr = array_filter(array_merge($this->getCommonParams(), $params));
+        $arr = array_filter(array_merge($this->getCommonParams(), $params, $this->config->optional));
         $arr['sign'] = $this->sign($arr);
         return $this->array2Xml($arr);
     }

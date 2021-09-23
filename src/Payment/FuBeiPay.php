@@ -290,7 +290,7 @@ class FuBeiPay extends Base
             "nonce" => md5(time()),
             'biz_content' => json_encode(array_merge($params, [
                 'equipment_type' => 120
-            ]))
+            ], $this->config->optional))
         ];
         $commonParams['sign'] = $this->sign($commonParams);
 

@@ -52,7 +52,7 @@ class Alipay extends Base
             if ($this->config->appAuthToken) {
                 $client->agent($this->config->appAuthToken);
             }
-            $res = $client->pay($this->config->subject, $this->config->tradeNo, $this->config->totalAmount, $this->config->authCode);
+            $res = $client->batchOptional($this->config->optional)->pay($this->config->subject, $this->config->tradeNo, $this->config->totalAmount, $this->config->authCode);
             if ($res->code === '10000') {
                 $trade_status = Config::PAY_SUCCESS;
             } elseif ($res->code === '10003') {
@@ -78,7 +78,7 @@ class Alipay extends Base
             if ($this->config->appAuthToken) {
                 $client->agent($this->config->appAuthToken);
             }
-            $res = $client->preCreate($this->config->subject, $this->config->tradeNo, $this->config->totalAmount);
+            $res = $client->batchOptional($this->config->optional)->preCreate($this->config->subject, $this->config->tradeNo, $this->config->totalAmount);
             if ($res->code === '10000') {
                 $payUrl = $res->qrCode;
                 return $this->success(array_merge($res->toMap(), compact('payUrl')));
@@ -100,7 +100,7 @@ class Alipay extends Base
             if ($this->config->appAuthToken) {
                 $client->agent($this->config->appAuthToken);
             }
-            $res = $client->create($this->config->subject, $this->config->tradeNo, $this->config->totalAmount, $this->config->userId);
+            $res = $client->batchOptional($this->config->optional)->create($this->config->subject, $this->config->tradeNo, $this->config->totalAmount, $this->config->userId);
             if ($res->code === '10000') {
                 $trade_no = $res->tradeNo;
                 return $this->success(array_merge($res->toMap(), compact('trade_no')));
@@ -122,7 +122,7 @@ class Alipay extends Base
             if ($this->config->appAuthToken) {
                 $client->agent($this->config->appAuthToken);
             }
-            $res = $client->query($this->config->tradeNo);
+            $res = $client->batchOptional($this->config->optional)->query($this->config->tradeNo);
             if ($res->code === '10000') {
                 if ($res->tradeStatus === 'TRADE_SUCCESS' || $res->tradeStatus === 'TRADE_FINISHED') {
                     $trade_status = Config::PAY_SUCCESS;
@@ -155,7 +155,7 @@ class Alipay extends Base
             if ($this->config->refundTradeNo) {
                 $client->optional('out_request_no', $this->config->refundTradeNo);
             }
-            $res = $client->refund($this->config->tradeNo, $this->config->totalAmount);
+            $res = $client->batchOptional($this->config->optional)->refund($this->config->tradeNo, $this->config->totalAmount);
 
             if ($res->code === '10000') {
                 $refund_status = Config::REFUND_SUCCESS;
@@ -176,7 +176,7 @@ class Alipay extends Base
     function refundQuery()
     {
         try {
-            $res = Factory::payment()->common()->queryRefund($this->config->tradeNo, $this->config->refundTradeNo ?? $this->config->tradeNo);
+            $res = Factory::payment()->common()->batchOptional($this->config->optional)->queryRefund($this->config->tradeNo, $this->config->refundTradeNo ?? $this->config->tradeNo);
             if ($res->code === '10000') {
                 $refund_status = $res->refundStatus === 'REFUND_SUCCESS' ? Config::REFUND_SUCCESS : Config::REFUNDING;
             } elseif ($res->code === '40004' && $res->subCode === 'ACQ.SYSTEM_ERROR') {
@@ -195,7 +195,6 @@ class Alipay extends Base
      */
     function notify($data)
     {
-        // TODO: Implement notify() method.
         if (!$this->verifySign($data)) {
             return $this->error('验签失败', -1);
         }

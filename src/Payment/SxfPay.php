@@ -460,14 +460,14 @@ class SxfPay extends Base
                 $params['subject'] = $res;
             }
         }
-        $commonParams = [
+        $commonParams = array_merge([
             "orgId" => $this->config->orgIdSxf,
             "reqData" => array_filter($params),
             "reqId" => uniqid('sxf'),
             "signType" => "RSA",
             "timestamp" => date("Y-m-d h:i:s"),
             "version" => "1.0",
-        ];
+        ], $this->config->optional);
         $commonParams['sign'] = $this->sign($commonParams);
 
         $client = new Client([

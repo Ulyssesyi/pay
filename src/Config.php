@@ -63,13 +63,28 @@ namespace Yijin\Pay;
  * @property string $merchantKeyFb 商户密码
  * @property string $storeIdFb 商户门店ID
  * @property string $wxOpenIDFb 付呗网页下的用户ID
+ *
+ * 联拓配置
+ * @property string $userNameLT 商户后台登录账号
+ * @property string $userPwdLt 商户后台登录密码
+ * @property string $appIdLt 合作方ID
+ * @property string $appKeyLt 签名密钥
+ * @property string $merchantCodeLt 商户编号
+ * @property string $refundReasonLt 退款原因。默认值：商家与消费者协商一致
+ *
+ * 乐刷配置
+ * @property string $merchantIdLS 商户ID
+ * @property string $serviceProviderKeyLS 服务商密码
+ * @property string $jumpUrlLS 使用乐刷收银台支付后跳回地址
  */
 class Config
 {
-    const PAY_BY_SXF = 10;
+    const PAY_BY_LT = 1;
+    const PAY_BY_FB = 4;
     const PAY_BY_OFFICIAL = 5;
     const PAY_BY_SQB = 6;
-    const PAY_BY_FB = 4;
+    const PAY_BY_LS = 7;
+    const PAY_BY_SXF = 10;
 
     const ALIPAY = 1;
     const WE_PAY = 2;
@@ -83,6 +98,12 @@ class Config
     const REFUND_FAIL = -1;
 
     protected $_config = [];
+
+    /**
+     * 更多的参数想要传递给支付渠道的，可以放入这个数组，会在请求时合并到请求参数内
+     * @var array
+     */
+    public $optional = [];
 
     public function __set($name, $value)
     {

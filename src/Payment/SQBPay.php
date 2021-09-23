@@ -85,7 +85,10 @@ class SQBPay extends Base
      */
     function webPay()
     {
-        $params = [
+        if ($this->config->isMiniProgram) {
+            return $this->error('收钱吧暂不支持小程序支付', -1);
+        }
+        $params = array_merge([
             'terminal_sn' => $this->config->terminalSNSqb,
             'client_sn' => $this->config->tradeNo,
             'total_amount' => (string)intval($this->config->totalAmount * 100),
@@ -94,7 +97,7 @@ class SQBPay extends Base
             'operator' => $this->config->operatorSqb,
             'return_url' => $this->config->returnUrlSqb,
             'reflect' => $this->config->reflectSqb,
-        ];
+        ], $this->config->optional);
         $params = array_filter($params);
         ksort($params);
         $str = '';
@@ -282,6 +285,7 @@ class SQBPay extends Base
      * @throws GuzzleException
      */
     private function execRequest($params, $url) {
+        $params = array_merge($params, $this->config->optional);
         $sign = $this->sign($params);
 
         $client = new Client([

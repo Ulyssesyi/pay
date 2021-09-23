@@ -3,12 +3,12 @@
 
 渠道|渠道编号|进度
 ---|---|---
-官方|5|（<font color=red>待完成</font>）
+官方|5|（<font color=blue>文档未完成</font>）
 随行付|10|（<font color=green>已完成</font>）
 联付通|1|（<font color=red>待完成</font>）
-付呗|4|（<font color=red>待完成</font>）
-收钱吧|6|（<font color=red>待完成</font>）
-乐刷|7|（<font color=red>待完成</font>）
+付呗|4|（<font color=blue>文档未完成</font>）
+收钱吧|6|（<font color=blue>文档未完成</font>）
+乐刷|7|（<font color=blue>文档未完成，微信支付未测试</font>）
 云闪付|8|（<font color=red>待完成</font>）
 乐天成|11|（<font color=red>待完成</font>）
 
