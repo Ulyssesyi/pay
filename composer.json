@@ -39,6 +39,6 @@
     "license":"Apache-2.0",
     "scripts": {
         "test": "phpunit --prepend tests/bootstrap.php -c phpunit.xml --colors=always",
-        "phpstan": "phpstan analyse --memory-limit 300M -l 0 -c phpstan.neon ./src ./examples"
+        "phpstan": "phpstan analyse --memory-limit 600M -l 0 -c phpstan.neon ./src ./tests"
     }
 }
