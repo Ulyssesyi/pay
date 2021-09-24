@@ -31,7 +31,7 @@ abstract class Base
     /**
      * 网页支付（含H5和小程序支付）
      * 返回的data中微信必须包含key-jsApiParameters：H5和小程序支付的参数数组，里面key list为appId/timeStamp/nonceStr/package/signType；支付宝必须包含key-trade_no：支付宝网页呼起支付用的订单号
-     * 如果是跳转支付的必须包含key-payUrl：支付跳转的地址
+     * 如果是跳转支付渠道的收银台支付的必须包含key-payUrl：支付跳转的地址
      * @return mixed
      */
     abstract function webPay();

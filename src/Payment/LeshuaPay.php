@@ -63,7 +63,7 @@ class LeshuaPay extends Base
             }
             return $this->success(array_merge($res, compact('trade_status')));
         } else {
-            return $this->error($res['error_msg'] ?? ($res['resp_msg'] ?? '系统异常'), $res['error_code'] ?? ($res['result_code'] ?? '1'));
+            return $this->error($res['error_msg'] ?? ($res['resp_msg'] ?? '系统异常'), $res['error_code'] ?? ($res['result_code'] ?? -1));
         }
     }
 
@@ -93,7 +93,7 @@ class LeshuaPay extends Base
             $payUrl = $res['jspay_url'] ?? ($res['td_code'] ?? '');
             return $this->success(array_merge($res, compact('payUrl')));
         } else {
-            return $this->error($res['error_msg'] ?? '系统异常', $res['error_code'] ?? ($res['result_code'] ?? '1'));
+            return $this->error($res['error_msg'] ?? '系统异常', $res['error_code'] ?? ($res['result_code'] ?? -1));
         }
     }
 
@@ -130,7 +130,7 @@ class LeshuaPay extends Base
             }
             return $this->success(array_merge($res, $data));
         } else {
-            return $this->error($res['error_msg'] ?? '系统异常', $res['error_code'] ?? ($res['result_code'] ?? '1'));
+            return $this->error($res['error_msg'] ?? '系统异常', $res['error_code'] ?? ($res['result_code'] ?? -1));
         }
     }
 
@@ -164,7 +164,7 @@ class LeshuaPay extends Base
             }
             return $this->success(array_merge($res, compact('trade_status')));
         } else {
-            return $this->error($res['error_msg'] ?? ($res['resp_msg'] ?? '系统异常'), $res['error_code'] ?? ($res['result_code'] ?? '1'));
+            return $this->error($res['error_msg'] ?? ($res['resp_msg'] ?? '系统异常'), $res['error_code'] ?? ($res['result_code'] ?? -1));
         }
     }
 
@@ -203,7 +203,7 @@ class LeshuaPay extends Base
             }
             return $this->success(array_merge($res, compact('refund_status')));
         } else {
-            return $this->error($res['error_msg'] ?? ($res['resp_msg'] ?? '系统异常'), $res['error_code'] ?? ($res['result_code'] ?? '1'));
+            return $this->error($res['error_msg'] ?? ($res['resp_msg'] ?? '系统异常'), $res['error_code'] ?? ($res['result_code'] ?? -1));
         }
     }
 
@@ -237,7 +237,7 @@ class LeshuaPay extends Base
             }
             return $this->success(array_merge($res, compact('refund_status')));
         } else {
-            return $this->error($res['error_msg'] ?? ($res['resp_msg'] ?? '系统异常'), $res['error_code'] ?? ($res['result_code'] ?? '1'));
+            return $this->error($res['error_msg'] ?? ($res['resp_msg'] ?? '系统异常'), $res['error_code'] ?? ($res['result_code'] ?? -1));
         }
     }
 
@@ -256,7 +256,7 @@ class LeshuaPay extends Base
                 return $this->success(array_merge($data, compact('merchantTradeNo')));
             }
         }
-        return $this->error($res['failure_reason'] ?? '系统异常', $res['error_code'] ?? '1');
+        return $this->error($res['failure_reason'] ?? '系统异常', $res['error_code'] ?? -1);
     }
 
     /**

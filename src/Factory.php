@@ -6,8 +6,10 @@ use Yijin\Pay\Payment\Base;
 use Yijin\Pay\Payment\FuBeiPay;
 use Yijin\Pay\Payment\LeshuaPay;
 use Yijin\Pay\Payment\LiantuoPay;
+use Yijin\Pay\Payment\LtcPay;
 use Yijin\Pay\Payment\SQBPay;
 use Yijin\Pay\Payment\SxfPay;
+use Yijin\Pay\Payment\UnionPay;
 use Yijin\Pay\Payment\WeixinPay;
 
 class Factory
@@ -29,6 +31,10 @@ class Factory
                 return new LiantuoPay($config);
             case Config::PAY_BY_FB:
                 return new FuBeiPay($config);
+            case Config::PAY_BY_YSF:
+                return new UnionPay($config);
+            case Config::PAY_BY_LTC:
+                return new LtcPay($config);
             case Config::PAY_BY_OFFICIAL:
                 return $config->payType === Config::WE_PAY ? new WeixinPay($config) : new Alipay($config);
             default:

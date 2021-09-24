@@ -51,7 +51,7 @@ class LiantuoPay extends Base
         } elseif ($this->isPaying($res)) {
             $trade_status = Config::PAYING;
         } else {
-            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? '-1'));
+            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? -1));
         }
         return $this->success(array_merge($res, compact('trade_status')));
     }
@@ -76,7 +76,7 @@ class LiantuoPay extends Base
             $payUrl = $res['url'] ?? '';
             return $this->success(array_merge($res, compact('payUrl')));
         } else {
-            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? '-1'));
+            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? -1));
         }
     }
 
@@ -120,7 +120,7 @@ class LiantuoPay extends Base
             }
             return $this->success(array_merge($res, $data));
         } else {
-            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? '-1'));
+            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? -1));
         }
     }
 
@@ -145,7 +145,7 @@ class LiantuoPay extends Base
         } elseif ($this->isPaying($res)) {
             $trade_status = Config::PAYING;
         } else {
-            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? '-1'));
+            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? -1));
         }
         return $this->success(array_merge($res, compact('trade_status')));
     }
@@ -173,7 +173,7 @@ class LiantuoPay extends Base
         } elseif ($this->isRefunding($res)) {
             $refund_status = Config::REFUNDING;
         } else {
-            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? '-1'));
+            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? -1));
         }
         return $this->success(array_merge($res, compact('refund_status')));
     }
@@ -198,7 +198,7 @@ class LiantuoPay extends Base
         } elseif ($this->isRefunding($res)) {
             $refund_status = Config::REFUNDING;
         } else {
-            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? '-1'));
+            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? -1));
         }
         return $this->success(array_merge($res, compact('refund_status')));
     }
@@ -215,7 +215,7 @@ class LiantuoPay extends Base
             $merchantTradeNo = $data['outTradeNo'] ?? '';
             return $this->success(array_merge($data, compact('merchantTradeNo')));
         } else {
-            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? '-1'));
+            return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? -1));
         }
     }
 
@@ -311,7 +311,7 @@ class LiantuoPay extends Base
                 'merchantCode' => $res['merchantCode'] ?? '',
             ]);
         } else {
-            return  $this->error($res['subMsg'] ?? ($res['msg'] ?? '请求异常'), $res['subCode'] ?? ($res['code'] ?? '-1'));
+            return  $this->error($res['subMsg'] ?? ($res['msg'] ?? '请求异常'), $res['subCode'] ?? ($res['code'] ?? -1));
         }
     }
 

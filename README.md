@@ -5,7 +5,7 @@
 ---|---|---
 官方|5|（<font color=blue>文档未完成</font>）
 随行付|10|（<font color=green>已完成</font>）
-联付通|1|（<font color=red>待完成</font>）
+联付通|1|（<font color=blue>文档未完成，微信支付未测试，退款未测试</font>）
 付呗|4|（<font color=blue>文档未完成</font>）
 收钱吧|6|（<font color=blue>文档未完成</font>）
 乐刷|7|（<font color=blue>文档未完成，微信支付未测试</font>）

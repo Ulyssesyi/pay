@@ -9,8 +9,10 @@ use Yijin\Pay\Payment\Alipay;
 use Yijin\Pay\Payment\FuBeiPay;
 use Yijin\Pay\Payment\LeshuaPay;
 use Yijin\Pay\Payment\LiantuoPay;
+use Yijin\Pay\Payment\LtcPay;
 use Yijin\Pay\Payment\SQBPay;
 use Yijin\Pay\Payment\SxfPay;
+use Yijin\Pay\Payment\UnionPay;
 use Yijin\Pay\Payment\WeixinPay;
 
 class FactoryTest extends TestCase
@@ -69,6 +71,22 @@ class FactoryTest extends TestCase
         $config->payType = Config::ALIPAY;
         $payModel = (new Factory())->getAdapter($config);
         $this->assertInstanceOf(LiantuoPay::class, $payModel, '工厂实例化联付通支付失败');
+    }
+
+    public function testUnionPayAdapter() {
+        $config = new Config();
+        $config->channel = Config::PAY_BY_YSF;
+        $config->payType = Config::ALIPAY;
+        $payModel = (new Factory())->getAdapter($config);
+        $this->assertInstanceOf(UnionPay::class, $payModel, '工厂实例化云闪付支付失败');
+    }
+
+    public function testLtcPayAdapter() {
+        $config = new Config();
+        $config->channel = Config::PAY_BY_LTC;
+        $config->payType = Config::ALIPAY;
+        $payModel = (new Factory())->getAdapter($config);
+        $this->assertInstanceOf(LtcPay::class, $payModel, '工厂实例化乐天成支付失败');
     }
 
     public function testNoChannelAdapter() {

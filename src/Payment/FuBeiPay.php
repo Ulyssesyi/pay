@@ -59,7 +59,7 @@ class FuBeiPay extends Base
             }
             return $this->success(array_merge($res, compact('trade_status')));
         } else {
-            return $this->error($res['result_message'] ?? '系统异常', $res['sub_code'] ?? ($res['result_code'] ?? '0001'));
+            return $this->error($res['result_message'] ?? '系统异常', $res['sub_code'] ?? ($res['result_code'] ?? -1));
         }
     }
 
@@ -85,7 +85,7 @@ class FuBeiPay extends Base
             $payUrl = $res['data']['qr_code'] ?? '';
             return $this->success(array_merge($res, compact('payUrl')));
         } else {
-            return $this->error($res['result_message'] ?? '系统异常', $res['sub_code'] ?? ($res['result_code'] ?? '0001'));
+            return $this->error($res['result_message'] ?? '系统异常', $res['sub_code'] ?? ($res['result_code'] ?? -1));
         }
     }
 
@@ -127,7 +127,7 @@ class FuBeiPay extends Base
             }
             return $this->success($data);
         } else {
-            return $this->error($res['result_message'] ?? '系统异常', $res['result_code'] ?? '0001');
+            return $this->error($res['result_message'] ?? '系统异常', $res['result_code'] ?? -1);
         }
     }
 
@@ -161,7 +161,7 @@ class FuBeiPay extends Base
             }
             return $this->success(array_merge($res, compact('trade_status')));
         } else {
-            return $this->error($res['result_message'] ?? '系统异常', $res['result_code'] ?? '0001');
+            return $this->error($res['result_message'] ?? '系统异常', $res['result_code'] ?? -1);
         }
     }
 
@@ -186,7 +186,7 @@ class FuBeiPay extends Base
             $refund_status = Config::REFUNDING;
             return $this->success(array_merge($res, compact('refund_status')));
         } else {
-            return $this->error($res['result_message'] ?? '系统异常', $res['result_code'] ?? '0001');
+            return $this->error($res['result_message'] ?? '系统异常', $res['result_code'] ?? -1);
         }
     }
 
@@ -220,7 +220,7 @@ class FuBeiPay extends Base
             }
             return $this->success(array_merge($res, compact('refund_status')));
         } else {
-            return $this->error($res['result_message'] ?? '系统异常', $res['result_code'] ?? '0001');
+            return $this->error($res['result_message'] ?? '系统异常', $res['result_code'] ?? -1);
         }
     }
 
@@ -237,7 +237,7 @@ class FuBeiPay extends Base
             $merchantTradeNo = $orderInfo['merchant_order_sn'] ?? '';
             return $this->success(array_merge($orderInfo, compact('merchantTradeNo')));
         } else {
-            return $this->error($data['result_message'] ?? '异步错误', $data['result_code'] ?? 500);
+            return $this->error($data['result_message'] ?? '异步错误', $data['result_code'] ?? -1);
         }
     }
 

@@ -76,6 +76,14 @@ namespace Yijin\Pay;
  * @property string $merchantIdLS 商户ID
  * @property string $serviceProviderKeyLS 服务商密码
  * @property string $jumpUrlLS 使用乐刷收银台支付后跳回地址
+ *
+ * 乐天成支付配置
+ * @property string $appKeyLtc 商户在乐天成的支付PayCode
+ * @property string $accessSecretLtc 商户在乐天成的内容密钥
+ * @property string $privateSecretLtc 商户在乐天成的私钥
+ * @property string $publicSecretLtc 乐天成的公钥
+ * @property string $requestDomainLtc 乐天成的支付请求地址
+ * @property string $jumpUrlLtc 使用乐天成收银台支付后跳回地址
  */
 class Config
 {
@@ -84,7 +92,9 @@ class Config
     const PAY_BY_OFFICIAL = 5;
     const PAY_BY_SQB = 6;
     const PAY_BY_LS = 7;
+    const PAY_BY_YSF = 8;
     const PAY_BY_SXF = 10;
+    const PAY_BY_LTC = 11;
 
     const ALIPAY = 1;
     const WE_PAY = 2;

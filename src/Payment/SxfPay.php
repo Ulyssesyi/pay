@@ -101,7 +101,7 @@ class SxfPay extends Base
             }
             return $this->success(array_merge($data, compact('trade_status')));
         } else {
-            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? -1);
         }
     }
 
@@ -165,7 +165,7 @@ class SxfPay extends Base
             $data = $res['respData'] ?? [];
             return $data['bizCode'] === '0000' ? $this->success($data) : $this->error($data['bizMsg'], $data['bizCode']);
         } else {
-            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? -1);
         }
     }
 
@@ -251,7 +251,7 @@ class SxfPay extends Base
                 return $this->error($data['bizMsg'], $data['bizCode']);
             }
         } else {
-            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? -1);
         }
     }
 
@@ -296,7 +296,7 @@ class SxfPay extends Base
                 return $this->error($data['bizMsg'], $data['bizCode']);
             }
         } else {
-            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? -1);
         }
     }
 
@@ -339,7 +339,7 @@ class SxfPay extends Base
             }
             return $this->success(array_merge($data, compact('refund_status')));
         } else {
-            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? -1);
         }
     }
 
@@ -376,7 +376,7 @@ class SxfPay extends Base
             }
             return $this->success(array_merge($data, compact('refund_status')));
         } else {
-            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? '0001');
+            return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? -1);
         }
     }
 

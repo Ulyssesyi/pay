@@ -50,7 +50,7 @@ class SQBPay extends Base
             $trade_status = $this->tradeStatus($res);
             return $this->success(array_merge($res, compact('trade_status')));
         } else {
-            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? '0001');
+            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? -1);
         }
     }
 
@@ -76,7 +76,7 @@ class SQBPay extends Base
         if ($this->isSuccess($res) && $payUrl) {
             return $this->success(array_merge($res, compact('payUrl')));
         } else {
-            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? '0001');
+            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? -1);
         }
     }
 
@@ -126,7 +126,7 @@ class SQBPay extends Base
             $trade_status = $this->tradeStatus($res);
             return $this->success(array_merge($res, compact('trade_status')));
         } else {
-            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? '0001');
+            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? -1);
         }
     }
 
@@ -159,7 +159,7 @@ class SQBPay extends Base
             }
             return $this->success(array_merge($res, compact('refund_status')));
         } else {
-            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? '0001');
+            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? -1);
         }
     }
 
@@ -189,7 +189,7 @@ class SQBPay extends Base
             }
             return $this->success(array_merge($res, compact('refund_status')));
         } else {
-            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? '0001');
+            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? -1);
         }
     }
 
@@ -252,7 +252,7 @@ class SQBPay extends Base
                 'terminal_key' => $res['biz_response']['terminal_key'] ?? '',
             ]);
         } else {
-            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? '0001');
+            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? -1);
         }
     }
 
@@ -277,7 +277,7 @@ class SQBPay extends Base
                 'terminal_key' => $res['biz_response']['terminal_key'] ?? '',
             ]);
         } else {
-            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? '0001');
+            return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? -1);
         }
     }
 
