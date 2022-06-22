@@ -2,7 +2,7 @@
     "name": "yijin/pay",
     "description": "A project for diff channel to pay in china",
     "type": "library",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "require": {
         "php": ">=7.2",
         "ext-json": "*",
@@ -23,10 +23,7 @@
     "autoload": {
         "psr-4": {
             "Yijin\\Pay\\": "src/"
-        },
-        "classmap": [
-            "class_map/AntCertificationUtil.php"
-        ]
+        }
     },
     "authors": [
         {
