@@ -317,7 +317,9 @@ class WeixinPay extends Base
     private function xml2Array($xml): array
     {
         try {
-            libxml_disable_entity_loader(true);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader();
+            }
             $res = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
         } catch (\Exception $e) {
             $res = ['return_code' => 'FAIL', 'return_msg' => 'xml解析失败，' . $e->getMessage()];

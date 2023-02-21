@@ -16,7 +16,7 @@ class Factory
 {
     /**
      * @param Config $config
-     * @return Base | SxfPay
+     * @return Base
      * @throws \Exception
      */
     function getAdapter(Config $config): Base {
