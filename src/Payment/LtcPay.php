@@ -248,12 +248,12 @@ class LtcPay extends Base
         return openssl_verify($content, base64_decode($sign), $this->getPublicKey(), OPENSSL_ALGO_SHA256);
     }
 
-    private function getPrivateKey(): string
+    private function getPrivateKey()
     {
         return openssl_get_privatekey("-----BEGIN RSA PRIVATE KEY-----\n" . wordwrap($this->config->privateSecretLtc, 64, "\n", true) . "\n-----END RSA PRIVATE KEY-----");
     }
 
-    private function getPublicKey(): string
+    private function getPublicKey()
     {
         return openssl_pkey_get_public("-----BEGIN PUBLIC KEY-----\n" . wordwrap($this->config->publicSecretLtc, 64, "\n", true) . "\n-----END PUBLIC KEY-----");
     }
