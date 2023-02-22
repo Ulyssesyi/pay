@@ -472,6 +472,7 @@ class SxfPay extends Base
 
         $client = new Client([
             'base_uri' => $this->domain,
+            'timeout' => $this->config->requestTimeout ?? 10,
             'curl' => [
                 CURLOPT_SSL_CIPHER_LIST => 'DEFAULT@SECLEVEL=1'
             ]

@@ -22,7 +22,8 @@ class WeixinPay extends Base
     {
         parent::__construct($config);
         $this->client = new Client([
-            'base_uri' => 'https://api.mch.weixin.qq.com'
+            'base_uri' => 'https://api.mch.weixin.qq.com',
+            'timeout' => $this->config->requestTimeout ?? 10
         ]);
     }
 

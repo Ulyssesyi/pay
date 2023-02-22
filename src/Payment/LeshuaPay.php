@@ -305,7 +305,9 @@ class LeshuaPay extends Base
         ], $params, $this->config->optional);
         $commonParams['sign'] = $this->sign($commonParams);
 
-        $client = new Client([]);
+        $client = new Client([
+            'timeout' => $this->config->requestTimeout ?? 10
+        ]);
         $response = $client->post($this->domain, [
             'form_params' => $commonParams,
         ]);

@@ -294,7 +294,9 @@ class FuBeiPay extends Base
         ];
         $commonParams['sign'] = $this->sign($commonParams);
 
-        $client = new Client([]);
+        $client = new Client([
+            'timeout' => $this->config->requestTimeout ?? 10
+        ]);
         $response = $client->post($this->domain, [
             'json' => $commonParams
         ]);

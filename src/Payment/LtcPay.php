@@ -270,7 +270,7 @@ class LtcPay extends Base
 
         $client = new Client([
             'base_uri' => $this->config->requestDomainLtc,
-            'timeout' => 60
+            'timeout' => $this->config->requestTimeout ?? 10
         ]);
         $response = $client->post($url, [
             'json' => [

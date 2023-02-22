@@ -7,6 +7,7 @@ namespace Yijin\Pay;
  * 通用配置参数
  * @property int $channel 支付渠道 1-联付通，4-付呗，5-官方直连，6-收钱吧，7-乐刷，8-云闪付，10-随行付，11-乐天成
  * @property int $payType 支付通道 1-支付宝， 2-微信，3-银联
+ * @property float $requestTimeout 请求超时时间。默认10，单位为秒
  * @property string $charset 请求和返回编码，目前都是UTF-8
  * @property string $tradeNo 商户订单号
  * @property string $refundTradeNo 商户退款订单号

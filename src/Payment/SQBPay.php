@@ -290,6 +290,7 @@ class SQBPay extends Base
 
         $client = new Client([
             'base_uri' => $this->domain,
+            'timeout' => $this->config->requestTimeout ?? 10
         ]);
         $response = $client->post($url, [
             'json' => $params,

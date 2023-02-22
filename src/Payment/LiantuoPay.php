@@ -265,7 +265,8 @@ class LiantuoPay extends Base
         $commonParams['sign'] = $this->sign($commonParams);
 
         $client = new Client([
-            'base_uri' => $this->domain
+            'base_uri' => $this->domain,
+            'timeout' => $this->config->requestTimeout ?? 10
         ]);
         $response = $client->post($url, [
             'form_params' => $commonParams
