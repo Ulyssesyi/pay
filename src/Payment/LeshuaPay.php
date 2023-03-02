@@ -344,6 +344,8 @@ class LeshuaPay extends Base
         switch ($this->config->payType) {
             case Config::WE_PAY:
                 return 'WXZF';
+            case Config::YSF_PAY:
+                return 'UPSMZF';
             default:
                 return 'ZFBZF';
         }

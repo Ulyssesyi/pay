@@ -98,6 +98,8 @@ class Config
 
     const ALIPAY = 1;
     const WE_PAY = 2;
+    const YSF_PAY = 3;
+    const DECP_PAY = 4;
 
     const PAY_SUCCESS = 1;
     const PAYING = 0;

@@ -491,6 +491,8 @@ class SxfPay extends Base
                 return 'WECHAT';
             case Config::ALIPAY:
                 return 'ALIPAY';
+            case Config::DECP_PAY:
+                return 'DCEP';
             default:
                 return 'UNIONPAY';
         }
