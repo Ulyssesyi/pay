@@ -275,7 +275,10 @@ class LeshuaPay extends Base
         ksort($data);
         $signString = "";
         foreach ($data as $key => $val) {
-            if ($key === 'sign' || $key === 'leshua' || $key === 'error_code' || empty($val)) {
+            if ($key === 'sign' || $key === 'leshua' || $key === 'error_code') {
+                continue;
+            }
+            if (is_array($val)) {
                 continue;
             }
             $signString .= $key . "=" . $val . "&";
