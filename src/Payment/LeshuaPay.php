@@ -163,6 +163,9 @@ class LeshuaPay extends Base
                     $trade_status = Config::PAY_FAIL;
             }
             return $this->success(array_merge($res, compact('trade_status')));
+        } else if ($this->isEasyPayTransactionPaying($res)) {
+            $trade_status = Config::PAYING;
+            return $this->success(array_merge($res, compact('trade_status')));
         } else {
             return $this->error($res['error_msg'] ?? ($res['resp_msg'] ?? '系统异常'), $res['error_code'] ?? ($res['result_code'] ?? -1));
         }
@@ -352,5 +355,10 @@ class LeshuaPay extends Base
             default:
                 return 'ZFBZF';
         }
+    }
+
+    private function isEasyPayTransactionPaying(array $info): bool
+    {
+        return !isset($info['status']) && $info['pay_way'] === 'UNKNOWN' && $info['error_code'] === "-4006";
     }
 }
