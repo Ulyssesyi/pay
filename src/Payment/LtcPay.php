@@ -31,7 +31,7 @@ class LtcPay extends Base
         $params = [
             //业务参数
             "seq_no" => $this->config->tradeNo,
-            "pay_amt" => intval($this->config->totalAmount * 100),
+            "pay_amt" => intval(bcmul($this->config->totalAmount, 100)),
             "auth_code" => $this->config->authCode,
             "call_back_url" => $this->config->notifyUrl
         ];
@@ -59,7 +59,7 @@ class LtcPay extends Base
     {
         $params = [
             "seq_no" => $this->config->tradeNo,
-            "pay_amt" => intval($this->config->totalAmount * 100),
+            "pay_amt" => intval(bcmul($this->config->totalAmount, 100)),
             "call_back_url" => $this->config->notifyUrl
         ];
         try {
@@ -84,7 +84,7 @@ class LtcPay extends Base
     {
         $params = [
             "seq_no" => $this->config->tradeNo,
-            "pay_amt" => intval($this->config->totalAmount * 100),
+            "pay_amt" => intval(bcmul($this->config->totalAmount, 100)),
             "call_back_url" => $this->config->notifyUrl,
             "notify_url" => $this->config->jumpUrlLtc,
         ];
@@ -145,7 +145,7 @@ class LtcPay extends Base
     {
         $params = [
             "seq_no" => $this->config->tradeNo,
-            "amount" => intval($this->config->totalAmount * 100),
+            "amount" => intval(bcmul($this->config->totalAmount, 100)),
             "ref_date" => date('Y-m-d H:i:s')
         ];
         try {

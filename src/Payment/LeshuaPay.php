@@ -39,7 +39,7 @@ class LeshuaPay extends Base
         $params = [
             //业务参数
             "third_order_id" => $this->config->tradeNo,
-            "amount" => intval($this->config->totalAmount * 100),
+            "amount" => intval(bcmul($this->config->totalAmount, 100)),
             "auth_code" => $this->config->authCode
         ];
         try {
@@ -78,7 +78,7 @@ class LeshuaPay extends Base
         $params = [
             "pay_way" => $this->getPayWay(),
             "third_order_id" => $this->config->tradeNo,
-            "amount" => intval($this->config->totalAmount * 100),
+            "amount" => intval(bcmul($this->config->totalAmount, 100)),
             "jspay_flag" => $this->config->payType === Config::WE_PAY ? '2' : '0',
             "jump_url" => urlencode($this->config->jumpUrlLS),
         ];
@@ -108,7 +108,7 @@ class LeshuaPay extends Base
         $params = [
             "pay_way" => $this->getPayWay(),
             "third_order_id" => $this->config->tradeNo,
-            "amount" => intval($this->config->totalAmount * 100),
+            "amount" => intval(bcmul($this->config->totalAmount, 100)),
             "appid" => $this->config->appid,
             "sub_openid" => $this->config->userId,
             "jspay_flag" => $this->config->isMiniProgram ? 3 : 1,
@@ -182,7 +182,7 @@ class LeshuaPay extends Base
         $params = [
             "third_order_id" => $this->config->tradeNo,
             "merchant_refund_id" => $this->config->refundTradeNo,
-            "refund_amount" => intval($this->config->totalAmount * 100),
+            "refund_amount" => intval(bcmul($this->config->totalAmount, 100)),
             "notify_url" => $this->config->notifyUrl ? urlencode($this->config->notifyUrl) : '',
         ];
         try {

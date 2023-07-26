@@ -38,7 +38,7 @@ class WeixinPay extends Base
                     'auth_code' => $this->config->authCode,
                     'attach' => $this->config->attach,
                     'body' => $this->config->subject,
-                    'total_fee' => intval($this->config->totalAmount * 100),
+                    'total_fee' => intval(bcmul($this->config->totalAmount, 100)),
                     'out_trade_no' => $this->config->tradeNo,
                 ])
             ]);
@@ -70,7 +70,7 @@ class WeixinPay extends Base
                     'out_trade_no' => $this->config->tradeNo,
                     'time_expire' => $time->format('YmdHis'),
                     'notify_url' => $this->config->notifyUrl,
-                    'total_fee' => intval($this->config->totalAmount * 100),
+                    'total_fee' => intval(bcmul($this->config->totalAmount, 100)),
                     'product_id' => '123456789',
                     'trade_type' => 'NATIVE',
                 ])
@@ -98,7 +98,7 @@ class WeixinPay extends Base
                 'out_trade_no' => $this->config->tradeNo,
                 'time_expire' => Carbon::createFromTimestamp($this->config->expireTime ?: (time()+ 600))->format('YmdHis'),
                 'notify_url' => $this->config->notifyUrl,
-                'total_fee' => intval($this->config->totalAmount * 100),
+                'total_fee' => intval(bcmul($this->config->totalAmount, 100)),
                 'product_id' => '123456789',
                 'trade_type' => 'JSAPI',
             ];
@@ -171,8 +171,8 @@ class WeixinPay extends Base
                 RequestOptions::BODY => $this->generateRequestParams([
                     'out_trade_no' => $this->config->tradeNo,
                     'out_refund_no' => $this->config->refundTradeNo,
-                    'total_fee' => intval($this->config->totalAmount * 100),
-                    'refund_fee' => intval($this->config->totalAmount * 100),
+                    'total_fee' => intval(bcmul($this->config->totalAmount, 100)),
+                    'refund_fee' => intval(bcmul($this->config->totalAmount, 100)),
                     "notify_url"=> $this->config->notifyUrl, //回调推送地址
                 ]),
                 RequestOptions::SSL_KEY => $this->config->clientApiV2KeyFilePath,

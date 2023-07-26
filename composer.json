@@ -11,6 +11,7 @@
         "ext-curl": "*",
         "ext-libxml": "*",
         "ext-simplexml": "*",
+        "ext-bcmath": "*",
         "guzzlehttp/guzzle": "^7.3",
         "nesbot/carbon": "^2.16",
         "vlucas/phpdotenv": "^5.3",

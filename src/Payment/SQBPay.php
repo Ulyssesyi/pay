@@ -36,7 +36,7 @@ class SQBPay extends Base
         $params = [
             'terminal_sn' => $this->config->terminalSNSqb,
             'client_sn' => $this->config->tradeNo,
-            'total_amount' => (string)intval($this->config->totalAmount * 100),
+            'total_amount' => (string)intval(bcmul($this->config->totalAmount, 100)),
             'dynamic_id' => $this->config->authCode,
             'subject' => $this->config->subject,
             'operator' => $this->config->operatorSqb
@@ -62,7 +62,7 @@ class SQBPay extends Base
         $params = [
             'terminal_sn' => $this->config->terminalSNSqb,
             'client_sn' => $this->config->tradeNo,
-            'total_amount' => (string)intval($this->config->totalAmount * 100),
+            'total_amount' => (string)intval(bcmul($this->config->totalAmount, 100)),
             'payway' => $this->config->payType === Config::WE_PAY ? '3' : '2',
             'subject' => $this->config->subject,
             'operator' => $this->config->operatorSqb
@@ -91,7 +91,7 @@ class SQBPay extends Base
         $params = array_merge([
             'terminal_sn' => $this->config->terminalSNSqb,
             'client_sn' => $this->config->tradeNo,
-            'total_amount' => (string)intval($this->config->totalAmount * 100),
+            'total_amount' => (string)intval(bcmul($this->config->totalAmount, 100)),
             'subject' => $this->config->subject,
             'notify_url' => $this->config->notifyUrl,
             'operator' => $this->config->operatorSqb,
@@ -139,7 +139,7 @@ class SQBPay extends Base
             'terminal_sn' => $this->config->terminalSNSqb,
             'client_sn' => $this->config->tradeNo,
             'refund_request_no' => $this->config->refundTradeNo,
-            'refund_amount' => (string)intval($this->config->totalAmount * 100),
+            'refund_amount' => (string)intval(bcmul($this->config->totalAmount, 100)),
             'operator' => $this->config->operatorSqb
         ];
         try {
