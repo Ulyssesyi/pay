@@ -5,7 +5,6 @@ namespace Cases;
 use Yijin\Pay\Config;
 use PHPUnit\Framework\TestCase;
 use Yijin\Pay\Factory;
-use Yijin\Pay\Payment\SxfPay;
 
 class AliPayTest extends TestCase
 {
@@ -97,9 +96,10 @@ class AliPayTest extends TestCase
 
         $config->appid = getenv('ALIPAY_APPID');
         $config->merchantPrivateKey = getenv('ALIPAY_MERCHANT_PRIVATE_KEY');
-        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
-        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
-        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
+        $config->appAuthToken = '202303BBc07b1fb06ced431e895ed4bfea99eX61';
+//        $config->alipayCertPath = BASE_PATH . '/cert/alipayCertPublicKey_RSA2.crt';
+//        $config->alipayRootCertPath = BASE_PATH . '/cert/alipayRootCert.crt';
+//        $config->merchantCertPath = BASE_PATH . '/cert/appCertPublicKey_2021001157630664.crt';
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->qrcodePay();

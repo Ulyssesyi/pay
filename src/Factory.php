@@ -4,6 +4,7 @@ namespace Yijin\Pay;
 use Yijin\Pay\Payment\Alipay;
 use Yijin\Pay\Payment\Base;
 use Yijin\Pay\Payment\FuBeiPay;
+use Yijin\Pay\Payment\HYPay;
 use Yijin\Pay\Payment\LeshuaPay;
 use Yijin\Pay\Payment\LiantuoPay;
 use Yijin\Pay\Payment\LtcPay;
@@ -35,6 +36,8 @@ class Factory
                 return new UnionPay($config);
             case Config::PAY_BY_LTC:
                 return new LtcPay($config);
+            case Config::PAY_BY_HY:
+                return new HYPay($config);
             case Config::PAY_BY_OFFICIAL:
                 return $config->payType === Config::WE_PAY ? new WeixinPay($config) : new Alipay($config);
             default:

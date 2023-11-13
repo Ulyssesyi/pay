@@ -7,6 +7,7 @@ use Yijin\Pay\Config;
 use Yijin\Pay\Factory;
 use Yijin\Pay\Payment\Alipay;
 use Yijin\Pay\Payment\FuBeiPay;
+use Yijin\Pay\Payment\HYPay;
 use Yijin\Pay\Payment\LeshuaPay;
 use Yijin\Pay\Payment\LiantuoPay;
 use Yijin\Pay\Payment\LtcPay;
@@ -87,6 +88,14 @@ class FactoryTest extends TestCase
         $config->payType = Config::ALIPAY;
         $payModel = (new Factory())->getAdapter($config);
         $this->assertInstanceOf(LtcPay::class, $payModel, '工厂实例化乐天成支付失败');
+    }
+
+    public function testHYPayAdapter() {
+        $config = new Config();
+        $config->channel = Config::PAY_BY_HY;
+        $config->payType = Config::ALIPAY;
+        $payModel = (new Factory())->getAdapter($config);
+        $this->assertInstanceOf(HYPay::class, $payModel, '工厂实例化杭研支付失败');
     }
 
     public function testNoChannelAdapter() {

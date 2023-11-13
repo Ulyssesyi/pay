@@ -84,6 +84,15 @@ namespace Yijin\Pay;
  * @property string $publicSecretLtc 乐天成的公钥
  * @property string $requestDomainLtc 乐天成的支付请求地址
  * @property string $jumpUrlLtc 使用乐天成收银台支付后跳回地址
+ *
+ * 移动杭研支付参数
+ * @property string $domainHY 移动杭研支付请求域名
+ * @property string $originIdHY 移动杭研的交易来源Id
+ * @property string $merchantCodeHY 商户在移动杭研的商户id
+ * @property int $merchantIdHY 商户在移动杭研的商户id
+ * @property int $productIdHY 移动杭研的产品id
+ * @property string $privateKeyHY 商户在移动杭研的密钥
+ * @property string $publicKeyHY 移动杭研的公钥
  */
 class Config
 {
@@ -95,6 +104,7 @@ class Config
     const PAY_BY_YSF = 8;
     const PAY_BY_SXF = 10;
     const PAY_BY_LTC = 11;
+    const PAY_BY_HY = 12;
 
     const ALIPAY = 1;
     const WE_PAY = 2;
@@ -108,6 +118,8 @@ class Config
     const REFUND_SUCCESS = 1;
     const REFUNDING = 0;
     const REFUND_FAIL = -1;
+    const HY_PAY_NOTIFY = 1;
+    const HY_REFUND_NOTIFY = 2;
 
     protected $_config = [];
 
