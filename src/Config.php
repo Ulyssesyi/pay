@@ -104,7 +104,7 @@ class Config
     const PAY_BY_YSF = 8;
     const PAY_BY_SXF = 10;
     const PAY_BY_LTC = 11;
-    const PAY_BY_HY = 12;
+    const PAY_BY_HY = 15;
 
     const ALIPAY = 1;
     const WE_PAY = 2;

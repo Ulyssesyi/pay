@@ -11,7 +11,7 @@
 | 乐刷   | 7    | （<font color=green>已完成</font>）               |
 | 云闪付  | 8    | （<font color=red>待完成</font>）                 |
 | 乐天成  | 11   | （<font color=green>已完成，未测试，不成熟，不建议接入</font>） |
-| 移动杭研 | 12   | （<font color=red>待完成</font>）                 |
+| 移动杭研 | 15   | （<font color=red>已完成</font>）                 |
 
 # 更多
 可以通过继承Base类后实现更多的支付渠道
