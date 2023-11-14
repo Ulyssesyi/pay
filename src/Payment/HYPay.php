@@ -163,21 +163,21 @@ class HYPay extends Base
      */
     function notify($data)
     {
-        $xml = $data['xml'] ?? '';
         $type = $data['type'] ?? Config::HY_PAY_NOTIFY;
         if ($type === Config::HY_REFUND_NOTIFY) {
-            if (!$this->verifySign($data)) {
+            $xmlData = $data['xml'] ?? [];
+            if (!$this->verifySign($xmlData)) {
                 return $this->error('验签失败', -1);
             }
-            $status = intval($data['BusiData']['ReturnCode'] ?? 201);
+            $status = intval($xmlData['BusiData']['ReturnCode'] ?? 201);
             if ($status === 200) {
-                $merchantTradeNo = $data['BusiData']['TradeNO'] ?? '';
-                return $this->success(array_merge($data, compact('merchantTradeNo')));
+                $merchantTradeNo = $xmlData['BusiData']['TradeNO'] ?? '';
+                return $this->success(array_merge($xmlData, compact('merchantTradeNo')));
             } else {
-                return $this->error($data['BusiData']['ReturnMsg'] ?? '', -1);
+                return $this->error($xmlData['BusiData']['ReturnMsg'] ?? '', -1);
             }
         } else {
-            $xmlData = $this->xmlToArray($xml);
+            $xmlData = $this->xmlToArray($data['xml'] ?? '');
             if (!$this->verifySign($xmlData)) {
                 return $this->error('验签失败', -1);
             }
