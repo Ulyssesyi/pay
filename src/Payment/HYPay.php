@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Yijin\Pay\Payment;
 
 use GuzzleHttp\Client;
@@ -30,8 +31,9 @@ class HYPay extends Base
             'ProCount' => 1,
             'PayAmount' => $this->config->totalAmount,
             'AuthCode' => $this->config->authCode,
-            'PayNotifyIntURL' => $this->config->notifyUrl,
-            'PayType' => 98
+            'PayNotifyPageURL' => $this->config->notifyUrl,
+            'PayType' => 98,
+            'ThirdChannel' => $this->getChannel(),
         ];
         list($result, $data) = $this->xmlRequest(self::PAY_URL, $params);
         if ($result && isset($data['BusiData'])) {
@@ -252,12 +254,13 @@ class HYPay extends Base
         ]);
         try {
             $xml = $this->buildXML($params);
-            $response = $client->get($uri . '?xml='.$xml);
+            $response = $client->get($uri . '?xml=' . $xml);
             return [true, $this->xmlToArray($response->getBody()->getContents())];
         } catch (GuzzleException $e) {
             return [false, ['return_msg' => $e->getMessage()]];
         }
     }
+
     private function jsonRequest(string $uri, array $params): array
     {
         $client = new Client([
@@ -313,5 +316,20 @@ class HYPay extends Base
     private function hexToStr(string $hex): string
     {
         return base64_encode(hex2bin($hex));
+    }
+
+    private function getChannel(): string
+    {
+        switch ($this->config->payType) {
+            case Config::ALIPAY:
+                return 'alipay';
+            case Config::WE_PAY:
+                return 'wechat';
+            case Config::YSF_PAY:
+                return 'unionpay';
+            default:
+                return '';
+
+        }
     }
 }
