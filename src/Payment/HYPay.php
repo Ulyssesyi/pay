@@ -108,7 +108,8 @@ class HYPay extends Base
             'TradeNO' => $this->config->tradeNo,
             'RefundOrderId' => $this->config->refundTradeNo,
             'RefundNotifyURL' => $this->config->notifyUrl,
-            'RefundReason' => '商户退款'
+            'RefundReason' => '商户退款',
+            'RefundAmount' => $this->config->totalAmount,
         ];
         list($result, $data) = $this->xmlRequest(self::REFUND_URL, $params);
         if ($result && isset($data['BusiData'])) {
