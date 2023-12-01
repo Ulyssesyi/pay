@@ -134,8 +134,9 @@ class SxfPayTest extends TestCase
         $config->subject = '起飞';
         $config->userIP = '127.0.0.1';
         $config->userId = getenv('SXF_OPENID');
-        $config->appid = getenv('SXF_APPID');
+        $config->subAppId = getenv('SXF_APPID');
         $config->notifyUrl = 'https://www.baidu.com';
+        $config->isMiniProgram = 1;
 
         $config->orgIdSxf = $this->orgId;
         $config->merchantNoSxf = $this->merchantNo;
@@ -143,6 +144,7 @@ class SxfPayTest extends TestCase
 
         $payModel = (new Factory())->getAdapter($config);
         $res = $payModel->webPay();
+        var_dump(json_encode($res));
         $this->assertTrue($res['result'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
         if ($config->payType === Config::WE_PAY) {
             $this->assertArrayHasKey('jsApiParameters', $res['data'], '网页支付失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));

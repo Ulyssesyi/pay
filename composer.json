@@ -4,7 +4,7 @@
     "type": "library",
     "version": "3.3.7",
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.4",
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-mbstring": "*",
@@ -15,7 +15,8 @@
         "guzzlehttp/guzzle": "^7.3",
         "nesbot/carbon": "^2.16",
         "vlucas/phpdotenv": "^5.3",
-        "alipaysdk/easysdk": "^2.2"
+        "alipaysdk/easysdk": "^2.2",
+        "stripe/stripe-php": "^12.7.0"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.12",

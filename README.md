@@ -1,17 +1,21 @@
 # 介绍
 这个项目初衷是适配公司多个不同支付渠道下（支付宝/微信支付）的支付组件，目前支持的支付渠道如下
 
-| 渠道   | 渠道编号 | 进度                                           |
-|------|------|----------------------------------------------|
-| 官方   | 5    | （<font color=green>已完成</font>）               |
-| 随行付  | 10   | （<font color=green>已完成</font>）               |
-| 联付通  | 1    | （<font color=green>已完成</font>）               |
-| 付呗   | 4    | （<font color=green>已完成</font>）               |
-| 收钱吧  | 6    | （<font color=green>已完成</font>）               |
-| 乐刷   | 7    | （<font color=green>已完成</font>）               |
-| 云闪付  | 8    | （<font color=red>待完成</font>）                 |
-| 乐天成  | 11   | （<font color=green>已完成，未测试，不成熟，不建议接入</font>） |
-| 移动杭研 | 15   | （<font color=green>已完成</font>）               |
+| 渠道         | 渠道编号 | 进度                                   |
+|------------|------|--------------------------------------|
+| 官方         | 5    | （<font color=green>已完成</font>）       |
+| 随行付        | 10   | （<font color=green>已完成</font>）       |
+| 移动杭研       | 15   | （<font color=green>已完成</font>）       |
+| Hi Pay     | 13   | （<font color=red>待测试</font>）         |
+| IPay88 Pay | 9    | （<font color=red>待测试</font>）         |
+| Gkash Pay  | 16   | （<font color=red>待测试</font>）         |
+| Stripe Pay | 14   | （<font color=red>待测试</font>）         |
+| 联付通        | 1    | （<font color=yellow>已完成，停止更新</font>） |
+| 付呗         | 4    | （<font color=yellow>已完成，停止更新</font>） |
+| 收钱吧        | 6    | （<font color=yellow>已完成，停止更新</font>） |
+| 乐刷         | 7    | （<font color=yellow>已完成，停止更新</font>） |
+| 云闪付        | 8    | （<font color=yellow>已完成，停止更新</font>） |
+| 乐天成        | 11   | （<font color=yellow>已完成，停止更新</font>） |
 
 # 更多
 可以通过继承Base类后实现更多的支付渠道
@@ -19,7 +23,7 @@
 # 示例
 参看examples文件夹
 
-# 请求参数
+# 国内渠道请求参数
 ## 通用参数
 
 | 名称            | 是否必填 | 类型     | 示例                             | 说明                                                            |
@@ -130,6 +134,68 @@
 | productIdHY    | M    | int    | 123          | 移动杭研的产品id      |
 | privateKeyHY   | M    | string | MB***        | 商户在移动杭研的密钥     |
 | publicKeyHY    | M    | string | MB***        | 移动杭研的公钥        |
+
+# 国外渠道请求参数
+
+## 通用参数
+
+| 名称            | 是否必填 | 类型     | 示例                             | 说明                                                            |
+|---------------|------|--------|--------------------------------|---------------------------------------------------------------|
+| channel       | M    | int    | 1                              | 支付渠道 1-KBZ Pay                                                |
+| charset       | C    | string | UTF-8                          | 请求和返回编码，目前都是UTF-8                                             |
+| tradeNo       | M    | string | SB202012261548555              | 商户订单号                                                         |
+| refundTradeNo | O    | string | SBTK202012261548555            | 商户退款订单号                                                       |
+| totalAmount   | O    | float  | 1.23                           | 订单总金额/退款总金额，可多次退款的渠道可能需要同时传入订单金额和退款金额，目前不支持传入不同值，即只能全退        |
+| notifyUrl     | O    | string | https://www.abc.com/pay/notify | 支付结果异步通知地址                                                    |
+| subject       | O    | string | FPX.Doinb                      | 订单标题                                                          |
+| authCode      | O    | string | 12331231321                    | B扫C时读取到的条码内容                                                  |
+| optional      | C    | array  | ['a'=>1]                       | 用于更多未添加的参数，当前只写了最小需求的参数，如果有更多需传给第三方的参数，可以通过该数组传入，具体参数请查阅第三方文档 |
+| isSandbox     | C    | bool   | false                          | 是否使用了UAT环境                                                    |
+
+## KBZ Pay参数
+
+| 名称              | 是否必填 | 类型     | 示例      | 说明   |
+|-----------------|------|--------|---------|------|
+| kbzAppId        | M    | string | Sf***** | 应用ID |
+| kbzMerchantCode | M    | string | MII**** | 商户编码 |
+| kbzMerchantKey  | M    | string | MII**** | 商户私钥 |
+
+## Hi Pay参数
+
+| 名称              | 是否必填 | 类型     | 示例      | 说明   |
+|-----------------|------|--------|---------|------|
+| hiPayAppId      | M    | string | Sf***** | 应用ID |
+| hiPayPrivateKey | M    | string | MII**** | 商户私钥 |
+| hiPayPublicKey  | M    | string | MII**** | 应用公钥 |
+
+## IPay88参数
+
+| 名称                    | 是否必填 | 类型     | 示例      | 说明    |
+|-----------------------|------|--------|---------|-------|
+| iPay88MerchantKey     | M    | string | Sf***** | 商户key |
+| iPay88MerchantCode    | M    | string | Sf***** | 商户编码  |
+| iPay88MerchantName    | M    | string | Sf***** | 商户名称  |
+| iPay88MerchantContact | M    | string | Sf***** | 商户手机号 |
+| iPay88MerchantEmail   | M    | string | Sf***** | 商户邮箱  |
+
+## Gkash参数
+
+| 名称               | 是否必填 | 类型     | 示例      | 说明    |
+|------------------|------|--------|---------|-------|
+| gKashMerchantKey | M    | string | Sf***** | 商户key |
+| gKashMerchantCID | M    | string | Sf***** | 商户id  |
+
+## Stripe参数
+
+| 名称                | 是否必填 | 类型     | 示例      | 说明             |
+|-------------------|------|--------|---------|----------------|
+| stripePublicKey   | M    | string | Sf***** | 应用公钥           |
+| stripePrivateKey  | M    | string | Sf***** | 应用私钥           |
+| stripeEndKey      | M    | string | Sf***** | 平台公钥           |
+| stripeAccount     | M    | string | Sf***** | 商户账号           |
+| paymentMethod     | O    | string | xxx     | 支付方式id, 网页支付需要 |
+| paymentMethodType | O    | string | card    | 支付方式, 网页支付需要   |
+| paymentIntentId   | O    | string | xxx     | 支付id，刷卡支付需要    |
 
 # 返回参数
 ## 通用参数

@@ -3,6 +3,11 @@
 namespace Cases;
 
 use PHPUnit\Framework\TestCase;
+use Yijin\Pay\AbroadConfig;
+use Yijin\Pay\AbroadPayment\GKash;
+use Yijin\Pay\AbroadPayment\HiPay;
+use Yijin\Pay\AbroadPayment\IPay88;
+use Yijin\Pay\AbroadPayment\StripePay;
 use Yijin\Pay\Config;
 use Yijin\Pay\Factory;
 use Yijin\Pay\Payment\Alipay;
@@ -96,6 +101,35 @@ class FactoryTest extends TestCase
         $config->payType = Config::ALIPAY;
         $payModel = (new Factory())->getAdapter($config);
         $this->assertInstanceOf(HYPay::class, $payModel, '工厂实例化杭研支付失败');
+    }
+
+
+    public function testGKashAdapter() {
+        $config = new AbroadConfig();
+        $config->channel = AbroadConfig::PAY_BY_GKASH;
+        $payModel = (new Factory())->getAbroadAdapter($config);
+        $this->assertInstanceOf(GKash::class, $payModel, '工厂实例化GKash渠道失败');
+    }
+
+    public function testHiPayAdapter() {
+        $config = new AbroadConfig();
+        $config->channel = AbroadConfig::PAY_BY_HIPAY;
+        $payModel = (new Factory())->getAbroadAdapter($config);
+        $this->assertInstanceOf(HiPay::class, $payModel, '工厂实例化HiPay渠道失败');
+    }
+
+    public function testIPay88Adapter() {
+        $config = new AbroadConfig();
+        $config->channel = AbroadConfig::PAY_BY_IPAY88;
+        $payModel = (new Factory())->getAbroadAdapter($config);
+        $this->assertInstanceOf(IPay88::class, $payModel, '工厂实例化IPay88渠道失败');
+    }
+
+    public function testStripePayAdapter() {
+        $config = new AbroadConfig();
+        $config->channel = AbroadConfig::PAY_BY_STRIPE;
+        $payModel = (new Factory())->getAbroadAdapter($config);
+        $this->assertInstanceOf(StripePay::class, $payModel, '工厂实例化Stripe渠道失败');
     }
 
     public function testNoChannelAdapter() {

@@ -1,6 +1,11 @@
 <?php
 namespace Yijin\Pay;
 
+use Yijin\Pay\AbroadPayment\Base as AbroadBase;
+use Yijin\Pay\AbroadPayment\GKash;
+use Yijin\Pay\AbroadPayment\HiPay;
+use Yijin\Pay\AbroadPayment\IPay88;
+use Yijin\Pay\AbroadPayment\StripePay;
 use Yijin\Pay\Payment\Alipay;
 use Yijin\Pay\Payment\Base;
 use Yijin\Pay\Payment\FuBeiPay;
@@ -40,6 +45,25 @@ class Factory
                 return new HYPay($config);
             case Config::PAY_BY_OFFICIAL:
                 return $config->payType === Config::WE_PAY ? new WeixinPay($config) : new Alipay($config);
+            default:
+                throw new \Exception('暂时未支持的支付通道');
+        }
+    }
+    /**
+     * @param AbroadConfig $config
+     * @return AbroadBase
+     * @throws \Exception
+     */
+    function getAbroadAdapter(AbroadConfig $config): AbroadBase {
+        switch ($config->channel) {
+            case AbroadConfig::PAY_BY_HIPAY:
+                return new HiPay($config);
+            case AbroadConfig::PAY_BY_IPAY88:
+                return new IPay88($config);
+            case AbroadConfig::PAY_BY_GKASH:
+                return new GKash($config);
+            case AbroadConfig::PAY_BY_STRIPE:
+                return new StripePay($config);
             default:
                 throw new \Exception('暂时未支持的支付通道');
         }
