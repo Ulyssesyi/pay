@@ -114,7 +114,7 @@ class WeixinPay extends Base
             if ($this->isReturnSuccess($data)) {
                 $jsApiParameters = [
                     'appId' => $this->config->subAppId ?: $this->config->appid,
-                    'timeStamp' => time(),
+                    'timeStamp' => (string)time(),
                     'nonceStr' => md5(time()),
                     'package' => 'prepay_id=' . ($data['prepay_id'] ?? ''),
                     'signType' => 'MD5',
