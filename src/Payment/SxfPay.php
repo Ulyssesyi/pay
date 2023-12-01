@@ -179,7 +179,7 @@ class SxfPay extends Base
             "mno" => $this->config->merchantNoSxf, //商户编号
             "ordNo" => $this->config->tradeNo, //商户订单号
             //"subMechId"=> "", //子商户号
-            "subAppid" => $this->config->appid, //微信 subAppId
+            "subAppid" => $this->config->subAppId, //微信 subAppId
             "amt" => $this->config->totalAmount, //订单总金额
             //"discountAmt"=> "", //参与优惠金额
             //"unDiscountAmt"=> "", //不参与优惠金额
@@ -481,6 +481,7 @@ class SxfPay extends Base
                 CURLOPT_SSL_CIPHER_LIST => 'DEFAULT@SECLEVEL=1'
             ]
         ]);
+        var_dump(json_encode($commonParams));
         $response = $client->post($url, [
             'json' => $commonParams
         ]);
