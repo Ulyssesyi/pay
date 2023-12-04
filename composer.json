@@ -2,7 +2,7 @@
     "name": "yijin/pay",
     "description": "A project for diff channel to pay in china",
     "type": "library",
-    "version": "3.3.8",
+    "version": "3.3.9",
     "require": {
         "php": ">=7.4",
         "ext-json": "*",

@@ -221,7 +221,9 @@ class WeixinPay extends Base
      */
     function notify($data)
     {
-        $data = $this->xml2Array($data);
+        if (is_string($data)) {
+            $data = $this->xml2Array($data);
+        }
         if (!$this->verifySign($data)) {
             return $this->error('验签失败', -1);
         }
