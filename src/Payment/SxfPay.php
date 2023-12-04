@@ -481,7 +481,6 @@ class SxfPay extends Base
                 CURLOPT_SSL_CIPHER_LIST => 'DEFAULT@SECLEVEL=1'
             ]
         ]);
-        var_dump(json_encode($commonParams));
         $response = $client->post($url, [
             'json' => $commonParams
         ]);
