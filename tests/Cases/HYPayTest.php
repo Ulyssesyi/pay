@@ -13,7 +13,7 @@ class HYPayTest extends TestCase
     private $merchantId;
     private $productId;
     private $orgPrivateRSAKey;
-    private $tradeNo;
+    private string $tradeNo;
 
     protected function setUp(): void
     {

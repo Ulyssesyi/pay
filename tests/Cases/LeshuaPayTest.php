@@ -10,7 +10,7 @@ class LeshuaPayTest extends TestCase
 {
     private $merchantNo;
     private $orgKey;
-    private $tradeNo;
+    private string $tradeNo;
 
     protected function setUp(): void
     {

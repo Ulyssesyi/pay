@@ -11,7 +11,7 @@ class FubeiPayTest extends TestCase
     private $storeId;
     private $merchantId;
     private $merchantKey;
-    private $tradeNo;
+    private string $tradeNo;
     protected function setUp(): void
     {
         $this->storeId = getenv('FB_STORE_ID');

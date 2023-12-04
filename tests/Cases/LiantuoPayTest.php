@@ -12,7 +12,7 @@ class LiantuoPayTest extends TestCase
     private $merchantNo;
     private $appId;
     private $appKey;
-    private $tradeNo;
+    private string $tradeNo;
 
     protected function setUp(): void
     {

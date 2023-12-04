@@ -8,7 +8,7 @@ use Yijin\Pay\Factory;
 
 class WeixinPayTest extends TestCase
 {
-    private $tradeNo;
+    private string $tradeNo;
     protected function setUp(): void
     {
         $this->tradeNo = 'TS-' . time();

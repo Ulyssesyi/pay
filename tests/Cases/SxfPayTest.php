@@ -11,7 +11,7 @@ class SxfPayTest extends TestCase
     private $orgId;
     private $merchantNo;
     private $orgPrivateRSAKey;
-    private $tradeNo;
+    private string $tradeNo;
     protected function setUp(): void
     {
         $this->orgId = getenv('SXF_ORG_ID');

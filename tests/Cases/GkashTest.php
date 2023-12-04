@@ -7,7 +7,7 @@ use Yijin\Pay\Factory;
 
 class GkashTest extends TestCase
 {
-    private $tradeNo;
+    private string $tradeNo;
     protected function setUp(): void
     {
         $this->tradeNo = 'TS' . time();
@@ -22,13 +22,12 @@ class GkashTest extends TestCase
         $config->subject = '起飞';
         $config->notifyUrl = 'https://www.baidu.com';
 
-        $config->kbzAppId = getenv('KBZ_APPID');
-        $config->kbzMerchantCode = getenv('KBZ_MCH_ID');
-        $config->kbzMerchantKey = getenv('KBZ_MCH_KEY');
+        $config->gKashCID = getenv('GKASH_CID');
+        $config->gKashSignKey = getenv('GKASH_SIGN_KEY');
 
         $payModel = (new Factory())->getAbroadAdapter($config);
-        $res = $payModel->qrcodePay();
-        $this->assertTrue($res['result'], 'B扫C失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
-        $this->assertArrayHasKey('payUrl', $res['data'], 'C扫B失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        $res = $payModel->webPay();
+        $this->assertTrue($res['result'], '网页支付请求失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
+        $this->assertArrayHasKey('jsApiParameters', $res['data'], 'C扫B失败' . json_encode($res,  JSON_UNESCAPED_UNICODE));
     }
 }

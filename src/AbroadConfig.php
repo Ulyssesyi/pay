@@ -5,7 +5,7 @@ namespace Yijin\Pay;
 
 /**
  * 通用配置参数
- * @property int $channel 支付渠道 1-KBZ支付
+ * @property int $channel 支付渠道 16-KBZ支付 9-IPay88 Pay 13-Hi Pay 14-Stripe Pay
  * @property string $charset 请求和返回编码，目前都是UTF-8
  * @property string $tradeNo 商户订单号
  * @property string $refundTradeNo 商户退款订单号
@@ -48,10 +48,10 @@ namespace Yijin\Pay;
  */
 class AbroadConfig
 {
-    const PAY_BY_HIPAY = 1;
-    const PAY_BY_IPAY88 = 2;
-    const PAY_BY_GKASH = 3;
-    const PAY_BY_STRIPE = 4;
+    const PAY_BY_HIPAY = 13;
+    const PAY_BY_IPAY88 = 9;
+    const PAY_BY_GKASH = 16;
+    const PAY_BY_STRIPE = 14;
 
     const PAY_SUCCESS = 1;
     const PAYING = 0;

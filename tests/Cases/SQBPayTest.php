@@ -11,7 +11,7 @@ class SQBPayTest extends TestCase
 {
     private $terminalSN;
     private $terminalKey;
-    private $tradeNo;
+    private string $tradeNo;
     protected function setUp(): void
     {
         $this->terminalSN = getenv('SQB_TERM_SN');
