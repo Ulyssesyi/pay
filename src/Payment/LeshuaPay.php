@@ -61,7 +61,8 @@ class LeshuaPay extends Base
                 default:
                     $trade_status = Config::PAY_FAIL;
             }
-            return $this->success(array_merge($res, compact('trade_status')));
+            $transaction_id = $res['out_transaction_id'] ?? '';
+            return $this->success(array_merge($res, compact('trade_status', 'transaction_id')));
         } else {
             return $this->error($res['error_msg'] ?? ($res['resp_msg'] ?? '系统异常'), $res['error_code'] ?? ($res['result_code'] ?? -1));
         }
@@ -150,6 +151,7 @@ class LeshuaPay extends Base
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
+        $transaction_id = $res['out_transaction_id'] ?? '';
         if ($this->isSuccess($res)) {
             $status = $res['status'] ?? '';
             switch ($status) {
@@ -162,10 +164,10 @@ class LeshuaPay extends Base
                 default:
                     $trade_status = Config::PAY_FAIL;
             }
-            return $this->success(array_merge($res, compact('trade_status')));
+            return $this->success(array_merge($res, compact('trade_status', 'transaction_id')));
         } else if ($this->isEasyPayTransactionPaying($res)) {
             $trade_status = Config::PAYING;
-            return $this->success(array_merge($res, compact('trade_status')));
+            return $this->success(array_merge($res, compact('trade_status', 'transaction_id')));
         } else {
             return $this->error($res['error_msg'] ?? ($res['resp_msg'] ?? '系统异常'), $res['error_code'] ?? ($res['result_code'] ?? -1));
         }
@@ -256,7 +258,8 @@ class LeshuaPay extends Base
             $status = $data['status'] ?? '';
             if ($status === 2 || $status === 11) {
                 $merchantTradeNo = $data['third_order_id'] ?? '';
-                return $this->success(array_merge($data, compact('merchantTradeNo')));
+                $transaction_id = $data['out_transaction_id'] ?? '';
+                return $this->success(array_merge($data, compact('merchantTradeNo', 'transaction_id')));
             }
         }
         return $this->error($res['failure_reason'] ?? '系统异常', $res['error_code'] ?? -1);

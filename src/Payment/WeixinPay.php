@@ -50,7 +50,8 @@ class WeixinPay extends Base
             } else {
                 $trade_status = -1;
             }
-            return $this->success(array_merge($data, compact('trade_status')));
+            $transaction_id = $data['transaction_id'] ?? '';
+            return $this->success(array_merge($data, compact('trade_status', 'transaction_id')));
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -154,7 +155,8 @@ class WeixinPay extends Base
             } else {
                 $trade_status = -1;
             }
-            return $this->success(array_merge($data, compact('trade_status')));
+            $transaction_id = $data['transaction_id'] ?? '';
+            return $this->success(array_merge($data, compact('trade_status', 'transaction_id')));
         } catch (GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -229,7 +231,8 @@ class WeixinPay extends Base
         }
         if (isset($data['return_code']) && $data['return_code'] === 'SUCCESS') {
             $merchantTradeNo = $data['out_refund_no'] ?? ($data['out_trade_no'] ?? '');
-            return $this->success(array_merge($data, compact('merchantTradeNo')));
+            $transaction_id = $data['transaction_id'] ?? '';
+            return $this->success(array_merge($data, compact('merchantTradeNo', 'transaction_id')));
         } else {
             return $this->error($data['return_msg'] ?? '异步失败', $data['return_code'] ?? '-1');
         }

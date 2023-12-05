@@ -62,7 +62,8 @@ class Alipay extends Base
             } else {
                 $trade_status = Config::PAY_FAIL;
             }
-            return $this->success(array_merge($res->toMap(), compact('trade_status')));
+            $transaction_id = $res->tradeNo;
+            return $this->success(array_merge($res->toMap(), compact('trade_status', 'transaction_id')));
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -136,7 +137,8 @@ class Alipay extends Base
             } else {
                 $trade_status = Config::PAY_FAIL;
             }
-            return $this->success(array_merge($res->toMap(), compact('trade_status')));
+            $transaction_id = $res->tradeNo;
+            return $this->success(array_merge($res->toMap(), compact('trade_status', 'transaction_id')));
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -200,7 +202,8 @@ class Alipay extends Base
         }
         if ($data['trade_status'] === 'TRADE_SUCCESS') {
             $merchantTradeNo = $data['out_trade_no'] ?? '';
-            return $this->success(array_merge($data, compact('merchantTradeNo')));
+            $transaction_id = $data['trade_no'] ?? '';
+            return $this->success(array_merge($data, compact('merchantTradeNo', 'transaction_id')));
         } else {
             return $this->error('交易未成功', -2);//实际不会触达，正常情况下只有TRADE_SUCCESS才会触发异步通知
         }

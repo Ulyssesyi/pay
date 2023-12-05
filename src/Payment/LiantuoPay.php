@@ -53,7 +53,8 @@ class LiantuoPay extends Base
         } else {
             return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? -1));
         }
-        return $this->success(array_merge($res, compact('trade_status')));
+        $transaction_id = $res['transactionId'] ?? '';
+        return $this->success(array_merge($res, compact('trade_status', 'transaction_id')));
     }
 
     /**
@@ -147,7 +148,8 @@ class LiantuoPay extends Base
         } else {
             return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? -1));
         }
-        return $this->success(array_merge($res, compact('trade_status')));
+        $transaction_id = $res['transactionId'] ?? '';
+        return $this->success(array_merge($res, compact('trade_status', 'transaction_id')));
     }
 
     /**
@@ -213,7 +215,8 @@ class LiantuoPay extends Base
         }
         if ($this->isSuccess($data)) {
             $merchantTradeNo = $data['outTradeNo'] ?? '';
-            return $this->success(array_merge($data, compact('merchantTradeNo')));
+            $transaction_id = $data['transactionId'] ?? '';
+            return $this->success(array_merge($data, compact('merchantTradeNo', 'transaction_id')));
         } else {
             return $this->error($res['subMsg'] ?? ($res['msg'] ?? '系统异常'), $res['subCode'] ?? ($res['code'] ?? -1));
         }
