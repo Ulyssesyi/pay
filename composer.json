@@ -19,7 +19,7 @@
         "stripe/stripe-php": "^12.7.0"
     },
     "require-dev": {
-        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": "^9.5"
     },
     "autoload": {
