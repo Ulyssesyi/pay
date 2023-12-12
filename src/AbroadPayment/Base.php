@@ -64,7 +64,7 @@ abstract class Base
     /**
      * 异步通知处理成功后给第三方平台的成功返回
      */
-    abstract function notifySuccess();
+    abstract function notifySuccess(array $params = []);
 
     /**
      * 签名

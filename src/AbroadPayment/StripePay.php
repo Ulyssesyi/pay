@@ -21,7 +21,7 @@ class StripePay extends Base
         $stripe = new StripeClient($this->config->stripePrivateKey);
 
         try {
-            $payment_intent_id = $this->config->paymentIntentId ?? '';
+            $payment_intent_id = $this->config->stripePaymentIntentId ?? '';
             $intent = $stripe->paymentIntents->capture($payment_intent_id);
             $status = 0;
             if ($intent->status === 'succeeded') {
@@ -58,8 +58,8 @@ class StripePay extends Base
     {
         $stripe = new StripeClient($this->config->stripePrivateKey);
         try {
-            $payment_method = $this->config->paymentMethod ?? null;
-            $payment_method_type = $this->config->paymentMethodType ?? 'card';
+            $payment_method = $this->config->stripePaymentMethod ?? null;
+            $payment_method_type = $this->config->stripePaymentMethodType ?? 'card';
             $paymentIntent = $stripe->paymentIntents->create([
                 'amount' => $this->config->totalAmount * 100,
                 'currency' => 'sgd',
@@ -158,7 +158,7 @@ class StripePay extends Base
     /**
      * @inheritDoc
      */
-    function notifySuccess(): string
+    function notifySuccess(array $params = []): string
     {
         return 'success';
     }

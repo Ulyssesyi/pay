@@ -36,14 +36,17 @@ namespace Yijin\Pay;
  * @property string $gKashCID 商户的应用id
  * @property string $gKashSignKey 商户密钥
  *
+ * MayBank参数
+ * @property string $mayBankMerchantCode 商户code
+ *
  * Stripe参数
  * @property string $stripePublicKey 应用公钥
  * @property string $stripePrivateKey 应用私钥
  * @property string $stripeEndKey 平台公钥
  * @property string $stripeAccount 商户账号
- * @property string $paymentMethod 支付方式id，网页支付需要
- * @property string $paymentMethodType 支付方式，网页支付需要
- * @property string $paymentIntentId 支付id，刷卡支付需要
+ * @property string $stripePaymentMethod 支付方式id，网页支付需要
+ * @property string $stripePaymentMethodType 支付方式，网页支付需要
+ * @property string $stripePaymentIntentId 支付id，刷卡支付需要
  *
  */
 class AbroadConfig
@@ -52,6 +55,7 @@ class AbroadConfig
     const PAY_BY_IPAY88 = 9;
     const PAY_BY_GKASH = 16;
     const PAY_BY_STRIPE = 14;
+    const PAY_BY_MAY_BANK = 17;
 
     const PAY_SUCCESS = 1;
     const PAYING = 0;

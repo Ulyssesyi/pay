@@ -1,15 +1,19 @@
 # 介绍
 这个项目初衷是适配公司多个不同支付渠道下（支付宝/微信支付）的支付组件，目前支持的支付渠道如下
 
+| 渠道          | 渠道编号 | 进度                                   |
+|-------------|------|--------------------------------------|
+| 官方          | 5    | （<font color=green>已完成</font>）       |
+| 随行付         | 10   | （<font color=green>已完成</font>）       |
+| 移动杭研        | 15   | （<font color=green>已完成</font>）       |
+| IPay88 Pay  | 9    | （<font color=red>待测试</font>）         |
+| Hi Pay      | 13   | （<font color=red>待测试</font>）         |
+| Stripe Pay  | 14   | （<font color=red>待测试</font>）         |
+| Gkash Pay   | 16   | （<font color=red>待测试</font>）         |
+| MayBank Pay | 17   | （<font color=red>待测试</font>）         |
+
 | 渠道         | 渠道编号 | 进度                                   |
 |------------|------|--------------------------------------|
-| 官方         | 5    | （<font color=green>已完成</font>）       |
-| 随行付        | 10   | （<font color=green>已完成</font>）       |
-| 移动杭研       | 15   | （<font color=green>已完成</font>）       |
-| Hi Pay     | 13   | （<font color=red>待测试</font>）         |
-| IPay88 Pay | 9    | （<font color=red>待测试</font>）         |
-| Gkash Pay  | 16   | （<font color=red>待测试</font>）         |
-| Stripe Pay | 14   | （<font color=red>待测试</font>）         |
 | 联付通        | 1    | （<font color=yellow>已完成，停止更新</font>） |
 | 付呗         | 4    | （<font color=yellow>已完成，停止更新</font>） |
 | 收钱吧        | 6    | （<font color=yellow>已完成，停止更新</font>） |
@@ -185,17 +189,23 @@
 | gKashMerchantKey | M    | string | Sf***** | 商户key |
 | gKashMerchantCID | M    | string | Sf***** | 商户id  |
 
+## MayBank参数
+
+| 名称                  | 是否必填 | 类型     | 示例      | 说明     |
+|---------------------|------|--------|---------|--------|
+| mayBankMerchantCode | M    | string | Sf***** | 商户Code |
+
 ## Stripe参数
 
-| 名称                | 是否必填 | 类型     | 示例      | 说明             |
-|-------------------|------|--------|---------|----------------|
-| stripePublicKey   | M    | string | Sf***** | 应用公钥           |
-| stripePrivateKey  | M    | string | Sf***** | 应用私钥           |
-| stripeEndKey      | M    | string | Sf***** | 平台公钥           |
-| stripeAccount     | M    | string | Sf***** | 商户账号           |
-| paymentMethod     | O    | string | xxx     | 支付方式id, 网页支付需要 |
-| paymentMethodType | O    | string | card    | 支付方式, 网页支付需要   |
-| paymentIntentId   | O    | string | xxx     | 支付id，刷卡支付需要    |
+| 名称                      | 是否必填 | 类型     | 示例      | 说明             |
+|-------------------------|------|--------|---------|----------------|
+| stripePublicKey         | M    | string | Sf***** | 应用公钥           |
+| stripePrivateKey        | M    | string | Sf***** | 应用私钥           |
+| stripeEndKey            | M    | string | Sf***** | 平台公钥           |
+| stripeAccount           | M    | string | Sf***** | 商户账号           |
+| stripePaymentMethod     | O    | string | xxx     | 支付方式id, 网页支付需要 |
+| stripePaymentMethodType | O    | string | card    | 支付方式, 网页支付需要   |
+| stripePaymentIntentId   | O    | string | xxx     | 支付id，刷卡支付需要    |
 
 # 返回参数
 ## 通用参数

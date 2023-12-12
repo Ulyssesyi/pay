@@ -283,7 +283,7 @@ class HiPay extends Base
     /**
      * @inheritDoc
      */
-    function notifySuccess(): string
+    function notifySuccess(array $params = []): string
     {
         return 'success';
     }

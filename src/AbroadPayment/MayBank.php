@@ -5,7 +5,7 @@ namespace Yijin\Pay\AbroadPayment;
 
 use Yijin\Pay\Response;
 
-class GKash extends Base
+class MayBank extends Base
 {
     use Response;
 
@@ -42,15 +42,8 @@ class GKash extends Base
     {
         return $this->success([
             'jsApiParameters' => [
-                'cid' => $this->config->gKashCID,
-                'currency' => self::CURRENCY,
-                'signature' => hash('sha512', strtoupper(implode(";", [
-                    $this->config->gKashSignKey,
-                    $this->config->gKashCID,
-                    $this->config->tradeNo,
-                    number_format($this->config->totalAmount, 2, '', ''),
-                    self::CURRENCY
-                ])))
+                'encryptedString' => $this->getEncryptString(),
+                'actionUrl' => $this->config->isSandbox ? 'https://m2upayuat.maybank2u.com.my/testM2uPayment' : 'https://www.maybank2u.com.my/mbb/m2u/m9006_enc/m2uMerchantLogin.do'
             ]
         ]);
     }
@@ -84,9 +77,9 @@ class GKash extends Base
      */
     function notify($data): array
     {
-        if (($data['status'] ?? '') === '88 - Transferred') {
+        if (($data['StatusCode'] ?? '') === '00') {
             return $this->success(array_merge($data, [
-                'merchantTradeNo' => $data['cartid'] ?? ''
+                'merchantTradeNo' => $data['AcctId'] ?? ''
             ]));
         }
         return $this->error('回调错误', -1);
@@ -97,7 +90,13 @@ class GKash extends Base
      */
     function notifySuccess(array $params = []): string
     {
-        return 'OK';
+        return json_encode([
+            'Msg' => [
+                'RefId' => $params['RefId'],
+                'PmtType' => $params['PmtType'],
+                'StatusCode' => 0
+            ]
+        ]);
     }
 
     /**
@@ -114,5 +113,21 @@ class GKash extends Base
     function verifySign(array $data): bool
     {
         return true;
+    }
+
+    private function getEncryptString(): string
+    {
+        $salt = "Maybank2u simple encryption";
+        $secretKey = pack("C*", 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f);
+        if (!$secretKey) {
+            return '';
+        }
+
+        $string = 'Login$' . $this->config->mayBankMerchantCode . '$1$' . $this->config->totalAmount . '$$$1$' . $this->config->tradeNo . '$' . $this->config->notifyUrl;
+
+        for ($i = 0; $i < 2; $i++) {
+            $string = rtrim(openssl_encrypt($salt . $string, 'aes-128-ecb', $secretKey));
+        }
+        return urlencode($string);
     }
 }
