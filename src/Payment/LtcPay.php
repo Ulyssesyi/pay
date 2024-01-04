@@ -49,7 +49,8 @@ class LtcPay extends Base
         } else {
             return $this->error($res['ret_msg'] ?? '系统异常', $res['ret_code'] ?? -1);
         }
-        return $this->success(array_merge($res, compact('trade_status')));
+        $transaction_id = '';
+        return $this->success(array_merge($res, compact('trade_status', 'transaction_id')));
     }
 
     /**
@@ -132,7 +133,8 @@ class LtcPay extends Base
                 default:
                     $trade_status = Config::PAYING;
             }
-            return $this->success(array_merge($res, compact('trade_status')));
+            $transaction_id = '';
+            return $this->success(array_merge($res, compact('trade_status', 'transaction_id')));
         } else {
             return $this->error($res['ret_msg'] ?? '系统异常', $res['ret_code'] ?? -1);
         }
@@ -209,7 +211,8 @@ class LtcPay extends Base
         $notifyData = json_decode($notify_data, true);
         if ($this->isSuccess($notifyData)) {
             $merchantTradeNo = $notifyData['ret_data']['buss_seq_no'] ?? '';
-            return $this->success(array_merge($notifyData, compact('merchantTradeNo')));
+            $transaction_id = '';
+            return $this->success(array_merge($notifyData, compact('merchantTradeNo', 'transaction_id')));
         } else {
             return $this->error($res['ret_msg'] ?? '系统异常', $res['ret_code'] ?? -1);
         }

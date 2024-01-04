@@ -48,7 +48,8 @@ class HYPay extends Base
                 default:
                     $trade_status = Config::PAY_FAIL;
             }
-            return $this->success(compact('trade_status', 'data'));
+            $transaction_id = $data['BusiData']['DoneCode'] ?? '';
+            return $this->success(compact('trade_status', 'transaction_id', 'data'));
         } else {
             return $this->error($data['return_msg'] ?? 'pay error', -1);
         }
@@ -93,7 +94,8 @@ class HYPay extends Base
                 default:
                     $trade_status = Config::PAY_FAIL;
             }
-            return $this->success(compact('trade_status', 'data'));
+            $transaction_id = '';
+            return $this->success(compact('trade_status', 'transaction_id', 'data'));
         } else {
             return $this->error($data, -1);
         }
@@ -173,7 +175,8 @@ class HYPay extends Base
             $status = intval($xmlData['BusiData']['ReturnCode'] ?? 201);
             if ($status === 200) {
                 $merchantTradeNo = $xmlData['BusiData']['TradeNO'] ?? '';
-                return $this->success(array_merge($xmlData, compact('merchantTradeNo')));
+                $transaction_id = '';
+                return $this->success(array_merge($xmlData, compact('merchantTradeNo', 'transaction_id')));
             } else {
                 return $this->error($xmlData['BusiData']['ReturnMsg'] ?? '', -1);
             }
@@ -185,7 +188,8 @@ class HYPay extends Base
             $status = intval($xmlData['BusiData']['Status'] ?? 1);
             if ($status === 0) {
                 $merchantTradeNo = $xmlData['BusiData']['OrderId'] ?? '';
-                return $this->success(array_merge($xmlData, compact('merchantTradeNo')));
+                $transaction_id = $xmlData['BusiData']['DoneCode'] ?? '';
+                return $this->success(array_merge($xmlData, compact('merchantTradeNo', 'transaction_id')));
             } else {
                 return $this->error($xmlData['BusiData']['StatusInfo'] ?? '', -1);
             }

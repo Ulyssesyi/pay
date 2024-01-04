@@ -57,7 +57,8 @@ class FuBeiPay extends Base
                 default:
                     $trade_status = Config::PAY_FAIL;
             }
-            return $this->success(array_merge($res, compact('trade_status')));
+            $transaction_id = $res['data']['channel_order_sn'] ?? '';
+            return $this->success(array_merge($res, compact('trade_status', 'transaction_id')));
         } else {
             return $this->error($res['result_message'] ?? '系统异常', $res['sub_code'] ?? ($res['result_code'] ?? -1));
         }
@@ -159,7 +160,8 @@ class FuBeiPay extends Base
                 default:
                     $trade_status = Config::PAY_FAIL;
             }
-            return $this->success(array_merge($res, compact('trade_status')));
+            $transaction_id = $res['data']['channel_order_sn'] ?? '';
+            return $this->success(array_merge($res, compact('trade_status', 'transaction_id')));
         } else {
             return $this->error($res['result_message'] ?? '系统异常', $res['result_code'] ?? -1);
         }
@@ -235,7 +237,8 @@ class FuBeiPay extends Base
         if ($data['result_code'] == 200) {
             $orderInfo = json_decode($data['data'], true);
             $merchantTradeNo = $orderInfo['merchant_order_sn'] ?? '';
-            return $this->success(array_merge($orderInfo, compact('merchantTradeNo')));
+            $transaction_id = $orderInfo['channel_order_sn'] ?? '';
+            return $this->success(array_merge($orderInfo, compact('merchantTradeNo', 'transaction_id')));
         } else {
             return $this->error($data['result_message'] ?? '异步错误', $data['result_code'] ?? -1);
         }

@@ -99,7 +99,8 @@ class SxfPay extends Base
                 default:
                     $trade_status = Config::PAY_FAIL;
             }
-            return $this->success(array_merge($data, compact('trade_status')));
+            $transaction_id = $data['transactionId'] ?? '';
+            return $this->success(array_merge($data, compact('trade_status', 'transaction_id')));
         } else {
             return $this->error($res['msg'] ?? '系统异常', $res['code'] ?? -1);
         }
@@ -291,7 +292,8 @@ class SxfPay extends Base
                     default:
                         $trade_status = Config::PAY_FAIL;
                 }
-                return $this->success(array_merge($data, compact('trade_status')));
+                $transaction_id = $data['transactionId'] ?? '';
+                return $this->success(array_merge($data, compact('trade_status', 'transaction_id')));
             } else {
                 return $this->error($data['bizMsg'], $data['bizCode']);
             }
@@ -394,7 +396,8 @@ class SxfPay extends Base
         }
         if ($data['bizCode'] === '0000') {
             $merchantTradeNo = $data['ordNo'] ?? '';
-            return $this->success(array_merge($data, compact('merchantTradeNo')));
+            $transaction_id = $data['transactionId'] ?? '';
+            return $this->success(array_merge($data, compact('merchantTradeNo', 'transaction_id')));
         } else {
             return $this->error($data['bizMsg'], $data['bizCode']);
         }
@@ -481,7 +484,6 @@ class SxfPay extends Base
                 CURLOPT_SSL_CIPHER_LIST => 'DEFAULT@SECLEVEL=1'
             ]
         ]);
-        var_dump(json_encode($commonParams));
         $response = $client->post($url, [
             'json' => $commonParams
         ]);

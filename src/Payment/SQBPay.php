@@ -48,7 +48,8 @@ class SQBPay extends Base
         }
         if ($this->isSuccess($res)) {
             $trade_status = $this->tradeStatus($res);
-            return $this->success(array_merge($res, compact('trade_status')));
+            $transaction_id = $res['biz_response']['data']['trade_no'] ?? '';
+            return $this->success(array_merge($res, compact('trade_status', 'transaction_id')));
         } else {
             return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? -1);
         }
@@ -124,7 +125,8 @@ class SQBPay extends Base
         }
         if ($this->isSuccess($res)) {
             $trade_status = $this->tradeStatus($res);
-            return $this->success(array_merge($res, compact('trade_status')));
+            $transaction_id = $res['biz_response']['data']['trade_no'] ?? '';
+            return $this->success(array_merge($res, compact('trade_status', 'transaction_id')));
         } else {
             return $this->error($res['error_message'] ?? '系统异常', $res['error_code'] ?? -1);
         }
@@ -203,7 +205,8 @@ class SQBPay extends Base
         }
         if (isset($data['status']) && $data['status'] === 'SUCCESS' && isset($data['order_status']) && $data['order_status'] === 'PAID') {
             $merchantTradeNo = $data['client_sn'] ?? '';
-            return $this->success(array_merge($data, compact('merchantTradeNo')));
+            $transaction_id = $data['trade_no'] ?? '';
+            return $this->success(array_merge($data, compact('merchantTradeNo', 'transaction_id')));
         } else {
             return $this->error($data['order_status'] ?? '内容异常', $data['status'] ?? '-1');
         }
