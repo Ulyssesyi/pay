@@ -26,7 +26,7 @@ class SxfPay extends Base
     /**
      * @var string $domain 接口域名
      */
-    public $domain = 'https://openapi.tianquetech.com';
+    public string $domain = 'https://openapi.tianquetech.com';
 
     /**
      * @inheritDoc

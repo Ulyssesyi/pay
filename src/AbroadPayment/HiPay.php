@@ -84,7 +84,8 @@ class HiPay extends Base
             } else {
                 $trade_status = AbroadConfig::PAYING;
             }
-            return $this->success(array_merge($data, compact('trade_status')));
+            $transaction_id = $data['id'] ?? '';
+            return $this->success(array_merge($data, compact('trade_status', 'transaction_id')));
         } else {
             return $this->error($res['error_msg'] ?? '系统异常', $res['error_code'] ?? -1);
         }
@@ -181,7 +182,8 @@ class HiPay extends Base
             } else {
                 $trade_status = AbroadConfig::PAYING;
             }
-            return $this->success(array_merge($data, compact('trade_status')));
+            $transaction_id = $data['id'] ?? '';
+            return $this->success(array_merge($data, compact('trade_status', 'transaction_id')));
         } else {
             return $this->error($res['error_msg'] ?? '系统异常', $res['error_code'] ?? -1);
         }
@@ -277,7 +279,8 @@ class HiPay extends Base
         } else {
             return $this->error("回调错误", -1);
         }
-        return $this->success(array_merge($data, compact('merchantTradeNo')));
+        $transaction_id = $data['id'] ?? '';
+        return $this->success(array_merge($data, compact('merchantTradeNo', 'transaction_id')));
     }
 
     /**

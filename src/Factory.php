@@ -6,6 +6,7 @@ use Yijin\Pay\AbroadPayment\GKash;
 use Yijin\Pay\AbroadPayment\HiPay;
 use Yijin\Pay\AbroadPayment\IPay88;
 use Yijin\Pay\AbroadPayment\MayBank;
+use Yijin\Pay\AbroadPayment\NetsPay;
 use Yijin\Pay\AbroadPayment\StripePay;
 use Yijin\Pay\Payment\Alipay;
 use Yijin\Pay\Payment\Base;
@@ -67,6 +68,8 @@ class Factory
                 return new StripePay($config);
             case AbroadConfig::PAY_BY_MAY_BANK:
                 return new MayBank($config);
+            case AbroadConfig::PAY_BY_NETS:
+                return new NetsPay($config);
             default:
                 throw new \Exception('暂时未支持的支付通道');
         }

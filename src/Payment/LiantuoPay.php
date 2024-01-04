@@ -26,7 +26,7 @@ class LiantuoPay extends Base
     /**
      * @var string $domain 接口域名
      */
-    public $domain = 'https://api.liantuofu.com';
+    public string $domain = 'https://api.liantuofu.com';
 
     /**
      * @inheritDoc

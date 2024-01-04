@@ -48,6 +48,12 @@ namespace Yijin\Pay;
  * @property string $stripePaymentMethodType 支付方式，网页支付需要
  * @property string $stripePaymentIntentId 支付id，刷卡支付需要
  *
+ * Nets参数
+ * @property string $netsKeyId 应用key id
+ * @property string $netsKey 应用key
+ * @property string $netsMID 应用MID
+ * @property string $netsTID 应用TID
+ * @property string $netsSTAN 商户unique number
  */
 class AbroadConfig
 {
@@ -56,6 +62,7 @@ class AbroadConfig
     const PAY_BY_GKASH = 16;
     const PAY_BY_STRIPE = 14;
     const PAY_BY_MAY_BANK = 17;
+    const PAY_BY_NETS = 18;
 
     const PAY_SUCCESS = 1;
     const PAYING = 0;

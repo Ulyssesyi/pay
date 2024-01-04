@@ -22,7 +22,7 @@ abstract class Base
 
     /**
      * 条码支付（B扫C）
-     * 返回的data中必须包含key-trade_status：当前交易状态，-1-支付失败, 0-支付进行中, 1-支付完成
+     * 返回的data中必须包含key-trade_status：当前交易状态，-1-支付失败, 0-支付进行中, 1-支付完成 transaction_id：第三方平台的订单号
      */
     abstract function barcodePay(): array;
     /**
@@ -39,7 +39,7 @@ abstract class Base
 
     /**
      * 支付结果查询
-     * 返回的data中必须包含key-trade_status：当前交易状态，-1-支付失败, 0-支付进行中, 1-支付完成
+     * 返回的data中必须包含key-trade_status：当前交易状态，-1-支付失败, 0-支付进行中, 1-支付完成 transaction_id：第三方平台的订单号
      */
     abstract function query(): array;
 
@@ -57,7 +57,7 @@ abstract class Base
 
     /**
      * 异步通知处理，返回的result为true代表异步通知的结果是成功
-     * 返回的data中必须包含key-merchantTradeNo：商户订单号/商户退款单号
+     * 返回的data中必须包含key-merchantTradeNo：商户订单号/商户退款单号 transaction_id：第三方平台的订单号
      */
     abstract function notify($data);
 

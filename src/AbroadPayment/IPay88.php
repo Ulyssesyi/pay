@@ -73,7 +73,8 @@ class IPay88 extends Base
             } else {
                 $trade_status = AbroadConfig::PAYING;
             }
-            return $this->success(array_merge($res['s_Body'] ?? [], ['trade_status' => $trade_status]));
+            $transaction_id = $res['s_Body']['EntryPageFunctionalityResponse']['EntryPageFunctionalityResult']['a_TransId'] ?: '';
+            return $this->success(array_merge($res['s_Body'] ?? [], ['trade_status' => $trade_status, 'transaction_id' => $transaction_id]));
         } catch (Exception | GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -115,7 +116,8 @@ class IPay88 extends Base
             } else {
                 $trade_status = AbroadConfig::PAYING;
             }
-            return $this->success(array_merge($res['soap_Body'] ?? [], ['trade_status' => $trade_status]));
+            $transaction_id = $res['soap_Body']['TxDetailsInquiryCardInfoResponse']['TxDetailsInquiryCardInfoResult']['TransId'] ?: '';
+            return $this->success(array_merge($res['soap_Body'] ?? [], ['trade_status' => $trade_status, 'transaction_id' => $transaction_id]));
         } catch (Exception | GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }

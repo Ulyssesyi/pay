@@ -26,7 +26,7 @@ class SQBPay extends Base
     /**
      * @var string $domain 接口域名
      */
-    public $domain = 'https://api.shouqianba.com';
+    public string $domain = 'https://api.shouqianba.com';
 
     /**
      * @inheritDoc

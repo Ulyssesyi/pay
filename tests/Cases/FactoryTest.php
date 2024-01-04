@@ -7,6 +7,7 @@ use Yijin\Pay\AbroadConfig;
 use Yijin\Pay\AbroadPayment\GKash;
 use Yijin\Pay\AbroadPayment\HiPay;
 use Yijin\Pay\AbroadPayment\IPay88;
+use Yijin\Pay\AbroadPayment\NetsPay;
 use Yijin\Pay\AbroadPayment\StripePay;
 use Yijin\Pay\Config;
 use Yijin\Pay\Factory;
@@ -130,6 +131,14 @@ class FactoryTest extends TestCase
         $config->channel = AbroadConfig::PAY_BY_STRIPE;
         $payModel = (new Factory())->getAbroadAdapter($config);
         $this->assertInstanceOf(StripePay::class, $payModel, '工厂实例化Stripe渠道失败');
+    }
+
+    public function testNetsPayAdapter() {
+        $this->expectException(\Exception::class);
+        $config = new AbroadConfig();
+        $config->channel = AbroadConfig::PAY_BY_NETS;
+        $payModel = (new Factory())->getAbroadAdapter($config);
+        $this->assertInstanceOf(NetsPay::class, $payModel, '工厂实例化Nets渠道失败');
     }
 
     public function testNoChannelAdapter() {
