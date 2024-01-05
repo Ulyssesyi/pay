@@ -144,7 +144,8 @@ class NetsPay extends Base
             if ($response['response_code'] !== '00') {
                 return $this->error($response, -1);
             }
-            return $this->success(array_merge(['payUrl' => $response['qr_code']], $response));
+            $payUrl = $response['qr_code'] ?? '';
+            return $this->success(array_merge($response, compact('payUrl')));
         } else {
             return $this->error($response, -1);
         }
