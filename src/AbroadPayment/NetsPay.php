@@ -4,6 +4,7 @@ namespace Yijin\Pay\AbroadPayment;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Yijin\Pay\AbroadConfig;
 use Yijin\Pay\Response;
 
 class NetsPay extends Base
@@ -12,6 +13,93 @@ class NetsPay extends Base
     const ORDER_REQUEST = '/qr/dynamic/v1/order/request';
     const ORDER_QUERY = '/qr/dynamic/v1/transaction/query';
     const ORDER_REVERSAL = '/qr/dynamic/v1/transaction/reversal';
+
+    private $NPSCodeMap = [
+        '00' => [
+            'result' => true,
+            'msg' => 'Approved or completed successfully',
+        ],
+        '01' => [
+            'result' => false,
+            'msg' => 'System is under Maintenance',
+        ],
+        '03' => [
+            'result' => false,
+            'msg' => 'Invalid Expiry date/Invalid institution code',
+        ],
+        '05' => [
+            'result' => false,
+            'msg' => 'Do not honour',
+        ],
+        '06' => [
+            'result' => false,
+            'msg' => 'Error',
+        ],
+        '09' => [
+            'result' => true,
+            'msg' => 'Request in progress',
+        ],
+        '12' => [
+            'result' => false,
+            'msg' => 'Invalid transaction',
+        ],
+        '13' => [
+            'result' => false,
+            'msg' => 'Invalid amount',
+        ],
+        '15' => [
+            'result' => false,
+            'msg' => 'SOF not found',
+        ],
+        '30' => [
+            'result' => false,
+            'msg' => 'Message Format Error',
+        ],
+        '55' => [
+            'result' => false,
+            'msg' => 'Invalid PIN',
+        ],
+        '58' => [
+            'result' => false,
+            'msg' => 'SOF not enabled for the terminal/Schema Payload not found',
+        ],
+        '63' => [
+            'result' => false,
+            'msg' => 'Invalid Signature',
+        ],
+        '68' => [
+            'result' => false,
+            'msg' => 'Transaction timed out',
+        ],
+        '76' => [
+            'result' => false,
+            'msg' => 'Transaction not found',
+        ],
+        '92' => [
+            'result' => false,
+            'msg' => 'No route found to bank',
+        ],
+        '94' => [
+            'result' => false,
+            'msg' => 'Order already exists',
+        ],
+        '96' => [
+            'result' => false,
+            'msg' => 'Invalid order state',
+        ],
+        '99' => [
+            'result' => false,
+            'msg' => 'System Error',
+        ],
+        'U9' => [
+            'result' => false,
+            'msg' => 'Pin Required',
+        ],
+        'ZZ' => [
+            'result' => false,
+            'msg' => 'Transaction Not Supported',
+        ]
+    ];
     function terminalPay(): array
     {
         return $this->error('暂不支持', -1);
@@ -27,10 +115,10 @@ class NetsPay extends Base
         $amount = str_pad(intval($this->config->totalAmount * 100), 12, '0', STR_PAD_LEFT);
         $params = [
             'mti' => '0200',
-            'processing_code' => '990000',
+            'process_code' => '990000',
             'amount' => $amount,
             'stan' => $this->config->netsSTAN,
-            'transaction_time' => date('His'),
+            'transaction_time' => date('his'),
             'transaction_date' => date('md'),
             'entry_mode' => '000',
             'condition_code' => '85',
@@ -43,14 +131,19 @@ class NetsPay extends Base
                 'E202' => 'SGD',
             ],
             'communication_data' => [
-                'type' => 'http_proxy',
-                'category' => 'URL',
-                'destination' => $this->config->notifyUrl,
+                [
+                    'type' => 'http_proxy',
+                    'category' => 'URL',
+                    'destination' => $this->config->notifyUrl,
+                ]
             ],
             'getQRCode' => 'Y',
         ];
         list($result, $response) = $this->request(self::ORDER_REQUEST, $params);
         if ($result) {
+            if ($response['response_code'] !== '00') {
+                return $this->error($response, -1);
+            }
             return $this->success(array_merge(['payUrl' => $response['qr_code']], $response));
         } else {
             return $this->error($response, -1);
@@ -64,27 +157,96 @@ class NetsPay extends Base
 
     function query(): array
     {
-        // TODO: Implement query() method.
+        $params = [
+            'mti' => '0100',
+            'process_code' => '330000',
+            'stan' => $this->config->netsSTAN,
+            'transaction_time' => date('his'),
+            'transaction_date' => date('md'),
+            'entry_mode' => '000',
+            'condition_code' => '85',
+            'institution_code' => '20000000001',
+            'host_tid' => $this->config->netsTID,
+            'host_mid' => $this->config->netsMID,
+            'npx_data' => [
+                'E103' => $this->config->netsTID,
+            ],
+            'txn_identifier' => $this->config->netsTxnIdentifier
+        ];
+        list($result, $response) = $this->request(self::ORDER_REQUEST, $params);
+        if ($result) {
+            switch ($response['response_code']) {
+                case '00':
+                    $trade_status = AbroadConfig::PAY_SUCCESS;
+                    break;
+                case '09':
+                    $trade_status = AbroadConfig::PAYING;
+                    break;
+                default:
+                    $trade_status = AbroadConfig::PAY_FAIL;
+            }
+            $transaction_id = $this->config->netsTxnIdentifier;
+            return $this->success(array_merge($response, compact('trade_status', 'transaction_id')));
+        } else {
+            return $this->error($response, -1);
+        }
     }
 
     function refund(): array
     {
-        // TODO: Implement refund() method.
+        $amount = str_pad(intval($this->config->totalAmount * 100), 12, '0', STR_PAD_LEFT);
+        $params = [
+            'mti' => '0400',
+            'process_code' => '990000',
+            'stan' => $this->config->netsSTAN,
+            'amount' => $amount,
+            'transaction_time' => date('his'),
+            'transaction_date' => date('md'),
+            'entry_mode' => '000',
+            'condition_code' => '85',
+            'institution_code' => '20000000001',
+            'host_tid' => $this->config->netsTID,
+            'host_mid' => $this->config->netsMID,
+            'npx_data' => [
+                'E103' => $this->config->netsTID,
+            ],
+            'txn_identifier' => $this->config->netsTxnIdentifier,
+        ];
+        list($result, $response) = $this->request(self::ORDER_REVERSAL, $params);
+        if ($result) {
+            switch ($response['response_code']) {
+                case '00':
+                    $refund_status = AbroadConfig::REFUND_SUCCESS;
+                    break;
+                default:
+                    $refund_status = AbroadConfig::REFUND_FAIL;
+            }
+            $transaction_id = $this->config->netsTxnIdentifier;
+            return $this->success(array_merge($response, compact('refund_status', 'transaction_id')));
+        } else {
+            return $this->error($response, -1);
+        }
     }
 
     function refundQuery(): array
     {
-        // TODO: Implement refundQuery() method.
+        return $this->error('暂不支持', -1);
     }
 
-    function notify($data)
+    function notify($data): array
     {
-        // TODO: Implement notify() method.
+        if (!$this->verifySign($data)) {
+            return $this->error('签名错误', -1);
+        }
+        list(, $requestData) = $data;
+        $merchantTradeNo = $requestData['stan'] ?? '';
+        $transaction_id = $requestData['txn_identifier'] ?? '';
+        return $this->success(array_merge($data, compact('merchantTradeNo', 'transaction_id')));
     }
 
-    function notifySuccess(array $params = [])
+    function notifySuccess(array $params = []): string
     {
-        // TODO: Implement notifySuccess() method.
+        return 'success';
     }
 
     function sign($data): string
@@ -95,29 +257,35 @@ class NetsPay extends Base
 
     function verifySign(array $data): bool
     {
-        return false;
+        list($sign, $requestData) = $data;
+        return $sign === $this->sign($requestData);
     }
 
     private function request(string $uri, array $params): array
     {
         $client = new Client([
-            'base_uri' => $this->config->isSandbox ? 'https://uat-api.nets.com.sg' : 'https://api.nets.com.sg',
+            'base_uri' => $this->config->isSandbox ? 'https://uat-api.nets.com.sg:9065' : 'https://api.nets.com.sg',
             'timeout' => 60,
         ]);
         try {
-            $headers = [
-                'Sign' => $this->sign($params),
-                'KeyId' => $this->config->netsKeyId,
-            ];
-            echo json_encode($params) . PHP_EOL;
-            echo json_encode($headers) . PHP_EOL;
             $response = $client->post(($this->config->isSandbox ? 'uat/merchantservices' : 'merchantservices' ) .$uri, [
-                'headers' => $headers,
+                'headers' => [
+                    'Sign' => $this->sign($params),
+                    'Keyid' => $this->config->netsKeyId,
+                ],
                 'json' => $params
             ]);
             $res = json_decode($response->getBody()->getContents(), true);
-            if (isset($res['response_code']) && $res['response_code'] === '00') {
-                return [true, $res];
+            if (isset($res['response_code'])) {
+                $resultParse = $this->NPSCodeMap[$res['response_code']] ?? [
+                    'result' => false,
+                    'msg' => 'Unknown Error：' . $res['response_code'],
+                ];
+                if ($resultParse['result']) {
+                    return [true, $res];
+                } else {
+                    return [false, $resultParse['msg']];
+                }
             } else {
                 return [false, json_encode($res)];
             }

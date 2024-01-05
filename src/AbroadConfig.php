@@ -54,6 +54,7 @@ namespace Yijin\Pay;
  * @property string $netsMID 应用MID
  * @property string $netsTID 应用TID
  * @property string $netsSTAN 商户unique number
+ * @property string $netsTxnIdentifier 平台订单号
  */
 class AbroadConfig
 {
