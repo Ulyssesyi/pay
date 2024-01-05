@@ -12,7 +12,7 @@
 | Stripe Pay  | 14   | （<font color=red>待测试</font>）   |
 | Gkash Pay   | 16   | （<font color=red>待测试</font>）   |
 | MayBank Pay | 17   | （<font color=red>待测试</font>）   |
-| Nets Pay    | 18   | （<font color=red>开发中</font>）   |
+| Nets Pay    | 18   | （<font color=red>已完成</font>）   |
 
 | 渠道  | 渠道编号 | 进度                                   |
 |-----|------|--------------------------------------|
