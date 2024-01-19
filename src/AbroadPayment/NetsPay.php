@@ -132,7 +132,7 @@ class NetsPay extends Base
             ],
             'communication_data' => [
                 [
-                    'type' => 'http',
+                    'type' => 'https_proxy',
                     'category' => 'URL',
                     'destination' => $this->config->notifyUrl,
                 ]
