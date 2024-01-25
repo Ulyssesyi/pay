@@ -289,7 +289,7 @@ class IPay88 extends Base
 
     private function buildXMLParams(array $params): string
     {
-        switch ($this->transType === TransactionType::BARCODE_PAY) {
+        switch ($this->transType) {
             case TransactionType::BARCODE_PAY:
                 $startTag = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mob="https://www.mobile88.com" xmlns:mhp="http://schemas.datacontract.org/2004/07/MHPHGatewayService.Model"><soapenv:Header/><soapenv:Body><mob:EntryPageFunctionality><mob:requestModelObj>';
                 $endTag = "</mob:requestModelObj> </mob:EntryPageFunctionality></soapenv:Body></soapenv:Envelope>";
