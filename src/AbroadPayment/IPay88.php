@@ -74,7 +74,8 @@ class IPay88 extends Base
                 $trade_status = AbroadConfig::PAYING;
             }
             $transaction_id = $res['s_Body']['EntryPageFunctionalityResponse']['EntryPageFunctionalityResult']['a_TransId'] ?: '';
-            return $this->success(array_merge($res['s_Body'] ?? [], ['trade_status' => $trade_status, 'transaction_id' => $transaction_id]));
+            $payment_id = $res['s_Body']['EntryPageFunctionalityResponse']['EntryPageFunctionalityResult']['a_PaymentId'] ?: 0;
+            return $this->success(array_merge($res['s_Body'] ?? [], ['trade_status' => $trade_status, 'transaction_id' => $transaction_id, 'payment_id' => $payment_id]));
         } catch (Exception | GuzzleException $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -309,7 +310,7 @@ class IPay88 extends Base
         }
         $xml = $startTag;
         foreach ($params as $key => $value) {
-            $value = htmlspecialchars($value, ENT_XML1);
+            $value = htmlspecialchars((string)$value, ENT_XML1);
             if($prefix!=''){
                 $xml .= '<'.$prefix.':' . $key . '>' . $value . '</' .$prefix.':'. $key . '>';
             }else{
