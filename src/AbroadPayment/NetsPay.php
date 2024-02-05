@@ -185,6 +185,7 @@ class NetsPay extends Base
                     break;
                 default:
                     $trade_status = AbroadConfig::PAY_FAIL;
+                    $this->reversal();
             }
             $transaction_id = $this->config->netsTxnIdentifier;
             return $this->success(array_merge($response, compact('trade_status', 'transaction_id')));
@@ -195,38 +196,7 @@ class NetsPay extends Base
 
     function refund(): array
     {
-        $amount = str_pad(intval($this->config->totalAmount * 100), 12, '0', STR_PAD_LEFT);
-        $params = [
-            'mti' => '0400',
-            'process_code' => '990000',
-            'stan' => $this->config->netsSTAN,
-            'amount' => $amount,
-            'transaction_time' => date('his'),
-            'transaction_date' => date('md'),
-            'entry_mode' => '000',
-            'condition_code' => '85',
-            'institution_code' => '20000000001',
-            'host_tid' => $this->config->netsTID,
-            'host_mid' => $this->config->netsMID,
-            'npx_data' => [
-                'E103' => $this->config->netsTID,
-            ],
-            'txn_identifier' => $this->config->netsTxnIdentifier,
-        ];
-        list($result, $response) = $this->request(self::ORDER_REVERSAL, $params);
-        if ($result) {
-            switch ($response['response_code']) {
-                case '00':
-                    $refund_status = AbroadConfig::REFUND_SUCCESS;
-                    break;
-                default:
-                    $refund_status = AbroadConfig::REFUND_FAIL;
-            }
-            $transaction_id = $this->config->netsTxnIdentifier;
-            return $this->success(array_merge($response, compact('refund_status', 'transaction_id')));
-        } else {
-            return $this->error($response, -1);
-        }
+        return $this->error('暂不支持', -1);
     }
 
     function refundQuery(): array
@@ -255,6 +225,34 @@ class NetsPay extends Base
     function verifySign(array $data): bool
     {
         return true;
+    }
+
+    private function reversal(): bool
+    {
+        $amount = str_pad(intval($this->config->totalAmount * 100), 12, '0', STR_PAD_LEFT);
+        $params = [
+            'mti' => '0400',
+            'process_code' => '990000',
+            'stan' => $this->config->netsSTAN,
+            'amount' => $amount,
+            'transaction_time' => date('his'),
+            'transaction_date' => date('md'),
+            'entry_mode' => '000',
+            'condition_code' => '85',
+            'institution_code' => '20000000001',
+            'host_tid' => $this->config->netsTID,
+            'host_mid' => $this->config->netsMID,
+            'npx_data' => [
+                'E103' => $this->config->netsTID,
+            ],
+            'txn_identifier' => $this->config->netsTxnIdentifier,
+        ];
+        list($result, $response) = $this->request(self::ORDER_REVERSAL, $params);
+        if ($result) {
+            return $response['response_code'] == '00';
+        } else {
+            return false;
+        }
     }
 
     private function request(string $uri, array $params): array
