@@ -141,9 +141,6 @@ class NetsPay extends Base
         ];
         list($result, $response) = $this->request(self::ORDER_REQUEST, $params);
         if ($result) {
-            if ($response['response_code'] !== '00') {
-                return $this->error($response, -1);
-            }
             $payUrl = $response['qr_code'] ?? '';
             return $this->success(array_merge($response, compact('payUrl')));
         } else {
@@ -190,6 +187,7 @@ class NetsPay extends Base
             $transaction_id = $this->config->netsTxnIdentifier;
             return $this->success(array_merge($response, compact('trade_status', 'transaction_id')));
         } else {
+            $this->reversal();
             return $this->error($response, -1);
         }
     }
