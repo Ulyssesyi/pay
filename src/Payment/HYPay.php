@@ -94,7 +94,7 @@ class HYPay extends Base
                 default:
                     $trade_status = Config::PAY_FAIL;
             }
-            $transaction_id = '';
+            $transaction_id = $data['pay_order_id'] ?? '';
             return $this->success(compact('trade_status', 'transaction_id', 'data'));
         } else {
             return $this->error($data, -1);
