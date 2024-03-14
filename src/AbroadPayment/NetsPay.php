@@ -155,6 +155,7 @@ class NetsPay extends Base
 
     function query(): array
     {
+        $amount = str_pad(intval($this->config->totalAmount * 100), 12, '0', STR_PAD_LEFT);
         $params = [
             'mti' => '0100',
             'process_code' => '330000',
@@ -168,6 +169,8 @@ class NetsPay extends Base
             'host_mid' => $this->config->netsMID,
             'npx_data' => [
                 'E103' => $this->config->netsTID,
+                'E201' => $amount,
+                'E202' => 'SGD',
             ],
             'txn_identifier' => $this->config->netsTxnIdentifier
         ];
