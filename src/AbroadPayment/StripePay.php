@@ -64,9 +64,9 @@ class StripePay extends Base
                 'amount' => $this->config->totalAmount * 100,
                 'currency' => 'sgd',
                 'description' => $this->config->subject ?: 'RIPOS',
-                'metadata' => [
+                'metadata' => array_merge($this->config->stripeMetaData, [
                     'trade_no' => $this->config->tradeNo,
-                ],
+                ]),
                 'on_behalf_of' => $this->config->stripeAccount,
                 'payment_method' => $payment_method,
                 'payment_method_types' => [$payment_method_type],

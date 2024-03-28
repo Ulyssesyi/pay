@@ -47,6 +47,7 @@ namespace Yijin\Pay;
  * @property string $stripePaymentMethod 支付方式id，网页支付需要
  * @property string $stripePaymentMethodType 支付方式，网页支付需要
  * @property string $stripePaymentIntentId 支付id，刷卡支付需要
+ * @property array $stripeMetaData 额外附加参数
  *
  * Nets参数
  * @property string $netsKeyId 应用key id
