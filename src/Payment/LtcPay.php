@@ -248,7 +248,7 @@ class LtcPay extends Base
         if (!$content || $content === 'null') {
             $content = '平台签发';
         }
-        return openssl_verify($content, base64_decode($sign), $this->getPublicKey(), OPENSSL_ALGO_SHA256);
+        return openssl_verify($content, base64_decode($sign), $this->getPublicKey(), OPENSSL_ALGO_SHA256) === 1;
     }
 
     private function getPrivateKey()

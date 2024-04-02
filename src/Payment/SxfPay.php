@@ -436,7 +436,7 @@ class SxfPay extends Base
         $signSecret = "-----BEGIN PUBLIC KEY-----\n" .
             wordwrap($this->config->orgPublicRSAKeySxf, 64, "\n", true) .
             "\n-----END PUBLIC KEY-----";
-        return openssl_verify($signContent, base64_decode($signed), $signSecret);
+        return openssl_verify($signContent, base64_decode($signed), $signSecret) === 1;
     }
 
     private function generateSignString($data): string

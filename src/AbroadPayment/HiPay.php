@@ -316,7 +316,7 @@ class HiPay extends Base
             wordwrap($this->config->hiPayPublicKey, 64, "\n", true) .
             "\n-----END PUBLIC KEY-----";
         $key = openssl_get_publickey($publicKey);
-        return openssl_verify($str, base64_decode($sign), $key,'sha256');
+        return boolval(openssl_verify($str, base64_decode($sign), $key,'sha256'));
     }
 
     /**
