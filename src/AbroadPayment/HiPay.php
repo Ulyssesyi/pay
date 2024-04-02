@@ -67,7 +67,7 @@ class HiPay extends Base
                 'auth_code' => $this->config->authCode,
                 'trans_type' => 'OnlinePaymentISV'
             ],
-            'meta_data' => [],
+            'meta_data' => (object)[],
         ];
         try {
             $res = $this->execRequest($params, self::ORDER_PAY_URL);
@@ -105,8 +105,8 @@ class HiPay extends Base
             'goods_subject' => $this->config->subject ?? 'Merchant Order',
             'goods_body' => '',
             'time_expire' => 15 * 60,
-            'channel_extra' => [],
-            'meta_data' => [],
+            'channel_extra' => (object)[],
+            'meta_data' => (object)[],
         ];
         try {
             $res = $this->execRequest($params, self::ORDER_PAY_URL);
@@ -139,8 +139,8 @@ class HiPay extends Base
             'goods_subject' => $this->config->subject ?? 'Merchant Order',
             'goods_body' => '',
             'time_expire' => 15 * 60,
-            'channel_extra' => [],
-            'meta_data' => [],
+            'channel_extra' => (object)[],
+            'meta_data' => (object)[],
         ];
         try {
             $res = $this->execRequest($params, self::ORDER_PAY_URL);
