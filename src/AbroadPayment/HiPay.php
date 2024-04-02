@@ -271,7 +271,7 @@ class HiPay extends Base
         }
         $bodyData = json_decode($body, true);
         $payData = $bodyData['data'] ?? [];
-        $event_type = $data['event_type'] ?? '';
+        $event_type = $bodyData['event_type'] ?? '';
         if ($event_type === 'charge.success') {
             $merchantTradeNo = $payData['merch_order_id'] ?? '';
         } else if ($event_type === 'refund.success') {
@@ -279,7 +279,7 @@ class HiPay extends Base
         } else {
             return $this->error("回调错误", -1);
         }
-        $transaction_id = $data['id'] ?? '';
+        $transaction_id = $payData['id'] ?? '';
         return $this->success(array_merge($data, compact('merchantTradeNo', 'transaction_id')));
     }
 
