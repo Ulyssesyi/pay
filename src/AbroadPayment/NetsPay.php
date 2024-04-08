@@ -112,7 +112,7 @@ class NetsPay extends Base
 
     function qrcodePay(): array
     {
-        $amount = str_pad(intval($this->config->totalAmount * 100), 12, '0', STR_PAD_LEFT);
+        $amount = str_pad(intval(bcmul($this->config->totalAmount, 100)), 12, '0', STR_PAD_LEFT);
         $params = [
             'mti' => '0200',
             'process_code' => '990000',
@@ -155,7 +155,7 @@ class NetsPay extends Base
 
     function query(): array
     {
-        $amount = str_pad(intval($this->config->totalAmount * 100), 12, '0', STR_PAD_LEFT);
+        $amount = str_pad(intval(bcmul($this->config->totalAmount, 100)), 12, '0', STR_PAD_LEFT);
         $params = [
             'mti' => '0100',
             'process_code' => '330000',
@@ -230,7 +230,7 @@ class NetsPay extends Base
 
     private function reversal(): bool
     {
-        $amount = str_pad(intval($this->config->totalAmount * 100), 12, '0', STR_PAD_LEFT);
+        $amount = str_pad(intval(bcmul($this->config->totalAmount, 100)), 12, '0', STR_PAD_LEFT);
         $params = [
             'mti' => '0400',
             'process_code' => '990000',
