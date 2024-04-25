@@ -152,7 +152,7 @@ class HiPay extends Base
 
         if ($this->isSuccess($res)) {
             $data = $res['biz_content'] ?? [];
-            $payUrl = ( $this->config->isSandbox ? 'https://static.kbzpay.com/pgw/uat/pwa/#/?' : 'https://wap.kbzpay.com/pgw/pwa/#/') . ($data['credential']['mm_kbzpay_pwa']['rawRequest'] ?? '');
+            $payUrl = ( $this->config->isSandbox ? 'https://static.kbzpay.com/pgw/uat/pwa/#/?' : 'https://wap.kbzpay.com/pgw/pwa/#/?') . ($data['credential']['mm_kbzpay_pwa']['rawRequest'] ?? '');
             return $this->success(array_merge($data, compact('payUrl')));
         } else {
             return $this->error($res['error_msg'] ?? '系统异常', $res['error_code'] ?? -1);
