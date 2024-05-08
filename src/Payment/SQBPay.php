@@ -152,7 +152,7 @@ class SQBPay extends Base
         if ($this->isSuccess($res)) {
             $code = $res['biz_response']['result_code'] ?? '';
             $status = $res['biz_response']['data']['order_status'] ?? '';
-            if ($code === 'REFUND_SUCCESS' && $status === 'REFUNDED') {
+            if ($code === 'REFUND_SUCCESS' && ($status === 'REFUNDED' || $status === 'PARTIAL_REFUNDED')) {
                 $refund_status = Config::REFUND_SUCCESS;
             } elseif ($code === 'REFUND_IN_PROGRESS') {
                 $refund_status = Config::REFUNDING;
@@ -182,7 +182,7 @@ class SQBPay extends Base
         }
         if ($this->isSuccess($res)) {
             $status = $res['biz_response']['data']['order_status'] ?? '';
-            if ($status === 'REFUNDED') {
+            if ($status === 'REFUNDED' || $status === 'PARTIAL_REFUNDED') {
                 $refund_status = Config::REFUND_SUCCESS;
             } elseif ($status === 'REFUND_INPROGRESS') {
                 $refund_status = Config::REFUNDING;
