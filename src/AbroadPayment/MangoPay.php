@@ -122,8 +122,12 @@ class MangoPay extends Base
     function notify($data): array
     {
         try {
-            $responseDataDecrypt = json_decode($this->decrypt($data['encryData']), true);
-            $sign = $data['sign'];
+            $sign = $data[0];
+            $postData = $data[1];
+            if (!$sign || !isset($postData['encryData'])) {
+                return $this->error('参数错误', -1);
+            }
+            $responseDataDecrypt = json_decode($this->decrypt($postData['encryData']), true);
 
             if (!$this->verifySign([
                 'params' => $responseDataDecrypt,
