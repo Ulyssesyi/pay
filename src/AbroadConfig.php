@@ -56,6 +56,13 @@ namespace Yijin\Pay;
  * @property string $netsTID 应用TID
  * @property string $netsSTAN 商户unique number
  * @property string $netsTxnIdentifier 平台订单号
+ *
+ * MangoPay参数
+ * @property string $mangoMerchantNo 商户号
+ * @property string $mangoMerchantSalt 商户加密盐值
+ * @property string $mangoMerchantKey 商户密钥
+ * @property string $mangoPlatformSalt 平台加密盐值
+ * @property string $mangoPlatformKey 平台公钥
  */
 class AbroadConfig
 {
@@ -65,6 +72,7 @@ class AbroadConfig
     const PAY_BY_STRIPE = 14;
     const PAY_BY_MAY_BANK = 17;
     const PAY_BY_NETS = 18;
+    const PAY_BY_MANGO = 19;
 
     const PAY_SUCCESS = 1;
     const PAYING = 0;

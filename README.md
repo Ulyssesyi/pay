@@ -7,12 +7,13 @@
 | 官方          | 5    | （<font color=green>已完成</font>） |
 | 随行付         | 10   | （<font color=green>已完成</font>） |
 | 移动杭研        | 15   | （<font color=green>已完成</font>） |
-| IPay88 Pay  | 9    | （<font color=red>待测试</font>）   |
-| Hi Pay      | 13   | （<font color=red>待测试</font>）   |
-| Stripe Pay  | 14   | （<font color=red>待测试</font>）   |
-| Gkash Pay   | 16   | （<font color=red>待测试</font>）   |
-| MayBank Pay | 17   | （<font color=red>待测试</font>）   |
-| Nets Pay    | 18   | （<font color=red>已完成</font>）   |
+| IPay88 Pay  | 9    | （<font color=green>已完成</font>） |
+| Hi Pay      | 13   | （<font color=green>已完成</font>） |
+| Stripe Pay  | 14   | （<font color=green>已完成</font>） |
+| Gkash Pay   | 16   | （<font color=green>已完成</font>） |
+| MayBank Pay | 17   | （<font color=green>已完成</font>） |
+| Nets Pay    | 18   | （<font color=green>已完成</font>） |
+| Mango Pay   | 19   | （<font color=red>开发中</font>）   |
 
 | 渠道  | 渠道编号 | 进度                                   |
 |-----|------|--------------------------------------|
@@ -230,6 +231,27 @@
 | netsMID             | M    | string | 11137066800   | 应用MID           |
 | netsTID             | M    | string | 37066801      | 应用TID           |
 | netsSTAN            | M    | string | 000001        | 商户unique number |
+
+# 返回参数
+
+## 通用参数
+
+| 名称       | 是否必填 | 类型     | 示例             | 说明                                  |
+|----------|------|--------|----------------|-------------------------------------|
+| result   | M    | bool   | true           | 支付请求结果，true-请求成功，false-请求失败         |
+| errMsgNo | C    | mixed  | 1001           | 支付请求失败的失败错误码，用于特定场景的特殊处理            |
+| errMsg   | C    | string | 缺失参数xxx        | 支付请求失败的失败原因                         |
+| data     | C    | mixed  | https://xxx/xx | 请求成功时，一些额外信息返回，各接口的返回必需参数参看Base类的注释 |
+
+## MangoCash参数
+
+| 名称                | 是否必填 | 类型     | 示例            | 说明     |
+|-------------------|------|--------|---------------|--------|
+| mangoMerchantNo   | M    | string | b027dacd-**** | 商户号    |
+| mangoMerchantSalt | M    | string | 21296dd3-**** | 商户加密盐值 |
+| mangoMerchantKey  | M    | string | 11137066800   | 商户密钥   |
+| mangoPlatformSalt | M    | string | 21296dd3-**** | 平台加密盐值 |
+| mangoPlatformKey  | M    | string | 11137066800   | 平台公钥   |
 
 # 返回参数
 
