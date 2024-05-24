@@ -13,7 +13,7 @@ class MangoPay extends Base
     use Response;
 
     const DOMAIN_UAT = 'http://122.8.181.200:50001';
-    const DOMAIN = 'https://isag.api.mangocash.com';
+    const DOMAIN = 'https://isag.mangocash.com';
     const ORDER_PAY_URL = '/global/api/paycreatebill';
     const ORDER_QUERY_URL = '/global/api/orderQuery';
 
