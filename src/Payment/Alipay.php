@@ -2,7 +2,7 @@
 
 namespace Yijin\Pay\Payment;
 
-use Alipay\EasySDK\Kernel\Factory;
+use Alipay\EasySDK\Kernel\MultipleFactory;
 use Yijin\Pay\Config;
 use Yijin\Pay\Response;
 
@@ -39,7 +39,7 @@ class Alipay extends Base
         //可设置AES密钥，调用AES加解密相关接口时需要（可选）
         $options->encryptKey = $config->encryptKey;
 
-        Factory::setOptions($options);
+        MultipleFactory::setOptions($options);
     }
 
     /**
@@ -48,7 +48,7 @@ class Alipay extends Base
     function barcodePay()
     {
         try {
-            $client = Factory::payment()->faceToFace();
+            $client = MultipleFactory::payment()->faceToFace();
             if ($this->config->appAuthToken) {
                 $client->agent($this->config->appAuthToken);
             }
@@ -75,7 +75,7 @@ class Alipay extends Base
     function qrcodePay()
     {
         try {
-            $client = Factory::payment()->faceToFace();
+            $client = MultipleFactory::payment()->faceToFace();
             if ($this->config->appAuthToken) {
                 $client->agent($this->config->appAuthToken);
             }
@@ -97,7 +97,7 @@ class Alipay extends Base
     function webPay()
     {
         try {
-            $client = Factory::payment()->common();
+            $client = MultipleFactory::payment()->common();
             if ($this->config->appAuthToken) {
                 $client->agent($this->config->appAuthToken);
             }
@@ -119,7 +119,7 @@ class Alipay extends Base
     function query()
     {
         try {
-            $client = Factory::payment()->common();
+            $client = MultipleFactory::payment()->common();
             if ($this->config->appAuthToken) {
                 $client->agent($this->config->appAuthToken);
             }
@@ -150,7 +150,7 @@ class Alipay extends Base
     function refund()
     {
         try {
-            $client = Factory::payment()->common();
+            $client = MultipleFactory::payment()->common();
             if ($this->config->appAuthToken) {
                 $client->agent($this->config->appAuthToken);
             }
@@ -178,7 +178,7 @@ class Alipay extends Base
     function refundQuery()
     {
         try {
-            $res = Factory::payment()->common()->batchOptional($this->config->optional)->queryRefund($this->config->tradeNo, $this->config->refundTradeNo ?? $this->config->tradeNo);
+            $res = MultipleFactory::payment()->common()->batchOptional($this->config->optional)->queryRefund($this->config->tradeNo, $this->config->refundTradeNo ?? $this->config->tradeNo);
             if ($res->code === '10000') {
                 $refund_status = $res->refundStatus === 'REFUND_SUCCESS' ? Config::REFUND_SUCCESS : Config::REFUNDING;
             } elseif ($res->code === '40004' && $res->subCode === 'ACQ.SYSTEM_ERROR') {
@@ -231,6 +231,6 @@ class Alipay extends Base
      */
     function verifySign(array $data): bool
     {
-        return Factory::payment()->common()->verifyNotify($data);
+        return MultipleFactory::payment()->common()->verifyNotify($data);
     }
 }

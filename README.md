@@ -13,7 +13,7 @@
 | Gkash Pay   | 16   | （<font color=green>已完成</font>） |
 | MayBank Pay | 17   | （<font color=green>已完成</font>） |
 | Nets Pay    | 18   | （<font color=green>已完成</font>） |
-| Mango Pay   | 19   | （<font color=red>已完成</font>）   |
+| Mango Pay   | 19   | （<font color=green>已完成</font>） |
 
 | 渠道  | 渠道编号 | 进度                                   |
 |-----|------|--------------------------------------|
