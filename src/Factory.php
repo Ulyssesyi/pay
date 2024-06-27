@@ -13,6 +13,7 @@ use Yijin\Pay\Payment\Alipay;
 use Yijin\Pay\Payment\Base;
 use Yijin\Pay\Payment\FuBeiPay;
 use Yijin\Pay\Payment\HYPay;
+use Yijin\Pay\Payment\JLPay;
 use Yijin\Pay\Payment\LeshuaPay;
 use Yijin\Pay\Payment\LiantuoPay;
 use Yijin\Pay\Payment\LtcPay;
@@ -32,6 +33,8 @@ class Factory
         switch ($config->channel) {
             case Config::PAY_BY_SXF:
                 return new SxfPay($config);
+            case Config::PAY_BY_JL:
+                return new JLPay($config);
             case Config::PAY_BY_SQB:
                 return new SQBPay($config);
             case Config::PAY_BY_LS:

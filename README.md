@@ -14,6 +14,7 @@
 | MayBank Pay | 17   | （<font color=green>已完成</font>） |
 | Nets Pay    | 18   | （<font color=green>已完成</font>） |
 | Mango Pay   | 19   | （<font color=green>已完成</font>） |
+| 嘉联支付        | 20   | （<font color=green>已完成</font>） |
 
 | 渠道  | 渠道编号 | 进度                                   |
 |-----|------|--------------------------------------|
@@ -154,6 +155,17 @@
 | privateKeyHY   | M    | string | MB***        | 商户在移动杭研的密钥     |
 | publicKeyHY    | M    | string | MB***        | 移动杭研的公钥        |
 
+## 嘉联支付参数
+
+| 名称           | 是否必填 | 类型      | 示例      | 说明         |
+|--------------|------|---------|---------|------------|
+| isSandboxJL  | M    | boolean | true    | 是否使用了UAT环境 |
+| orgCodeJL    | M    | string  | 2021*** | 机构号        |
+| merchantIdJL | M    | string  | 123     | 商户在嘉联的商户号  |
+| termNoJL     | M    | string  | MB***   | 商户在嘉联的终端号  |
+| privateKeyJL | M    | string  | MB***   | 商户在嘉联的密钥   |
+| publicKeyJL  | M    | string  | MB***   | 嘉联的公钥      |
+
 # 国外渠道请求参数
 
 ## 通用参数
@@ -224,13 +236,13 @@
 
 ## Nets参数
 
-| 名称                  | 是否必填 | 类型     | 示例            | 说明              |
-|---------------------|------|--------|---------------|-----------------|
-| netsKeyId           | M    | string | b027dacd-**** | 应用key id        |
-| netsKey             | M    | string | 21296dd3-**** | 应用key           |
-| netsMID             | M    | string | 11137066800   | 应用MID           |
-| netsTID             | M    | string | 37066801      | 应用TID           |
-| netsSTAN            | M    | string | 000001        | 商户unique number |
+| 名称        | 是否必填 | 类型     | 示例            | 说明              |
+|-----------|------|--------|---------------|-----------------|
+| netsKeyId | M    | string | b027dacd-**** | 应用key id        |
+| netsKey   | M    | string | 21296dd3-**** | 应用key           |
+| netsMID   | M    | string | 11137066800   | 应用MID           |
+| netsTID   | M    | string | 37066801      | 应用TID           |
+| netsSTAN  | M    | string | 000001        | 商户unique number |
 
 # 返回参数
 

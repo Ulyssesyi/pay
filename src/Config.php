@@ -93,6 +93,15 @@ namespace Yijin\Pay;
  * @property int $productIdHY 移动杭研的产品id
  * @property string $privateKeyHY 商户在移动杭研的密钥
  * @property string $publicKeyHY 移动杭研的公钥
+ *
+ * 嘉联支付参数
+ * @property string $isSandboxJL 是否使用了UAT环境
+ * @property string $orgCodeJL 机构号
+ * @property string $merchantIdJL 商户在嘉联的商户号
+ * @property string $termNoJL 商户在嘉联的终端号
+ * @property string $privateKeyJL 商户在嘉联的密钥
+ * @property string $publicKeyJL 嘉联的公钥
+ *
  */
 class Config
 {
@@ -105,6 +114,7 @@ class Config
     const PAY_BY_SXF = 10;
     const PAY_BY_LTC = 11;
     const PAY_BY_HY = 15;
+    const PAY_BY_JL = 20;
 
     const ALIPAY = 1;
     const WE_PAY = 2;
