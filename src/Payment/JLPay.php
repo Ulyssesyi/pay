@@ -263,7 +263,7 @@ class JLPay extends Base
      */
     function notifySuccess()
     {
-        return ['code' => 'success', 'msg' => '成功'];
+        return ['retCode' => 'success'];
     }
 
     /**
